@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">VBVMI</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_my_studies">My Studies</string>
+    <string name="recently_viewed">Recently Viewed</string>
+    <string name="latest_teachings">Latest Teachings</string>
+    <string name="devotionals">Devotionals</string>
+    <string name="title_activity_bible_study">BibleStudyActivity</string>
+    <string name="status_text_default">Enter the URL of the file to download.</string>
+    <string name="progress_dialog_title_downloading">Downloading...</string>
+    <string name="progress_dialog_title_connecting">Connecting...</string>
+    <string name="progress_dialog_message_prefix_downloading">Downloading file</string>
+    <string name="progress_dialog_message_prefix_connecting">Connecting to</string>
+    <string name="user_message_download_complete">Download complete!</string>
+    <string name="user_message_download_canceled">Download canceled!</string>
+    <string name="error_message_bad_url">Error: Invalid URL!</string>
+    <string name="error_message_file_not_found">Error: File not found!</string>
+    <string name="error_message_general">Error downloading file!</string>
+    <string name="title_activity_study_details">StudyDetailsActivity</string>
+    <string name="msg_progress_dialog">Please wait...</string>
+    <string name="msg_progress_dialog_loading">Loading, please wait...</string>
+    <string name="dialog_title_error">Error</string>
+    <string name="title_activity_play_lesson">PlayLessonActivity</string>
+    <string name="title_activity_audio_player">AudioPlayerActivity</string>
+    <string name="title_activity_study_list">StudyListActivity</string>
+    <string name="title_activity_events">Events</string>
+    <string name="title_activity_event_details">Event</string>
+    <string name="title_activity_qand_aposts">Answers</string>
+    <string name="title_activity_qand_apost_details">Answers Details</string>
+    <string name="title_activity_articles">Articles</string>
+    <string name="title_activity_article_details">Article Details</string>
+    <string name="title_activity_video">Videos</string>
+    <string name="title_activity_video_details">Video</string>
+    <string name="pdf_show_online_dialog_title">Show PDF</string>
+    <string name="pdf_show_online_dialog_question">You are trying to open a PDF file, but you don\'t have a PDF reader installed. Do you want to read the PDF file online with Google Drive (Requires Google account)?</string>
+    <string name="pdf_show_online_dialog_button_yes">Yes, read online</string>
+    <string name="pdf_show_online_dialog_button_no">No</string>
+    <string name="pdf_show_local_progress_title">Please wait</string>
+    <string name="pdf_show_local_progress_content">Downloading PDF&#8230;</string>
+    <string name="title_activity_vbvm">VbvmActivity</string>
+    <string name="title_activity_vbvm_details">VbvmDetailsActivity</string>
+    <string name="title_activity_vbvm_contact">Contact</string>
+    <string name="title_activity_vbvm_donate">Donate</string>
+    <string name="title_activity_splash_screen">SplashScreenActivity</string>
+    <string name="title_activity_directors_vbvm">DirectorsVbvmActivity</string>
+    <string name="title_activity_staff_vbvm">StaffVbvmActivity</string>
+    <string name="title_activity_staff_vbvm_details">StaffVbvmDetailsActivity</string>
+    <string name="title_activity_vbvm_staff_details">VbvmStaffDetailsActivity</string>
+    <string name="title_activity_staff_details">StaffDetailsActivity</string>
+    <string name="title_dialog_find_bible_studies">Find Bible Studies</string>
+    <string name="title_dialog_mark_lessons_as_played">Settings</string>
+    <string name="dialog_button_cancel">Cancel</string>
+    <string name="action_filter">Filter</string>
+    <string name="action_topics">Topics</string>
+    <string name="action_authors">Authors</string>
+
+    <string-array name="items_find_bible_studies">
+        <item>Old Testament Books</item>
+        <item>New Testament Books</item>
+        <item>Single Teachings</item>
+        <item>Topical Series</item>
+        <item>All</item>
+    </string-array>
+    <string-array name="items_mark_lessons_as_played">
+        <item>Mark All As Played</item>
+        <item>Mark All As Unplayed</item>
+        <item>Download All Lessons</item>
+        <item>Delete All Lessons</item>
+    </string-array>
+
+    <string name="title_activity_find_by_topic">FindByTopicActivity</string>
+    <string name="eula"></string>
+    <string name="updates">COPYRIGHTS:
+ 
+\n\nCopyright 2014 Verse By Verse Ministry International. All Rights Reserved.
+ 
+\n\nThis software may not, in whole or in any part, be copied, reproduced, transmitted, translated (into any
+language, natural or computer), stored in a retrieval system, reduced to any electronic medium or machine readable
+format, or by any other form or means without prior consent, in writing, from Verse By Verse Ministry International.
+ 
+\n\nYou are granted a limited license to use this software. The software may be used or copied only in accordance
+with the terms of that license, which is described in the following paragraphs.
+ 
+\n\nTRADEMARKS:
+\n\nYou acknowledge that no title to the intellectual property in the Software is transferred to you. You further acknowledge that title and full ownership rights to the Software will remain the exclusive property of Countdown and/or its suppliers, and you will not acquire any rights to the Software, except as expressly set forth above. All title and copyrights in and to the Software (including but not limited to any images, photographs, animations, video, audio, music, text and “applets,” incorporated into the Software), the accompanying printed materials, and any copies of the Software, are owned by Countdown or its suppliers.
+
+This Software is protected by copyright laws, international copyright treaties, other intellectual property laws and treaties.
+
+Android™ is a trademark of Google, Inc., registered in the U.S. and other countries. All other trademarks appearing in the Software, Services or Agreement are the property of their respective owners.
+ 
+\n\nLICENSE:
+\n\n\"THE SOFTWARE\" shall be taken to mean the software contained in this app and any subsequent versions
+or upgrades received as a result of having purchased this app. \"BUYER\" shall be taken as the original
+purchaser of the software.
+ 
+\n\nBuyer has the non-exclusive right to the use of software only on a single device. Buyer may not electronically
+transfer the program from one device to another over any type of network. Buyer may not distribute copies
+of the software or the accompanying documentation to others either for a fee or without charge. Buyer may not modify
+or translate the program or documentation. User may not disassemble the program or allow it to be disassembled
+into its constituent source code. Buyer\'s use of the software indicates his/her acceptance of these terms
+and conditions. If buyer does not agree to these conditions, return the distribution media, documentation, and
+associated materials to the vendor from whom the software was purchased, and/or uninstall the software from the device,
+and erase the software from any and all storage devices upon which it may have been installed.
+ 
+\n\nThis license agreement shall be governed by the laws of The United States of America, Massachusetts and
+shall inure to the benefit of Verse By Verse Ministry International or its assigns.
+ 
+\n\nDISCLAIMER / LIMITATION OF LIABILITY:
+\n\nBuyer acknowledges that the software may not be free from defects and may not satisfy all of buyer\'s
+needs. Verse By Verse Ministry International warrants all media on which the software is distributed for 60 days to be free from defects
+in normal use. The software and any accompanying written materials are licensed \"AS IS\". Buyer\'s exclusive
+remedy during the warranty period (if any) shall consist of replacement of distribution media if determined to be
+faulty. In no event will Verse By Verse Ministry International be liable for direct, indirect, incidental or consequential damage or
+damages resulting from loss of use, or loss of anticipated profits resulting from any defect in the software,
+even if it has been advised of the possibility of such damage. Some laws do not allow exclusion or limitation
+of implied warranties or liabilities for incidental or consequential damages, so the above limitations or
+exclusion may not apply.
+ 
+\n\nSPECIFIC RESTRICTIONS:
+\n\nIn accordance with the COMPUTER SOFTWARE RENTAL ACT OF 1990, this software may not be rented, lent or leased.
+\n\nThe software and accompanying documentation may not be provided by a \"Backup Service\" or any other vendor
+which does not provide an original package as composed of Verse By Verse Ministry International, including but not limited to all original
+distribution media, documentation, registration cards, and insertions.</string>
+    <string name="title_activity_init">InitActivity</string>
+    <string name="title_activity_license">LicenseActivity</string>
+    <string name="title_dialog_error_connection">No Internet Connection Found</string>
+    <string name="message_dialog_error_connection">Your device is not connected to the internet or our server is not responding. Some content will not be available until a connection is restored.</string>
+
+    <string name="drawer_open">Slider Menu Opened</string>
+    <string name="drawer_close">Slider Menu Closed</string>
+
+    <!-- Nav Drawer Menu Items -->
+    <string-array name="nav_drawer_items">
+        <item>My Home</item>
+        <item>Browse Library</item>
+        <item>Events</item>
+        <item>Donate</item>
+        <item>Connect</item>
+        <item>About</item>
+    </string-array>
+
+    <!-- Nav Drawer List Item Icons -->
+    <!-- Keep them in order as the titles are in -->
+    <integer-array name="nav_drawer_icons">
+        <item>@drawable/ic_home</item>
+        <item>@drawable/ic_people</item>
+        <item>@drawable/ic_photos</item>
+        <item>@drawable/ic_communities</item>
+        <item>@drawable/ic_pages</item>
+        <item>@drawable/ic_whats_hot</item>
+    </integer-array>
+
+    <!-- Content Description -->
+    <string name="desc_list_item_icon">Item Icon</string>
+    <string name="title_newest">Newest</string>
+    <string name="title_favorites">Favorites</string>
+    <string name="title_activity_mail_sender">MailSenderActivity</string>
+
+    <!--Bottom bar buttons-->
+    <string name="bottom_menu_studies">Studies</string>
+    <string name="bottom_menu_articles">Articles</string>
+    <string name="bottom_menu_answers">Answers</string>
+    <string name="bottom_menu_videos">Videos</string>
+
+</resources>

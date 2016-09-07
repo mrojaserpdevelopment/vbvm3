@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    tools:context=".activity.QAndAPostDetailsActivity" >
+
+    <!-- Post Details -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="top"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="#ffffffff"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="top"
+            android:layout_weight="0.2"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/tv_post_author"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:lines="1"
+                    android:text="Author"
+                    android:textColor="#938d8c"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_post_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:lines="1"
+                    android:text="Date"
+                    android:textColor="#938d8c"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_post_title"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:gravity="left"
+                android:text="Title"
+                android:textColor="#FF3200"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_post_topics"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:lines="1"
+                android:text="Topics"
+                android:textColor="#938d8c"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <ScrollView
+		    android:id="@+id/horizontalScrollView1"
+		    android:layout_width="wrap_content"
+		    android:layout_height="0dp"
+            android:layout_weight="0.8"		    
+		    android:scrollbars="none" >
+	        <TextView
+	            android:id="@+id/tv_post_description"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_margin="10dp"
+	            android:gravity="left|top"
+	            android:text="Description"
+	            android:textColor="#938d8c"
+	            android:textSize="16sp" />
+        </ScrollView>
+        
+    </LinearLayout>
+
+</RelativeLayout>

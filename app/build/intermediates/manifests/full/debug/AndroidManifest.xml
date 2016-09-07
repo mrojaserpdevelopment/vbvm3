@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.erpdevelopment.vbvm"
+    android:versionCode="13"
+    android:versionName="2.1" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="24" />
+
+    <supports-screens
+        android:largeScreens="false"
+        android:normalScreens="true"
+        android:smallScreens="true"
+        android:xlargeScreens="false" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/app_logo_scaled"
+        android:label="@string/app_name"
+        android:theme="@style/CustomLightTheme" >
+        <activity
+            android:name="com.erpdevelopment.vbvm.SplashActivity"
+            android:configChanges="orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.erpdevelopment.vbvm.MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.erpdevelopment.vbvm.activity.BibleStudyLessonsActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.erpdevelopment.vbvm.activity.AudioControllerActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" >
+
+            <!-- <meta-data -->
+            <!-- android:name="android.support.UI_OPTIONS" android:value="splitActionBarWhenNarrow"/> -->
+        </activity>
+        <activity
+            android:name="com.erpdevelopment.vbvm.activity.EventDetailsActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_event_details"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.erpdevelopment.vbvm.activity.ArticleDetailsActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_article_details"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.erpdevelopment.vbvm.activity.VideosVbvmActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_video"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.erpdevelopment.vbvm.activity.VideoVbvmDetailsActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_qand_aposts"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.erpdevelopment.vbvm.activity.QAndAPostDetailsActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_qand_apost_details"
+            android:parentActivityName="com.erpdevelopment.vbvm.MainActivity"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.erpdevelopment.vbvm.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.erpdevelopment.vbvm.activity.AboutActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_vbvm"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.erpdevelopment.vbvm.activity.AboutDetailsActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_vbvm_details"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.erpdevelopment.vbvm.activity.DonateActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_vbvm_donate"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.erpdevelopment.vbvm.activity.StaffBoardActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_staff_vbvm"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.erpdevelopment.vbvm.activity.StaffBoardDetailsActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_vbvm_staff_details"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.erpdevelopment.vbvm.activity.FindByTopicActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_find_by_topic"
+            android:screenOrientation="portrait" >
+        </activity>
+
+        <service android:name="com.erpdevelopment.vbvm.activity.AudioPlayerService" >
+        </service>
+        <service android:name="com.erpdevelopment.vbvm.service.DownloadService" >
+        </service>
+
+        <receiver android:name="com.erpdevelopment.vbvm.ShutdownReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_SHUTDOWN" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name="com.erpdevelopment.vbvm.MailSenderActivity"
+            android:label="@string/title_activity_mail_sender" >
+        </activity>
+    </application>
+
+</manifest>

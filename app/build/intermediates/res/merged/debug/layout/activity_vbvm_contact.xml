@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" 
+	android:layout_height="fill_parent"
+	android:background="#ffffff">
+
+<!--     <include layout="@layout/top_bottom_menu_bar"/> -->
+    
+<!--     <include layout="@layout/top_menu_bar"/> -->
+    
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_gravity="top"
+        >
+       
+        <LinearLayout
+            android:id="@+id/ll_vbvm_detail_header" 
+	        android:layout_width="fill_parent"
+	        android:layout_height="0dp"
+	        android:layout_weight="0.2"
+	        android:orientation="horizontal"
+	        android:layout_gravity="top">
+    
+	        <ImageView
+			    android:id="@+id/img_vbvm_detail"
+			    android:layout_width="60dp"
+			    android:layout_height="60dp"
+			    android:layout_marginRight="10dp" />
+		
+	        <LinearLayout 
+	            android:id="@+id/layout_title"
+		        android:layout_width="wrap_content"
+		        android:layout_height="50dp"
+		        android:orientation="vertical"
+		        android:gravity="center_vertical|left">
+	        
+				<TextView
+				    android:id="@+id/tv_vbvm_title"
+				    android:layout_width="fill_parent"
+				    android:layout_height="wrap_content"	    
+				    android:textSize="18sp"
+				    android:text="TextView"
+				    android:textColor="#000000"
+				    android:gravity="left"
+				    android:singleLine="true"
+				    android:ellipsize="end"/>			
+	 
+				<TextView
+				    android:id="@+id/tv_vbvm_subtitle"
+				    android:layout_width="fill_parent"
+				    android:layout_height="wrap_content"	    
+				    android:textSize="14sp"
+				    android:text="TextView"
+				    android:textColor="#938d8c"
+				    android:gravity="left"
+				    android:singleLine="true"
+				    android:ellipsize="end"/>
+				
+			</LinearLayout>	
+			
+		</LinearLayout>	
+		
+        <ScrollView
+		    android:id="@+id/horizontalScrollView2"
+		    android:layout_width="wrap_content"
+		    android:layout_height="0dp"
+            android:layout_weight="0.8"		    
+		    android:scrollbars="none" >		        
+	        <TextView
+			    android:id="@+id/tv_vbvm_contact"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"	  
+			    android:textSize="16sp"
+			    android:text="Description"
+			    android:textColor="#938d8c"
+			    android:gravity="left|top"
+			    android:scrollbars="vertical"
+			    android:layout_margin="10dp"
+			    />        
+        </ScrollView>
+        
+	</LinearLayout>
+        
+</RelativeLayout>

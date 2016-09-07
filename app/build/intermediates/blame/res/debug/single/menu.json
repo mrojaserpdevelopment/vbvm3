@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "C:\\Users\\rojas\\AndroidStudioProjects\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_library.xml",
+        "source": "C:\\Users\\rojas\\AndroidStudioProjects\\vbvm3\\app\\src\\main\\res\\menu\\menu_library.xml"
+    },
+    {
+        "merged": "C:\\Users\\rojas\\AndroidStudioProjects\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\menu\\mail_sender.xml",
+        "source": "C:\\Users\\rojas\\AndroidStudioProjects\\vbvm3\\app\\src\\main\\res\\menu\\mail_sender.xml"
+    },
+    {
+        "merged": "C:\\Users\\rojas\\AndroidStudioProjects\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_event_details.xml",
+        "source": "C:\\Users\\rojas\\AndroidStudioProjects\\vbvm3\\app\\src\\main\\res\\menu\\menu_event_details.xml"
+    },
+    {
+        "merged": "C:\\Users\\rojas\\AndroidStudioProjects\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\menu\\bible_study_lessons.xml",
+        "source": "C:\\Users\\rojas\\AndroidStudioProjects\\vbvm3\\app\\src\\main\\res\\menu\\bible_study_lessons.xml"
+    },
+    {
+        "merged": "C:\\Users\\rojas\\AndroidStudioProjects\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\menu\\main.xml",
+        "source": "C:\\Users\\rojas\\AndroidStudioProjects\\vbvm3\\app\\src\\main\\res\\menu\\main.xml"
+    }
+]

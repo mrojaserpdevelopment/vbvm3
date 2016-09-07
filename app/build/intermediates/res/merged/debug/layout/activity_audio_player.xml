@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/lib/com.erpdevelopment.vbvm2.utils"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/white" >
+    
+    <include layout="@layout/bottom_menu_bar" android:id="@+id/bmb"/>
+    
+    <View
+        android:id="@+id/bmb_top_divider"
+	    android:layout_width="match_parent"
+	    android:layout_height="2dp"
+	    android:background="?android:attr/actionBarDivider"
+	    android:layout_above="@id/bmb"/>
+    
+    <!-- Song Thumbnail Image -->
+    <LinearLayout 
+        android:id="@+id/ll_study_thumbnail"
+        android:layout_width="fill_parent"
+        android:layout_height="170dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentTop="true">
+        
+    	<LinearLayout 
+    	    android:id="@+id/llImageStudy"
+    	    android:layout_width="0dp"
+    	    android:layout_weight="0.55"
+    	    android:layout_height="wrap_content"
+    	    android:orientation="vertical"
+    	    android:layout_margin="0dp" >
+	    	<ImageView
+	    	    android:id="@+id/img_study" 
+	    	    android:layout_width="150dp"
+	        	android:layout_height="150dp"
+	        	android:src="@drawable/adele"/>
+	    </LinearLayout>
+    	
+		<RelativeLayout 
+		    android:layout_width="0dp"
+		    android:layout_weight="0.45"
+		    android:layout_height="fill_parent">
+
+	    	<TextView
+	    	    android:id="@+id/tv_title_bible_study_progress"
+	    	    android:layout_width="fill_parent"
+	    	    android:layout_height="wrap_content"
+	    	    android:text="Bible Study Progress"
+	    	    android:textColor="@android:color/black"
+	    	    android:layout_marginBottom="0dp"
+	    	    android:layout_marginTop="0dp"
+	    	    android:gravity="center_horizontal"
+	    	    android:layout_alignParentTop="true" />
+	    	
+			<ProgressBar
+				android:id="@+id/circularProgressbar"
+				android:layout_width="150dp"
+				android:layout_height="150dp"
+				style="?android:attr/progressBarStyleHorizontal"
+				android:indeterminate="false"
+		        android:progress="25"
+				android:max="100"
+				android:secondaryProgress="100"
+				android:progressDrawable="@drawable/circular"
+				android:layout_centerInParent="true" />
+
+			<TextView
+    	        android:id="@+id/tv_progress_percent"
+	    	    android:layout_width="wrap_content"
+	    	    android:layout_height="wrap_content"
+	    	    android:text="" 
+	    	    android:textColor="@android:color/holo_blue_light"
+	    	    android:textSize="34sp"
+	    	    android:layout_centerInParent="true"
+	    	    android:layout_marginTop="0dp" />
+			
+    	    <TextView
+    	        android:id="@+id/tv_qty_lessons"
+	    	    android:layout_width="fill_parent"
+	    	    android:layout_height="wrap_content"
+	    	    android:text="# Lessons"
+	    	    android:textColor="@android:color/black"
+	    	    android:layout_marginTop="0dp"
+	    	    android:gravity="center_horizontal"
+	    	    android:layout_alignParentBottom="true" />
+    	    
+		</RelativeLayout>    
+        
+    </LinearLayout>
+    
+    <LinearLayout 
+        android:id="@+id/ll_title_thumbnail"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@id/ll_study_thumbnail"
+        android:visibility="gone">
+    	<TextView
+    	    android:id="@+id/tv_title_study"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+    	    android:text="Title"
+    	    android:textSize="20sp"
+    	    android:textColor="@android:color/black"
+    	    android:layout_marginBottom="5dp"
+    	     />	    	
+    	<TextView
+    	    android:id="@+id/tv_type_study"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+    	    android:text="Type"
+    	    android:textColor="#bbbbbb"
+    	    android:layout_marginBottom="0dp"
+    	     />
+    </LinearLayout>
+    
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/bmb"
+        android:gravity="center_horizontal" >
+    
+	    <TextView
+	   	    android:id="@+id/tv_lesson_resources"
+	   	    android:layout_width="wrap_content"
+	   	    android:layout_height="wrap_content"
+	   	    android:text="Lesson Resources"
+	   	    android:textColor="@android:color/darker_gray"
+	   	    android:layout_marginBottom="5dp" />
+	    
+	        <!-- Player Header -->
+	    <LinearLayout 
+	        android:id="@+id/player_header_bg"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@id/tv_lesson_resources"
+	        android:paddingLeft="5dp"
+	        android:paddingRight="5dp"
+	        android:gravity="center_horizontal|center_vertical"
+	        android:orientation="horizontal">        
+	        
+	        <LinearLayout 
+	            android:id="@+id/ll_image_read"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:orientation="vertical"
+	            android:layout_gravity="center_vertical|center_horizontal"
+	            android:visibility="gone">        
+		        <ImageView
+		    	    android:id="@+id/img_pdf_read" 
+		    	    android:layout_width="32dp"
+		        	android:layout_height="32dp"
+		        	android:src="@drawable/document"
+		        	android:onClick="onClickPDF"
+		        	android:layout_gravity="center_horizontal" />
+		        <TextView
+				    android:id="@+id/txtRead"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"	    
+				    android:textSize="12sp"
+				    android:text="Outline"
+				    android:textColor="@android:color/black"
+				    android:layout_gravity="center_horizontal|center_vertical" 
+				    android:gravity="center_horizontal" />	                
+	        </LinearLayout>
+	
+	        <LinearLayout 
+	            android:id="@+id/ll_image_present"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="50dp"
+	            android:orientation="vertical"
+	            android:visibility="gone"
+	            android:layout_gravity="center_vertical|center_horizontal">        
+		        <ImageView
+		    	    android:id="@+id/img_pdf_present" 
+		    	    android:layout_width="32dp"
+		        	android:layout_height="32dp"
+		        	android:src="@drawable/presenter"
+		        	android:onClick="onClickPDF"
+		        	android:layout_gravity="center_horizontal" />
+		        <TextView
+				    android:id="@+id/txtPresent"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"	    
+				    android:textSize="12sp"
+				    android:text="Present"
+				    android:textColor="@android:color/black"
+				    android:layout_gravity="center_horizontal|center_vertical" 
+				    android:gravity="center_horizontal" />	         
+	        </LinearLayout>
+	
+	        <LinearLayout 
+	            android:id="@+id/ll_image_handout"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	        	android:layout_marginLeft="50dp"
+	            android:orientation="vertical"
+	            android:visibility="gone"
+	            android:layout_gravity="center_vertical|center_horizontal">        
+		        <ImageView
+		    	    android:id="@+id/img_pdf_handout" 
+		    	    android:layout_width="32dp"
+		        	android:layout_height="32dp"
+		        	android:src="@drawable/handouts"
+		        	android:onClick="onClickPDF" 
+		        	android:layout_gravity="center_horizontal"/> 
+	        	<TextView
+				    android:id="@+id/txtHandout"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"	    
+				    android:textSize="12sp"
+				    android:text="Handout"
+				    android:textColor="@android:color/black"
+				    android:layout_gravity="center_horizontal|center_vertical" 
+				    android:gravity="center_horizontal" />       
+	        </LinearLayout>
+	                
+	    </LinearLayout>
+	    
+	        <!-- Timer Display -->
+	    <LinearLayout 
+	        android:id="@+id/ll_timer_display"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginRight="10dp"
+	        android:layout_marginLeft="10dp"
+	        android:layout_marginBottom="5dp">
+	        <!-- Current Duration Label -->
+	        <TextView 
+	            android:id="@+id/songCurrentDurationLabel"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:gravity="start"
+	            android:text="0:00"
+	            android:textColor="@android:color/holo_blue_light"
+	            android:textStyle="bold"/>
+	        <!-- Total Duration Label -->
+	        <TextView 
+	            android:id="@+id/songTotalDurationLabel"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:gravity="end"
+	            android:text="0:00"
+	            android:textColor="#bbbbbb"
+	            android:textStyle="bold"/>
+	    </LinearLayout>
+	
+	    <!-- Progress Bar/Seek bar -->
+<!-- 	    <SeekBar -->
+<!-- 	        android:id="@+id/songProgressBar" -->
+<!-- 	        android:layout_width="fill_parent" -->
+<!-- 	        android:layout_height="wrap_content" -->
+<!-- 	        android:layout_marginRight="5dp"  -->
+<!-- 	        android:layout_marginLeft="5dp" -->
+<!-- 	        android:layout_marginBottom="10dp" -->
+<!-- 	    	android:thumb="@drawable/seek_handler" -->
+<!-- 	    	android:progressDrawable="@drawable/seekbar_progress" -->
+<!-- 	    	android:paddingLeft="15dp" -->
+<!-- 	    	android:paddingRight="15dp"/> -->
+
+	    <SeekBar
+	        android:id="@+id/songProgressBar"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginRight="5dp" 
+	        android:layout_marginLeft="5dp"
+	    	android:paddingLeft="15dp"
+	    	android:paddingRight="15dp"/>
+
+	    
+	    <!-- Description Label -->
+	    <LinearLayout
+	        android:id="@+id/ll_title_chapter" 
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center">
+	        <!-- Description text -->
+	        <TextView 
+	            android:id="@+id/tvDescription"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:gravity="center_horizontal"
+	            android:textColor="@android:color/black"
+	            android:textStyle="bold"
+	            android:text="Chapter"
+	            android:textSize="16sp"/>
+	    </LinearLayout>
+	
+	    <!-- Title Label -->
+	    <LinearLayout
+	        android:id="@+id/ll_title_lesson" 
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center"
+	        android:layout_marginBottom="10dp">
+	        <!-- Title text -->
+	        <TextView 
+	            android:id="@+id/tvTitle"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:gravity="center_horizontal"
+	            android:textColor="#bbbbbb"
+	            android:textStyle="normal"
+	            android:text="Lesson"
+	            android:textSize="14sp"/>
+	    </LinearLayout>
+	    
+	    
+	    <!-- Player Footer -->
+	    <LinearLayout 
+	        android:id="@+id/player_footer_bg"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:background="@android:color/transparent"
+	        android:gravity="center"
+	        android:layout_marginTop="20dp"
+	        android:layout_marginBottom="20dp">
+	    	
+	        <!-- Player Buttons -->
+	        <LinearLayout 
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:orientation="horizontal"
+	            android:gravity="center_vertical"
+	            android:background="@android:color/transparent"
+	            android:paddingLeft="10dp"
+	            android:paddingRight="10dp">
+	            <!-- Previous Button -->
+	            <ImageButton
+	                android:id="@+id/btnPrevious" 
+	                android:src="@drawable/media_previous"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:background="@null"
+	                android:layout_marginLeft="5dp"
+	                android:layout_marginRight="10dp" />
+	            <!-- Backward Button -->
+	            <ImageButton 
+	                android:id="@+id/btnBackward"
+	                android:src="@drawable/media_fast_backward"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:background="@null"
+	                android:layout_marginLeft="10dp"
+	                android:layout_marginRight="10dp" />
+	            <!-- Play Button -->
+	            <ImageButton 
+	                android:id="@+id/btnPlay"
+	                android:src="@drawable/media_play"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:background="@null"
+	                android:paddingLeft="2dp"
+	                android:paddingRight="2dp"
+	                android:layout_marginLeft="10dp"
+	                android:layout_marginRight="10dp" />
+	            <!-- Stop Button -->
+	            <ImageButton 
+	                android:id="@+id/btnStop"
+	                android:src="@drawable/media_stop"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:background="@null"
+	                android:paddingLeft="2dp"
+	                android:paddingRight="2dp"
+	                android:layout_marginLeft="10dp"
+	                android:layout_marginRight="10dp" />
+	            <!-- Forward Button -->
+	            <ImageButton 
+	                android:id="@+id/btnForward"
+	                android:src="@drawable/media_fast_forward"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:background="@null"
+	                android:layout_marginLeft="10dp"
+	                android:layout_marginRight="10dp" />
+	            <!-- Next Button -->
+	            <ImageButton 
+	                android:id="@+id/btnNext"
+	                android:src="@drawable/media_next"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:background="@null"
+	                android:layout_marginLeft="10dp"
+	                android:layout_marginRight="5dp" />
+	        </LinearLayout>
+	        
+	    </LinearLayout>
+	    
+    </LinearLayout>
+    
+</RelativeLayout>

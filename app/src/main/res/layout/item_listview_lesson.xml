@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:id="@+id/layout_item_lesson"
+     android:layout_width="fill_parent"
+     android:layout_height="wrap_content"
+     android:background="#FFFFFFFF"
+     android:orientation="horizontal"
+     android:padding="10dp" >
+
+	<ImageView
+	    android:id="@+id/img_lesson"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:background="@drawable/play_color" />
+
+    <LinearLayout 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.7"
+        android:orientation="vertical"
+        android:layout_marginLeft="10dp">
+       
+		<TextView
+		    android:id="@+id/tv_lesson_title"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"	    
+		    android:textSize="14sp"
+		    android:lines="1"
+		    android:text="Title"
+		    android:textColor="#FF3200"
+		    android:gravity="left"
+		    android:singleLine="true"
+		    android:ellipsize="end"/>			
+       
+		<TextView
+		    android:id="@+id/tv_lesson_length"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"	    
+		    android:textSize="12sp"
+		    android:lines="1"
+		    android:text="Length"
+		    android:textColor="#938d8c"
+		    android:gravity="left"/>
+		
+	</LinearLayout>
+	
+    <ImageView
+        android:id="@+id/img_download_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/download_cloud_32"
+        android:visibility="gone" />
+    
+    <TextView
+	    android:id="@+id/tv_item_downloading"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="Downloading..."
+	    android:textStyle="italic"	    
+	    android:textSize="12sp"
+	    android:lines="1"
+	    android:textColor="#938d8c"
+	    android:layout_gravity="center_vertical"
+	    android:visibility="gone" />
+
+</LinearLayout>
