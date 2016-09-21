@@ -47,7 +47,7 @@ public class DBHandleStudies {
 	    try {
 		    row_id = MainActivity.db.insertOrThrow("study", null, values);
     	}catch(SQLiteConstraintException e){
-    		Log.i("SQLiteConstraintException study", e.getMessage());
+    		Log.i("SQLiteConstraintEx", e.getMessage());
     	}catch(SQLiteException exception) {
     		Log.i("SQLiteException", "exception insert on the next line");
     	}
@@ -84,7 +84,7 @@ public class DBHandleStudies {
 	    try {
 	    	row_id = MainActivity.db.insertOrThrow("lesson", null, values);
     	}catch(SQLiteConstraintException e){
-    		Log.i("SQLiteConstraintException lesson", e.getMessage());
+    		Log.i("SQLiteConstraintEx", e.getMessage());
     	}catch(SQLiteException exception) {
     	  Log.i("SQLiteException lesson", "exception insert on the next line");
     	}
@@ -104,9 +104,9 @@ public class DBHandleStudies {
 	    try {
 	    	row_id = MainActivity.db.insertOrThrow("topic_lesson", null, values);
     	}catch(SQLiteConstraintException e){
-    		Log.i("SQLiteConstraintException topic_lesson", e.getMessage());
+    		Log.i("SQLiteConstraintEx", e.getMessage());
     	}catch(SQLiteException exception) {
-    		Log.i("SQLiteException topic_lesson", exception.getMessage());
+    		Log.i("SQLiteEx", exception.getMessage());
     	}
     	catch(Exception exception) {
       	  	Log.i("Exception topic_lesson", exception.getMessage());
@@ -132,7 +132,7 @@ public class DBHandleStudies {
 	    try {
 		    row_id = MainActivity.db.insertOrThrow("article", null, values);
     	}catch(SQLiteConstraintException e){
-    		Log.i("SQLiteConstraintException study", e.getMessage());
+    		Log.i("SQLiteConstraintEx", e.getMessage());
     	}catch(SQLiteException exception) {
     	  Log.i("SQLiteException", "exception insert on the next line");
     	}
@@ -159,7 +159,7 @@ public class DBHandleStudies {
 	    try {
 		    row_id = MainActivity.db.insertOrThrow("event", null, values);
     	}catch(SQLiteConstraintException e){
-    		Log.i("SQLiteConstraintException study", e.getMessage());
+    		Log.i("SQLiteConstraintEx", e.getMessage());
     	}catch(SQLiteException exception) {
     	  Log.i("SQLiteException", "exception insert on the next line");
     	}
@@ -187,7 +187,7 @@ public class DBHandleStudies {
 	    try {
 		    row_id = MainActivity.db.insertOrThrow("post", null, values);
     	}catch(SQLiteConstraintException e){
-    		Log.i("SQLiteConstraintException study", e.getMessage());
+    		Log.i("SQLiteConstraintEx", e.getMessage());
     	}catch(SQLiteException exception) {
     	  Log.i("SQLiteException", "exception insert on the next line");
     	}
@@ -210,15 +210,13 @@ public class DBHandleStudies {
 	    try {
 		    row_id = MainActivity.db.insertOrThrow("channel", null, values);
     	}catch(SQLiteConstraintException e){
-    		Log.i("SQLiteConstraintException channel", e.getMessage());
+    		Log.i("SQLiteConstraintEx", e.getMessage());
     	}catch(SQLiteException exception) {
     	  Log.i("SQLiteException", "exception insert on the next line");
     	}
     	catch(Exception exception) {
       	  Log.i("Exception", "exception insert on the next line");
     	}
-    	finally {
-    	}	    
 	    return row_id;	    
 	}
 	
@@ -240,15 +238,13 @@ public class DBHandleStudies {
 	    try {
 		    row_id = MainActivity.db.insertOrThrow("video", null, values);
     	}catch(SQLiteConstraintException e){
-    		Log.i("SQLiteConstraintException video", e.getMessage());
+    		Log.i("SQLiteConstraintEx", e.getMessage());
     	}catch(SQLiteException exception) {
     	  Log.i("SQLiteException", "exception insert on the next line");
     	}
     	catch(Exception exception) {
       	  Log.i("Exception", "exception insert on the next line");
     	}
-    	finally {
-    	}	    
 	    return row_id;	    
 	}
 	
@@ -261,7 +257,7 @@ public class DBHandleStudies {
 	    try {
 		    row_id = MainActivity.db.insertOrThrow("topic_post", null, values);
     	}catch(SQLiteConstraintException e){
-    		Log.i("SQLiteConstraintException study", e.getMessage());
+    		Log.i("SQLiteConstraintEx", e.getMessage());
     	}catch(SQLiteException exception) {
     	  Log.i("SQLiteException", "exception insert on the next line");
     	}
@@ -280,7 +276,7 @@ public class DBHandleStudies {
 	    try {
 		    row_id = MainActivity.db.insertOrThrow("topic_article", null, values);
     	}catch(SQLiteConstraintException e){
-    		Log.i("SQLiteConstraintException study", e.getMessage());
+    		Log.i("SQLiteConstraintEx", e.getMessage());
     	}catch(SQLiteException exception) {
     	  Log.i("SQLiteException", "exception insert on the next line");
     	}
@@ -299,7 +295,7 @@ public class DBHandleStudies {
 	    try {
 		    row_id = MainActivity.db.insertOrThrow("recently_viewed", null, values);
     	}catch(SQLiteConstraintException e){
-    		Log.i("SQLiteConstraintException study", e.getMessage());
+    		Log.i("SQLiteConstraintEx", e.getMessage());
     	}catch(SQLiteException exception) {
     		Log.i("SQLiteException", "exception insert on the next line");
     	}
@@ -310,7 +306,7 @@ public class DBHandleStudies {
 	}
 	
 	public static List<Study> getAllStudies() {
-	    List<Study> studies = new ArrayList<Study>();
+	    List<Study> studies = new ArrayList<>();
 	    String selectQuery = "SELECT  * FROM study ;";	 
 	    Log.e(LOG, selectQuery);	 
 	    Cursor c = MainActivity.db.rawQuery(selectQuery, null);
@@ -330,6 +326,43 @@ public class DBHandleStudies {
 	    }
 	    c.close();
 	    return studies;
+	}
+
+	public static List<List<Study>> getAllStudiesByType() {
+		List<List<Study>> studies = new ArrayList<>();
+		List<Study> studiesNew = new ArrayList<>();
+		List<Study> studiesOld = new ArrayList<>();
+		List<Study> studiesSingle = new ArrayList<>();
+		String selectQuery = "SELECT * FROM study ;";
+		Log.e(LOG, selectQuery);
+		Cursor c = MainActivity.db.rawQuery(selectQuery, null);
+		if (c.moveToFirst()) {
+			do {
+				Study study = new Study();
+				study.setIdProperty(c.getString((c.getColumnIndex(COLUMN_ID_STUDY))));
+				study.setThumbnailSource(c.getString((c.getColumnIndex(COLUMN_THUMBNAIL_SOURCE))));
+				study.setTitle(c.getString((c.getColumnIndex(COLUMN_TITLE))));
+				study.setThumbnailAltText(c.getString((c.getColumnIndex(COLUMN_THUMBNAIL_ALT_TEXT))));
+				study.setPodcastLink(c.getString((c.getColumnIndex(COLUMN_PODCAST_LINK))));
+				study.setAverageRating(c.getString((c.getColumnIndex(COLUMN_AVERAGE_RATING))));
+				study.setStudiesDescription(c.getString((c.getColumnIndex(COLUMN_DESCRIPTION))));
+				study.setType(c.getString((c.getColumnIndex(COLUMN_TYPE))));
+				if (study.getType().contains("New")) {
+					studiesNew.add(study);
+				}
+				if (study.getType().contains("Old")) {
+					studiesOld.add(study);
+				}
+				if (study.getType().contains("Single")) {
+					studiesSingle.add(study);
+				}
+			} while (c.moveToNext());
+			studies.add(studiesNew);
+			studies.add(studiesOld);
+			studies.add(studiesSingle);
+		}
+		c.close();
+		return studies;
 	}
 	
 	public static Study getStudyById(String idStudy) {

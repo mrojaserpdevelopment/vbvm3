@@ -165,4 +165,18 @@ distribution media, documentation, registration cards, and insertions.</string>
     <string name="bottom_menu_answers">Answers</string>
     <string name="bottom_menu_videos">Videos</string>
 
+    <!--Action bar menu options-->
+    <string name="action_about">About</string>
+    <string name="action_events">Events</string>
+    <string name="action_contact">Contact</string>
+    <string name="action_donate">Donate</string>
+    <!--<string name="action_settings">Videos</string>-->
+
+    <!-- Formatted Messages -->
+    <string name="message_count_studies">%1$d Studies</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
 </resources>

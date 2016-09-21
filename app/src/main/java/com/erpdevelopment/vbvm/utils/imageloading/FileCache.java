@@ -64,7 +64,6 @@ public class FileCache {
         //Identify images by directory or encode by URLEncoder.encode.
 //        String filename = String.valueOf(url.hashCode());
     	String filename = BitmapManager.getFileNameFromUrl(url);
-         System.out.println("url is: " + url + " after hashcode is: " + filename);
         File f = new File(cacheDir, filename);
         return f;         
     }

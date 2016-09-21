@@ -64,7 +64,6 @@ public class BibleStudiesAdapter extends BaseAdapter implements Filterable {
 	       }
 	       // Lookup view for data population
 	       ImageView img = (ImageView) convertView.findViewById(R.id.img_bible_study);
-
 	       imageLoader.DisplayImage(study.getThumbnailSource(), img);
 		   
 		   TextView txt = (TextView) convertView.findViewById(R.id.tv_type_bible_study);
@@ -73,10 +72,10 @@ public class BibleStudiesAdapter extends BaseAdapter implements Filterable {
 	       TextView txt2 = (TextView) convertView.findViewById(R.id.tv_title_bible_study);
 	       txt2.setText(study.getTitle());
 		   
-	       if(selectedPos == position)
-	    	   convertView.setBackgroundColor(Color.CYAN);
-	       else	    	   
-	    	   convertView.setBackgroundColor(Color.WHITE);
+//	       if(selectedPos == position)
+//	    	   convertView.setBackgroundColor(Color.CYAN);
+//	       else
+//	    	   convertView.setBackgroundColor(Color.WHITE);
 	       
 		   return convertView;
 	}

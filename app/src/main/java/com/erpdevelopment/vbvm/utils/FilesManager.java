@@ -34,6 +34,9 @@ public class FilesManager {
 	    public static List<QandAPost> listQAPosts = new ArrayList<QandAPost>();
 	    public static List<Article> listArticles = new ArrayList<Article>();
 	    public static List<ChannelVbvm> listChannels = new ArrayList<ChannelVbvm>();
+		public static List<Study> listStudiesTypeOld = new ArrayList<Study>(); // Old Testament books
+		public static List<Study> listStudiesTypeNew = new ArrayList<Study>(); // New Testament books
+		public static List<Study> listStudiesTypeSingle = new ArrayList<Study>(); // Single Teachings
 		private URL url;
 		private URLConnection conn;
 		private int lastSlash;

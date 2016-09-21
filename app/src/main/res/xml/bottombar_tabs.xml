@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        id="@+id/tab_studies"
+        icon="@drawable/icon_studies_24"
+        title="Studies"
+        inActiveColor="00FF00"
+        activeColor="F80303"/>
+    <tab
+        id="@+id/tab_articles"
+        icon="@drawable/icon_articles_24"
+        title="Articles"
+        inActiveColor="00FF00"
+        activeColor="F80303"/>
+    <tab
+        id="@+id/tab_answers"
+        icon="@drawable/icon_answers_24"
+        title="Answers"
+        inActiveColor="00FF00"
+        activeColor="F80303"/>
+    <tab
+        id="@+id/tab_videos"
+        icon="@drawable/icon_videos_24"
+        title="Videos"
+        inActiveColor="00FF00"
+        activeColor="F80303"/>
+</tabs>

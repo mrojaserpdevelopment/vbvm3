@@ -135,7 +135,7 @@ public class WebServiceCall {
 
 		// Getting JSON from URL
 		JSONObject json = jParser.getJSONFromUrl(JSON_STUDY_DETAIL_URL + study.getIdProperty() + "/");
-		
+
 		try {
 			vbv = json.getJSONObject(TAG_VERSE_BY_VERSE);
 			
