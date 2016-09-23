@@ -1,6 +1,7 @@
 package com.erpdevelopment.vbvm.fragment;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,12 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.erpdevelopment.vbvm.R;
+import com.erpdevelopment.vbvm.view.SlidingDownPanelLayout;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class LessonsFragment extends Fragment {
 
+    private View rootView;
 
     public LessonsFragment() {
         // Required empty public constructor
@@ -38,5 +41,25 @@ public class LessonsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        rootView = getView();
+
+        SlidingDownPanelLayout layout = (SlidingDownPanelLayout) rootView.findViewById(R.id.sliding_layout);
+        layout.setSliderFadeColor(Color.argb(128, 0, 0, 0));
+        layout.setParallaxDistance(100);
+
+        layout.setPanelSlideListener(new SlidingDownPanelLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+            }
+
+            @Override
+            public void onPanelOpened(View panel) {
+            }
+
+            @Override
+            public void onPanelClosed(View panel) {
+            }
+        });
     }
 }

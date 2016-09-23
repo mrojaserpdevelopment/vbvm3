@@ -168,12 +168,12 @@
         "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\src\\main\\res\\layout\\fragment_answers.xml"
     },
     {
-        "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\layout\\bb_bottom_bar_item_fixed.xml",
-        "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.roughike\\bottom-bar\\2.0.2\\res\\layout\\bb_bottom_bar_item_fixed.xml"
-    },
-    {
         "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\layout\\bb_bottom_bar_item_shifting.xml",
         "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.roughike\\bottom-bar\\2.0.2\\res\\layout\\bb_bottom_bar_item_shifting.xml"
+    },
+    {
+        "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\layout\\bb_bottom_bar_item_fixed.xml",
+        "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.roughike\\bottom-bar\\2.0.2\\res\\layout\\bb_bottom_bar_item_fixed.xml"
     },
     {
         "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\layout\\notification_template_part_chronometer.xml",

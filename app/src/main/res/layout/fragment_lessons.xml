@@ -76,20 +76,60 @@
             android:layout_marginRight="0dp"
             android:layout_marginBottom="0dp" >
 
-            <TextView
-                android:id="@+id/tv_description"
-                android:layout_width="fill_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.4"
-                android:textSize="18sp"
-                android:text="Description"
-                android:textColor="#938d8c"
-                android:gravity="left"
-                android:scrollbars="vertical"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                />
+            <!--<TextView-->
+                <!--android:id="@+id/tv_description"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="0dp"-->
+                <!--android:layout_weight="0.4"-->
+                <!--android:textSize="18sp"-->
+                <!--android:text="Description"-->
+                <!--android:textColor="#938d8c"-->
+                <!--android:gravity="left"-->
+                <!--android:scrollbars="vertical"-->
+                <!--android:layout_marginBottom="10dp"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:layout_marginRight="10dp"-->
+                <!--/>-->
+
+            <com.erpdevelopment.vbvm.view.SlidingDownPanelLayout
+                android:id="@+id/sliding_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/main_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:gravity="center"
+                    android:text="Main Content"
+                    android:background="@android:color/holo_blue_light"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"/>
+
+                <LinearLayout
+                    android:id="@+id/llDragView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="200dp">
+
+                    <TextView
+                        android:id="@+id/drag_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:gravity="center"
+                        android:text="Sliding Down Panel"
+                        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+                        android:textColor="@android:color/white"
+                        android:background="@android:color/holo_orange_light"/>
+
+                    <!--<ImageView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:scaleType="fitXY"-->
+                        <!--android:src="@drawable/adele"/>-->
+                </LinearLayout>
+
+            </com.erpdevelopment.vbvm.view.SlidingDownPanelLayout>
 
             <ListView
                 android:id="@+id/lv_lessons"

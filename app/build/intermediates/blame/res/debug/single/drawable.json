@@ -328,12 +328,12 @@
         "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\img_btn_pause.png"
     },
     {
-        "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\icon_studies_32.png",
-        "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\icon_studies_32.png"
-    },
-    {
         "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\img_title_newest_2.png",
         "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\img_title_newest_2.png"
+    },
+    {
+        "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\icon_studies_32.png",
+        "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\icon_studies_32.png"
     },
     {
         "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\settings.png",
