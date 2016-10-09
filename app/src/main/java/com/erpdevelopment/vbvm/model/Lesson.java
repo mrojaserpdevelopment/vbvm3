@@ -32,6 +32,7 @@ public class Lesson implements Parcelable {
 	private String state;
 	private int positionInList;
 	private int downloadStatus;
+	private Study study;
 	
 	public Lesson() {
 		super();
@@ -236,9 +237,12 @@ public class Lesson implements Parcelable {
 		this.downloadStatus = downloadStatus;
 	}
 
+	public Study getStudy() { return study; }
+
+	public void setStudy(Study study) { this.study = study; }
+
 	@Override
 	public int describeContents() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -266,6 +270,8 @@ public class Lesson implements Parcelable {
 		dest.writeInt(studyLessonsSize);
 		dest.writeString(state);
 		dest.writeInt(positionInList);
+		dest.writeInt(downloadStatus);
+		dest.writeParcelable(study, flags);
 	}	
 	
 	private void readFromParcel(Parcel in) {
@@ -292,6 +298,8 @@ public class Lesson implements Parcelable {
 		studyLessonsSize = in.readInt();
 		state = in.readString();
 		positionInList = in.readInt();
+		downloadStatus = in.readInt();
+		study = (Study) in.readParcelable(Study.class.getClassLoader());
 	}
 	
 	/**

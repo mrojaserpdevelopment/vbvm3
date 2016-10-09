@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fa_icon_teacher_aid">&#xf016;</string>
+    <string name="fa_icon_transcript">&#xf0f6;</string>
+    <string name="fa_icon_play_mini">&#xf04b;</string>
+</resources>

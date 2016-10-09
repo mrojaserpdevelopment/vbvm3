@@ -16,6 +16,7 @@ public class Study implements Parcelable {
 	private String thumbnailAltText;
 	private String studiesDescription;
 	private String type;
+	private String lessonCount;
 	private List<Topic> topics;
 	private List<Lesson> lessons;
 	
@@ -24,12 +25,12 @@ public class Study implements Parcelable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public List<Topic> getTopics() {
-		return topics;
+	public String getIdProperty() {
+		return idProperty;
 	}
 
-	public void setTopics(List<Topic> topics) {
-		this.topics = topics;
+	public void setIdProperty(String idProperty) {
+		this.idProperty = idProperty;
 	}
 
 	public String getThumbnailSource() {
@@ -88,12 +89,12 @@ public class Study implements Parcelable {
 		this.type = type;
 	}
 
-	public String getIdProperty() {
-		return idProperty;
+	public String getLessonCount() {
+		return lessonCount;
 	}
 
-	public void setIdProperty(String idProperty) {
-		this.idProperty = idProperty;
+	public void setLessonCount(String lessonCount) {
+		this.lessonCount = lessonCount;
 	}
 
 	public List<Lesson> getLessons() {
@@ -104,6 +105,14 @@ public class Study implements Parcelable {
 		this.lessons = lessons;
 	}
 
+	public List<Topic> getTopics() {
+		return topics;
+	}
+
+	public void setTopics(List<Topic> topics) {
+		this.topics = topics;
+	}
+
 	@Override
 	public int describeContents() {
 		// TODO Auto-generated method stub
@@ -112,8 +121,7 @@ public class Study implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeList(topics);
-		dest.writeList(lessons);
+		dest.writeString(idProperty);
 		dest.writeString(thumbnailSource);
 		dest.writeString(title);
 		dest.writeString(podcastLink);
@@ -121,14 +129,13 @@ public class Study implements Parcelable {
 		dest.writeString(averageRating);
 		dest.writeString(studiesDescription);
 		dest.writeString(type);
-		dest.writeString(idProperty);
+		dest.writeString(lessonCount);
+		dest.writeList(lessons);
+		dest.writeList(topics);
 	}	
 	
 	private void readFromParcel(Parcel in) {
-		topics = new ArrayList<Topic>();
-		lessons = new ArrayList<Lesson>();
-		in.readList(topics, getClass().getClassLoader());
-		in.readList(lessons, getClass().getClassLoader());
+		idProperty = in.readString();
 		thumbnailSource = in.readString();
 		title = in.readString();
 		podcastLink = in.readString();
@@ -136,7 +143,11 @@ public class Study implements Parcelable {
 		thumbnailAltText = in.readString();
 		studiesDescription = in.readString();
 		type = in.readString();
-		idProperty = in.readString();
+		lessonCount = in.readString();
+		lessons = new ArrayList<Lesson>();
+		topics = new ArrayList<Topic>();
+		in.readList(lessons, getClass().getClassLoader());
+		in.readList(topics, getClass().getClassLoader());
 	}
 
 	
@@ -162,5 +173,4 @@ public class Study implements Parcelable {
 		                return new Study[size];
 		            }
 		        };
-	
 }

@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           package="com.erpdevelopment.vbvm"
           android:versionCode="13"
           android:versionName="2.1">
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="24"/>
+        android:targetSdkVersion="24"
+        tools:overrideLibrary="com.cardinalsolutions.progressindicator"/>
 m
     <supports-screens
         android:largeScreens="false"

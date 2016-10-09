@@ -13,6 +13,8 @@
         android:paddingTop="0dp"
         android:paddingBottom="0dp"/>
 
+
+
     <com.roughike.bottombar.BottomBar
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"

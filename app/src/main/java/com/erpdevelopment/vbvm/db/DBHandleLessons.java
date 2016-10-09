@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.erpdevelopment.vbvm.MainActivity;
 import com.erpdevelopment.vbvm.model.Lesson;
+import com.erpdevelopment.vbvm.model.Study;
 
 public class DBHandleLessons {
 	
@@ -71,6 +72,8 @@ public class DBHandleLessons {
 	        	lesson.setState(c.getString((c.getColumnIndex(COLUMN_STATE_LESSON))));
 	        	lesson.setPositionInList(c.getInt((c.getColumnIndex(COLUMN_POSITION_IN_LIST))));
 	        	lesson.setDownloadStatus(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS))));
+				Study study = DBHandleStudies.getStudyById(id_study);
+				lesson.setStudy(study);
 	        	lessons.add(lesson);
 	        } while (c.moveToNext());
 	    }

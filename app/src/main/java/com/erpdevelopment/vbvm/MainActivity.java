@@ -136,8 +136,6 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		fragmentVideos = VideosFragment.newInstance(0);
 		fragmentLessons = LessonsFragment.newInstance(0);
 
-//		}
-
 		BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
 		bottomBar.setActiveTabColor(ContextCompat.getColor(this, R.color.blue));
 		bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
@@ -145,94 +143,20 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 			public void onTabSelected(@IdRes int tabId) {
 
 				if (tabId == R.id.tab_studies) {
-					// The tab with id R.id.tab_favorites was selected,
-					// change your content accordingly.
-//					fragmentManager.beginTransaction().replace(R.id.frame_container, new StudiesFragment()).addToBackStack(null).commit();
-//					fragmentManager.beginTransaction().replace(R.id.frame_container, new StudiesFragment()).commit();
-//					fragmentManager.beginTransaction().add(R.id.frame_container, new StudiesFragment()).commit();
-
-//					ft.add(R.id.frame_container, fArticles);
-//					ft.hide(fArticles);
-//					ft.add(R.id.frame_container, fAnswers);
-//					ft.hide(fAnswers);
-//					ft.add(R.id.frame_container, fVideos);
-//					ft.hide(fVideos);
-//					ft.add(R.id.frame_container, fStudies);
-//					ft.show(fStudies);
-//					ft.commit();
 					displayFragmentStudies();
 				}
 				if (tabId == R.id.tab_articles) {
-					// The tab with id R.id.tab_favorites was selected,
-					// change your content accordingly.
-//					fragmentManager.beginTransaction().replace(R.id.frame_container, new ArticlesFragment()).addToBackStack(null).commit();
-//					fragmentManager.beginTransaction().replace(R.id.frame_container, new ArticlesFragment()).commit();
-//					fragmentManager.beginTransaction().add(R.id.frame_container, new ArticlesFragment()).commit();
-
-//					ft.add(R.id.frame_container, fStudies);
-//					ft.hide(fStudies);
-//					ft.add(R.id.frame_container, fAnswers);
-//					ft.hide(fAnswers);
-//					ft.add(R.id.frame_container, fVideos);
-//					ft.hide(fVideos);
-//					ft.add(R.id.frame_container, fArticles);
-//					ft.show(fArticles);
-//					ft.commit();
 					displayFragmentArticles();
 				}
 				if (tabId == R.id.tab_answers) {
-					// The tab with id R.id.tab_favorites was selected,
-					// change your content accordingly.
-//					fragmentManager.beginTransaction().replace(R.id.frame_container, new AnswersFragment()).addToBackStack(null).commit();
-//					fragmentManager.beginTransaction().replace(R.id.frame_container, new AnswersFragment()).commit();
-//					fragmentManager.beginTransaction().add(R.id.frame_container, new AnswersFragment()).commit();
-
-//					ft.add(R.id.frame_container, fStudies);
-//					ft.hide(fStudies);
-//					ft.add(R.id.frame_container, fArticles);
-//					ft.hide(fArticles);
-//					ft.add(R.id.frame_container, fVideos);
-//					ft.hide(fVideos);
-//					ft.add(R.id.frame_container, fAnswers);
-//					ft.show(fAnswers);
-//					ft.commit();
 					displayFragmentAnswers();
 				}
 				if (tabId == R.id.tab_videos) {
-					// The tab with id R.id.tab_favorites was selected,
-					// change your content accordingly.
-//					fragmentManager.beginTransaction().replace(R.id.frame_container, new VideosFragment()).addToBackStack(null).commit();
-//					fragmentManager.beginTransaction().replace(R.id.frame_container, new VideosFragment()).commit();
-//					fragmentManager.beginTransaction().add(R.id.frame_container, new VideosFragment()).commit();
-
-//					ft.add(R.id.frame_container, fStudies);
-//					ft.hide(fStudies);
-//					ft.add(R.id.frame_container, fAnswers);
-//					ft.hide(fAnswers);
-//					ft.add(R.id.frame_container, fArticles);
-//					ft.hide(fArticles);
-//					ft.add(R.id.frame_container, fVideos);
-//					ft.show(fVideos);
-//					ft.commit();
 					displayFragmentVideos();
 				}
 			}
 		});
 
-//		ft.add(R.id.frame_container, fArticles);
-//		ft.hide(fArticles);
-//		ft.add(R.id.frame_container, fAnswers);
-//		ft.hide(fAnswers);
-//		ft.add(R.id.frame_container, fVideos);
-//		ft.hide(fVideos);
-//		ft.add(R.id.frame_container, fStudies);
-//		ft.show(fStudies).commit();
-////		ft.commit();
-
-//		FragmentManager fragmentManager = getFragmentManager();
-//		fragmentManager.beginTransaction().replace(R.id.frame_container, new StudiesFragment()).commit();
-
-//		displayFragmentStudies();
 	}
 
 	// Replace the switch method
@@ -313,6 +237,17 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		if (fragmentArticles.isAdded()) { ft.hide(fragmentArticles); }
 		if (fragmentAnswers.isAdded()) { ft.hide(fragmentAnswers); }
 		if (fragmentVideos.isAdded()) { ft.hide(fragmentVideos); }
+//		Bundle bundle = new Bundle();
+//		bundle.putParcelable("study", study);
+//		fragmentLessons.setArguments(bundle);
+
+		Bundle bundle = new Bundle();
+		bundle.putParcelable("study", study);
+		fragmentLessons.getArguments().putAll(bundle);
+
+		ft.detach(fragmentLessons);
+		ft.attach(fragmentLessons);
+
 		ft.commit();
 	}
 

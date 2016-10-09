@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.erpdevelopment.vbvm.MainActivity;
 import com.erpdevelopment.vbvm.R;
-import com.erpdevelopment.vbvm.adapter.BibleStudyLessonsAdapter;
+import com.erpdevelopment.vbvm.adapter.LessonListAdapter;
 import com.erpdevelopment.vbvm.db.DBHandleLessons;
 import com.erpdevelopment.vbvm.model.Lesson;
 import com.erpdevelopment.vbvm.model.Study;
@@ -44,7 +44,7 @@ public class BibleStudyLessonsActivity extends Activity {
 
 	private ListView lvLessons;
 	private Study mStudy;
-	private BibleStudyLessonsAdapter adapter;
+	private LessonListAdapter adapter;
 	private List<Lesson> lessons;
 	public static boolean lessonListSelected = false;
 	static int counter = 0;
@@ -78,7 +78,7 @@ public class BibleStudyLessonsActivity extends Activity {
 
 		
 		lessons = new ArrayList<Lesson>();
-		adapter = new BibleStudyLessonsAdapter(this, lessons);
+		adapter = new LessonListAdapter(this, lessons);
 		lvLessons.setAdapter(adapter);
 		
 		imgMenuBarCancel.setOnClickListener(new OnClickListener() {

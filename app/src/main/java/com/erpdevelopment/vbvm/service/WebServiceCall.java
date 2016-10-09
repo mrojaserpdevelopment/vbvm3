@@ -164,6 +164,7 @@ public class WebServiceCall {
 				lesson.setStudyThumbnailSource(study.getThumbnailSource());
 				lesson.setStudyLessonsSize(lessonArray.length());
 				lesson.setDownloadStatus(0);
+				lesson.setStudy(study);
 				
 				JSONArray ltopics = lessonArray.getJSONObject(j).getJSONArray(TAG_TOPICS);
 				
