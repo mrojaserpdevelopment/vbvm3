@@ -57,7 +57,10 @@ public class VbvmDatabaseOpenHelper extends SQLiteOpenHelper {
     		" study_thumbnail_source TEXT," +
     		" state TEXT, " +
     		" position_in_list INTEGER," +
-    		" download_status INTEGER );";
+			" download_status INTEGER," +
+			" download_status_audio INTEGER," +
+			" download_status_teacher INTEGER," +
+    		" download_status_transcript INTEGER );";
 
     private static final String CREATE_TABLE_TOPIC_LESSON = "CREATE TABLE IF NOT EXISTS topic_lesson (" +
     		" _id INTEGER PRIMARY KEY AUTOINCREMENT," +

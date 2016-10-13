@@ -32,7 +32,12 @@ public class Lesson implements Parcelable {
 	private String state;
 	private int positionInList;
 	private int downloadStatus;
-	private Study study;
+	private int downloadStatusAudio;
+	private int downloadStatusTeacherAid;
+	private int downloadStatusTranscript;
+//	private Study study;
+	private int downloadProgress;
+	private String downloadThreadName;
 	
 	public Lesson() {
 		super();
@@ -237,9 +242,49 @@ public class Lesson implements Parcelable {
 		this.downloadStatus = downloadStatus;
 	}
 
-	public Study getStudy() { return study; }
+	public int getDownloadStatusAudio() {
+		return downloadStatusAudio;
+	}
 
-	public void setStudy(Study study) { this.study = study; }
+	public void setDownloadStatusAudio(int downloadStatusAudio) {
+		this.downloadStatusAudio = downloadStatusAudio;
+	}
+
+	public int getDownloadStatusTeacherAid() {
+		return downloadStatusTeacherAid;
+	}
+
+	public void setDownloadStatusTeacherAid(int downloadStatusTeacherAid) {
+		this.downloadStatusTeacherAid = downloadStatusTeacherAid;
+	}
+
+	public int getDownloadStatusTranscript() {
+		return downloadStatusTranscript;
+	}
+
+	public void setDownloadStatusTranscript(int downloadStatusTranscript) {
+		this.downloadStatusTranscript = downloadStatusTranscript;
+	}
+
+//	public Study getStudy() { return study; }
+//
+//	public void setStudy(Study study) { this.study = study; }
+
+	public int getDownloadProgress() {
+		return downloadProgress;
+	}
+
+	public void setDownloadProgress(int downloadProgress) {
+		this.downloadProgress = downloadProgress;
+	}
+
+	public String getDownloadThreadName() {
+		return downloadThreadName;
+	}
+
+	public void setDownloadThreadName(String downloadThreadName) {
+		this.downloadThreadName = downloadThreadName;
+	}
 
 	@Override
 	public int describeContents() {
@@ -271,7 +316,12 @@ public class Lesson implements Parcelable {
 		dest.writeString(state);
 		dest.writeInt(positionInList);
 		dest.writeInt(downloadStatus);
-		dest.writeParcelable(study, flags);
+		dest.writeInt(downloadStatusAudio);
+		dest.writeInt(downloadStatusTeacherAid);
+		dest.writeInt(downloadStatusTranscript);
+//		dest.writeParcelable(study, flags);
+		dest.writeInt(downloadProgress);
+		dest.writeString(downloadThreadName);
 	}	
 	
 	private void readFromParcel(Parcel in) {
@@ -299,7 +349,12 @@ public class Lesson implements Parcelable {
 		state = in.readString();
 		positionInList = in.readInt();
 		downloadStatus = in.readInt();
-		study = (Study) in.readParcelable(Study.class.getClassLoader());
+		downloadStatusAudio = in.readInt();
+		downloadStatusTeacherAid = in.readInt();
+		downloadStatusTranscript = in.readInt();
+//		study = (Study) in.readParcelable(Study.class.getClassLoader());
+		downloadProgress = in.readInt();
+		downloadThreadName = in.readString();
 	}
 	
 	/**

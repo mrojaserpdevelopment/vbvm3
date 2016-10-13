@@ -41,9 +41,6 @@ public class StudiesFragment extends Fragment {
     private StudiesAdapter adapterStudiesNew;
     private StudiesAdapter adapterStudiesOld;
     private StudiesAdapter adapterStudiesSingle;
-    private TextView tvCountStudiesNew;
-    private TextView tvCountStudiesOld;
-    private TextView tvCountStudiesSingle;
     // Define the listener of the interface type
     // listener will the activity instance containing fragment
     private OnItemSelectedListener listener;
@@ -98,9 +95,6 @@ public class StudiesFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         rootView = getView();
         scroll = (ScrollView) rootView.findViewById(R.id.scrollViewStudies);
-        tvCountStudiesNew = (TextView) rootView.findViewById(R.id.tvCountStudiesNew);
-        tvCountStudiesOld = (TextView) rootView.findViewById(R.id.tvCountStudiesOld);
-        tvCountStudiesSingle = (TextView) rootView.findViewById(R.id.tvCountStudiesSingle);
         gvStudiesNew = (ExpandableHeightGridview) rootView.findViewById(R.id.gvStudiesNew);
         gvStudiesOld = (ExpandableHeightGridview) rootView.findViewById(R.id.gvStudiesOld);
         gvStudiesSingle = (ExpandableHeightGridview) rootView.findViewById(R.id.gvStudiesSingle);
@@ -140,19 +134,6 @@ public class StudiesFragment extends Fragment {
             DownloadJsonData.getInstance().asyncJsonGetStudies(getActivity(),
                     adapterStudiesNew, adapterStudiesOld, adapterStudiesSingle, rootView, scroll);
         }
-//        else {
-//            adapterStudiesNew.setStudyListItems(FilesManager.listStudiesTypeNew);
-//            adapterStudiesOld.setStudyListItems(FilesManager.listStudiesTypeOld);
-//            adapterStudiesSingle.setStudyListItems(FilesManager.listStudiesTypeSingle);
-//
-//            Resources res = getResources();
-//            String messageCountStudies = res.getString(R.string.message_count_studies, (FilesManager.listStudiesTypeNew).size());
-//            tvCountStudiesNew.setText(messageCountStudies);
-//            messageCountStudies = res.getString(R.string.message_count_studies, (FilesManager.listStudiesTypeOld).size());
-//            tvCountStudiesOld.setText(messageCountStudies);
-//            messageCountStudies = res.getString(R.string.message_count_studies, (FilesManager.listStudiesTypeSingle).size());
-//            tvCountStudiesSingle.setText(messageCountStudies);
-//        }
     }
 
     // Play first lesson from Studies list

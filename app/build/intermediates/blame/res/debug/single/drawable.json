@@ -1,11 +1,11 @@
 [
     {
-        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\icon_answers_32.png",
-        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\icon_answers_32.png"
-    },
-    {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\button.xml",
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\button.xml"
+    },
+    {
+        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\icon_answers_32.png",
+        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\icon_answers_32.png"
     },
     {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_ic_arrow_drop_right_black_24dp.xml",
@@ -456,12 +456,12 @@
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\app_logo_24.png"
     },
     {
-        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\edittext_rounded_corners.xml",
-        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\edittext_rounded_corners.xml"
-    },
-    {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\icon_mini_player2.png",
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\icon_mini_player2.png"
+    },
+    {
+        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\edittext_rounded_corners.xml",
+        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\edittext_rounded_corners.xml"
     },
     {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\back_button_64.png",

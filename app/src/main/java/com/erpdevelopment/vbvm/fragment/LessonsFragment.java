@@ -1,10 +1,14 @@
 package com.erpdevelopment.vbvm.fragment;
 
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -20,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.erpdevelopment.vbvm.MainActivity;
 import com.erpdevelopment.vbvm.R;
@@ -27,14 +32,15 @@ import com.erpdevelopment.vbvm.adapter.LessonListAdapter;
 import com.erpdevelopment.vbvm.db.DBHandleLessons;
 import com.erpdevelopment.vbvm.model.Lesson;
 import com.erpdevelopment.vbvm.model.Study;
+import com.erpdevelopment.vbvm.service.DownloadService;
 import com.erpdevelopment.vbvm.service.WebServiceCall;
 import com.erpdevelopment.vbvm.utils.CheckConnectivity;
-import com.erpdevelopment.vbvm.utils.FilesManager;
 import com.erpdevelopment.vbvm.utils.imageloading.ImageLoader;
 import com.roughike.bottombar.BottomBar;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class LessonsFragment extends Fragment {
@@ -57,6 +63,7 @@ public class LessonsFragment extends Fragment {
     private List<Lesson> listLessons;
     private Study mStudy;
     private ImageLoader imageLoader;
+    private Activity activity;
 
     public LessonsFragment() {
         // Required empty public constructor
@@ -74,7 +81,62 @@ public class LessonsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         imageLoader = new ImageLoader(getActivity());
+        activity = getActivity();
+        activity.registerReceiver(receiverDownloadComplete, new IntentFilter(DownloadService.NOTIFICATION_COMPLETE));
+        activity.registerReceiver(receiverDownloadProgress, new IntentFilter(DownloadService.NOTIFICATION_PROGRESS));
     }
+
+    private BroadcastReceiver receiverDownloadComplete = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+//            boolean oneDownloadComplete = false; //At least one download has finished successfully
+            if (bundle != null) {
+                int resultCode = bundle.getInt(DownloadService.RESULT);
+                String fileName = bundle.getString(DownloadService.FILENAME);
+                if (resultCode == activity.RESULT_OK) {
+//                    System.out.println("Downloaded: " + fileName);
+                    Toast.makeText(activity, "Downloaded: " + fileName, Toast.LENGTH_LONG).show();
+//                    oneDownloadComplete = true;
+//                    new asyncGetStudyLessons().execute(mStudy);
+                } else {
+//                    Toast.makeText(BibleStudyLessonsActivity.this, "Download failed!: " + fileName,
+//                            Toast.LENGTH_LONG).show();
+                }
+//                DownloadService.decrementCount();
+//                if (oneDownloadComplete) {
+//                    if (DownloadService.countDownloads == 0){
+//                        DownloadService.downloading = false;
+//                        tvDownloading.setVisibility(View.GONE);
+//                        tvDownloading.setText("");
+//                        tvTitle.setVisibility(View.VISIBLE);
+//                        imgMenuBarOptions.setVisibility(View.VISIBLE);
+//                        new asyncGetStudyLessons().execute(mStudy);
+//                    }
+//                }
+            }
+        }
+    };
+
+    private BroadcastReceiver receiverDownloadProgress = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            if (bundle != null) {
+                String idLesson = bundle.getString("idLesson");
+                int downloadProgress = bundle.getInt("downloadProgress");
+                List<Lesson> listLessons = mStudy.getLessons();
+                for (int i=0; i<listLessons.size(); i++) {
+                    if (listLessons.get(i).getIdProperty().equals(idLesson)) {
+                        listLessons.get(i).setDownloadProgress(downloadProgress);
+                        break;
+                    }
+                }
+                adapter.setStudyDetailsListItems(listLessons);
+            }
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,7 +148,6 @@ public class LessonsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         rootView = getView();
         rootViewMain = (RelativeLayout) (rootView.getParent()).getParent();
         actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();

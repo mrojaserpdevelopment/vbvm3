@@ -7,7 +7,7 @@
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="24" />
-m
+    m
     <supports-screens
         android:largeScreens="false"
         android:normalScreens="true"
@@ -146,6 +146,11 @@ m
         <!-- android:name=".MailSenderActivity" -->
         <!-- android:label="@string/title_activity_mail_sender"> -->
         <!-- </activity> -->
+        <service
+            android:name="com.erpdevelopment.vbvm.service.DownloadService2"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
     </application>
 
 </manifest>

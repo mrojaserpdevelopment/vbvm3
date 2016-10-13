@@ -2,10 +2,10 @@
  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
      android:id="@+id/layout_item_lesson"
      android:layout_width="match_parent"
-     android:layout_height="wrap_content"
+     android:layout_height="60dp"
      android:background="#FFFFFFFF"
      android:orientation="horizontal"
-     android:padding="10dp" >
+     android:padding="5dp" >
 
 	<!--<ImageView-->
 	    <!--android:id="@+id/img_lesson"-->
@@ -67,8 +67,9 @@
 			android:textColor="#938d8c"/>
 
 		<LinearLayout
+			android:id="@+id/ll_buttons_listview"
 			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
+			android:layout_height="match_parent"
 			android:layout_below="@id/tv_lesson_description"
 			android:layout_alignParentRight="true"
 			android:orientation="horizontal">
@@ -79,32 +80,93 @@
 				<!--android:layout_height="wrap_content"-->
 				<!--android:background="@drawable/play_color" />-->
 
-			<TextView
-				android:id="@+id/tv_icon_teacher_aid"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:gravity="center"
-				android:layout_weight="1"
-				android:text="@string/fa_icon_teacher_aid"
-				android:layout_marginRight="10dp"/>
+			<RelativeLayout
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent">
+				<TextView
+					android:id="@+id/tv_icon_teacher_aid"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:gravity="center"
+					android:layout_weight="1"
+					android:text="@string/fa_icon_teacher_aid"
+					android:textSize="14sp"
+					android:layout_marginRight="30dp"
+					android:layout_centerInParent="true"/>
 
-			<TextView
-				android:id="@+id/tv_icon_transcript"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:gravity="center"
-				android:layout_weight="1"
-				android:text="@string/fa_icon_transcript"
-				android:layout_marginRight="10dp"/>
+				<ProgressBar
+					android:id="@+id/pb_teacher"
+					android:layout_width="40dp"
+					android:layout_height="40dp"
+					style="?android:attr/progressBarStyleHorizontal"
+					android:indeterminate="false"
+					android:progress="0"
+					android:max="100"
+					android:secondaryProgress="0"
+					android:progressDrawable="@drawable/circular"
+					android:layout_centerInParent="true" />
+			</RelativeLayout>
 
-			<TextView
-				android:id="@+id/tv_icon_play_mini"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:gravity="center"
-				android:layout_weight="1"
-				android:text="@string/fa_icon_play_mini"
-				android:layout_marginRight="10dp"/>
+			<RelativeLayout
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent">
+				<TextView
+					android:id="@+id/tv_icon_transcript"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:gravity="center"
+					android:layout_weight="1"
+					android:text="@string/fa_icon_transcript"
+					android:textSize="14sp"
+					android:layout_marginRight="30dp"
+					android:layout_centerInParent="true"/>
+				<ProgressBar
+					android:id="@+id/pb_transcript"
+					android:layout_width="40dp"
+					android:layout_height="40dp"
+					style="?android:attr/progressBarStyleHorizontal"
+					android:indeterminate="false"
+					android:progress="0"
+					android:max="100"
+					android:secondaryProgress="0"
+					android:progressDrawable="@drawable/circular"
+					android:layout_centerInParent="true" />
+			</RelativeLayout>
+
+			<RelativeLayout
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent">
+				<!--<TextView-->
+					<!--android:id="@+id/tv_icon_play_mini"-->
+					<!--android:layout_width="wrap_content"-->
+					<!--android:layout_height="wrap_content"-->
+					<!--android:gravity="center"-->
+					<!--android:layout_weight="1"-->
+					<!--android:text="@string/fa_icon_play_mini"-->
+					<!--android:textSize="14sp"-->
+					<!--android:textStyle="bold"-->
+					<!--android:layout_marginRight="30dp"-->
+					<!--android:layout_centerInParent="true"/>-->
+				<ImageButton
+					android:id="@+id/img_btn_play_mini"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:src="@drawable/icon_mini_player"
+					android:gravity="center"
+					android:layout_marginRight="30dp"
+					android:layout_centerInParent="true"/>
+				<ProgressBar
+					android:id="@+id/pb_player"
+					android:layout_width="40dp"
+					android:layout_height="40dp"
+					style="?android:attr/progressBarStyleHorizontal"
+					android:indeterminate="false"
+					android:progress="0"
+					android:max="100"
+					android:secondaryProgress="0"
+					android:progressDrawable="@drawable/circular"
+					android:layout_centerInParent="true" />
+			</RelativeLayout>
 
 		</LinearLayout>
 

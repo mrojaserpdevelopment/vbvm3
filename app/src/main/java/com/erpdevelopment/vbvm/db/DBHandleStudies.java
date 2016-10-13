@@ -80,6 +80,9 @@ public class DBHandleStudies {
 	    values.put("study_thumbnail_source", lesson.getStudyThumbnailSource());
 	    values.put("state", "new");
 	    values.put("position_in_list", lesson.getPositionInList());
+		values.put("download_status_audio", lesson.getDownloadStatusAudio());
+		values.put("download_status_teacher", lesson.getDownloadStatusTeacherAid());
+		values.put("download_status_transcript", lesson.getDownloadStatusTranscript());
 	    long row_id = 0;
 	    try {
 	    	row_id = MainActivity.db.insertOrThrow("lesson", null, values);

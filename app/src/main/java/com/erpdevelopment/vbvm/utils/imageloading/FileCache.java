@@ -101,7 +101,7 @@ public class FileCache {
             f.delete();
     }
     
-    public void copyFile(File source, File target) {
+    public synchronized void copyFile(File source, File target) {
     	FileInputStream fis = null;
     	FileOutputStream fos = null;
 		try {

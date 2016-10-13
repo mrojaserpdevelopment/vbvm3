@@ -59,6 +59,9 @@ public class DownloadJsonData {
     private TextView tvCountStudiesNew;
     private TextView tvCountStudiesOld;
     private TextView tvCountStudiesSingle;
+    private TextView tvStudiesNew;
+    private TextView tvStudiesOld;
+    private TextView tvStudiesSingle;
     public static final int COUNT_PARALLEL_DOWNLOADS = 3;
 
     public static DownloadJsonData getInstance() {
@@ -82,6 +85,13 @@ public class DownloadJsonData {
         tvCountStudiesNew = (TextView) rootView.findViewById(R.id.tvCountStudiesNew);
         tvCountStudiesOld = (TextView) rootView.findViewById(R.id.tvCountStudiesOld);
         tvCountStudiesSingle = (TextView) rootView.findViewById(R.id.tvCountStudiesSingle);
+        tvStudiesNew = (TextView) rootView.findViewById(R.id.tvStudiesNew);
+        tvStudiesOld = (TextView) rootView.findViewById(R.id.tvStudiesOld);
+        tvStudiesSingle = (TextView) rootView.findViewById(R.id.tvStudiesSingle);
+
+//        tvStudiesNew.setVisibility(View.VISIBLE);
+//        tvStudiesOld.setVisibility(View.VISIBLE);
+//        tvStudiesSingle.setVisibility(View.VISIBLE);
 
         WebServiceCall.studiesInDB = MainActivity.settings.getBoolean("studiesInDB", false);
         if ( WebServiceCall.studiesInDB ){
@@ -108,6 +118,10 @@ public class DownloadJsonData {
             tvCountStudiesOld.setText(messageCountStudies);
             messageCountStudies = res.getString(R.string.message_count_studies, dbListStudiesByType.get(2).size());
             tvCountStudiesSingle.setText(messageCountStudies);
+
+            tvStudiesNew.setVisibility(View.VISIBLE);
+            tvStudiesOld.setVisibility(View.VISIBLE);
+            tvStudiesSingle.setVisibility(View.VISIBLE);
 
 //            new asyncGetAllLessons().execute();
 //            asyncJsonArticles();
@@ -200,6 +214,9 @@ public class DownloadJsonData {
                         messageCountStudies = res.getString(R.string.message_count_studies, (FilesManager.listStudiesTypeSingle).size());
                         tvCountStudiesSingle.setText(messageCountStudies);
 
+                        tvStudiesNew.setVisibility(View.VISIBLE);
+                        tvStudiesOld.setVisibility(View.VISIBLE);
+                        tvStudiesSingle.setVisibility(View.VISIBLE);
 
 //                        new asyncGetAllLessons().execute();
 //                        asyncJsonArticles();

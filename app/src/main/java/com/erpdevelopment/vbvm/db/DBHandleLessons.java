@@ -36,7 +36,10 @@ public class DBHandleLessons {
     private static final String COLUMN_STUDY_THUMBNAIL_SOURCE = "study_thumbnail_source";
     private static final String COLUMN_STATE_LESSON = "state";
     private static final String COLUMN_POSITION_IN_LIST = "position_in_list";
-    private static final String COLUMN_DOWNLOAD_STATUS = "download_status"; // 0=No  1=Yes  2=In progress
+    private static final String COLUMN_DOWNLOAD_STATUS = "download_status"; // 0=Not downloaded  1=Downloaded  2=In progress
+	private static final String COLUMN_DOWNLOAD_STATUS_AUDIO = "download_status_audio"; // 0=Not downloaded  1=Downloaded  2=In progress
+	private static final String COLUMN_DOWNLOAD_STATUS_TEACHER = "download_status_teacher"; // 0=Not downloaded  1=Downloaded  2=In progress
+	private static final String COLUMN_DOWNLOAD_STATUS_TRANSCRIPT = "download_status_transcript"; // 0=Not downloaded  1=Downloaded  2=In progress
     
     public static List<Lesson> getLessons(String id_study) {
 	    List<Lesson> lessons = new ArrayList<Lesson>();
@@ -72,8 +75,11 @@ public class DBHandleLessons {
 	        	lesson.setState(c.getString((c.getColumnIndex(COLUMN_STATE_LESSON))));
 	        	lesson.setPositionInList(c.getInt((c.getColumnIndex(COLUMN_POSITION_IN_LIST))));
 	        	lesson.setDownloadStatus(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS))));
+				lesson.setDownloadStatusAudio(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_AUDIO))));
+				lesson.setDownloadStatusTeacherAid(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_TEACHER))));
+				lesson.setDownloadStatusTranscript(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_TRANSCRIPT))));
 				Study study = DBHandleStudies.getStudyById(id_study);
-				lesson.setStudy(study);
+//				lesson.setStudy(study);
 	        	lessons.add(lesson);
 	        } while (c.moveToNext());
 	    }
@@ -111,6 +117,9 @@ public class DBHandleLessons {
 	    	lesson.setState(c.getString((c.getColumnIndex(COLUMN_STATE_LESSON))));	 
         	lesson.setPositionInList(c.getInt((c.getColumnIndex(COLUMN_POSITION_IN_LIST))));
         	lesson.setDownloadStatus(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS))));
+			lesson.setDownloadStatusAudio(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_AUDIO))));
+			lesson.setDownloadStatusTeacherAid(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_TEACHER))));
+			lesson.setDownloadStatusTranscript(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_TRANSCRIPT))));
 	    }
 	    c.close();
 	    return lesson;
@@ -146,14 +155,57 @@ public class DBHandleLessons {
 		 }
          return updatedRows;
 	}
+
+	public static void updateLessonDownloadStatus(String idLesson, int downloadStatus) {
+
+	}
 	
-	public static int updateLessonDownloadStatus(String idLesson, int downloadStatus){
-		 int updatedRows = 0;
-		 if( MainActivity.db != null ){
-		  ContentValues values = new ContentValues();
-		  values.put("download_status", downloadStatus);
-		  updatedRows = (int) MainActivity.db.update("lesson", values, "id_lesson = ?", new String[]{idLesson});  
-		 }
-		 return updatedRows;
+	public static void updateLessonDownloadStatus(String idLesson, int downloadStatus, String downloadType){
+//		 int updatedRows = 0;
+//		 if( MainActivity.db != null ){
+//		  ContentValues values = new ContentValues();
+//		  values.put("COLUMN_DOWNLOAD_STATUS", downloadStatus);
+//		  updatedRows = (int) MainActivity.db.update("lesson", values, "id_lesson = ?", new String[]{idLesson});
+//		 }
+//		 return updatedRows;
+
+		switch (downloadType) {
+			case "audio": updateLessonDownloadStatusAudio(idLesson, downloadStatus);
+				break;
+			case "teacher": updateLessonDownloadStatusTeacher(idLesson, downloadStatus);
+				break;
+			case "transcript": updateLessonDownloadStatusTranscript(idLesson, downloadStatus);
+				break;
+		}
+	}
+
+	public static int updateLessonDownloadStatusAudio(String idLesson, int downloadStatus){
+		int updatedRows = 0;
+		if( MainActivity.db != null ){
+			ContentValues values = new ContentValues();
+			values.put(COLUMN_DOWNLOAD_STATUS_AUDIO, downloadStatus);
+			updatedRows = (int) MainActivity.db.update("lesson", values, "id_lesson = ?", new String[]{idLesson});
+		}
+		return updatedRows;
+	}
+
+	public static int updateLessonDownloadStatusTeacher(String idLesson, int downloadStatus){
+		int updatedRows = 0;
+		if( MainActivity.db != null ){
+			ContentValues values = new ContentValues();
+			values.put(COLUMN_DOWNLOAD_STATUS_TEACHER, downloadStatus);
+			updatedRows = (int) MainActivity.db.update("lesson", values, "id_lesson = ?", new String[]{idLesson});
+		}
+		return updatedRows;
+	}
+
+	public static int updateLessonDownloadStatusTranscript(String idLesson, int downloadStatus){
+		int updatedRows = 0;
+		if( MainActivity.db != null ){
+			ContentValues values = new ContentValues();
+			values.put(COLUMN_DOWNLOAD_STATUS_TRANSCRIPT, downloadStatus);
+			updatedRows = (int) MainActivity.db.update("lesson", values, "id_lesson = ?", new String[]{idLesson});
+		}
+		return updatedRows;
 	}
 }

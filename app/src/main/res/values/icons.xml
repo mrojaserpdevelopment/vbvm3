@@ -3,4 +3,5 @@
     <string name="fa_icon_teacher_aid">&#xf016;</string>
     <string name="fa_icon_transcript">&#xf0f6;</string>
     <string name="fa_icon_play_mini">&#xf04b;</string>
+    <string name="fa_icon_stop">&#xf04d;</string>
 </resources>

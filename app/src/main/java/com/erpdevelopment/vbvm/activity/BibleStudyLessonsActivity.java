@@ -130,7 +130,7 @@ public class BibleStudyLessonsActivity extends Activity {
 		
 	    fileCache = new FileCache(MainActivity.mainCtx);
 		
-	    registerReceiver(receiver, new IntentFilter(DownloadService.NOTIFICATION));
+	    registerReceiver(receiver, new IntentFilter(DownloadService.NOTIFICATION_COMPLETE));
     	registerReceiver(receiverDownloading, new IntentFilter(DownloadService.NOTIFICATION2));
 	}
 	

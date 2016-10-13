@@ -23,11 +23,13 @@
             android:layout_marginRight="10dp">
 
             <TextView
+                android:id="@+id/tvStudiesNew"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="New Testament Books"
                 android:textColor="@android:color/black"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:visibility="gone"/>
             <TextView
                 android:id="@+id/tvCountStudiesNew"
                 android:layout_width="wrap_content"
@@ -46,11 +48,13 @@
                 android:background="@android:color/transparent"/>
 
             <TextView
+                android:id="@+id/tvStudiesOld"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Old Testament Books"
                 android:textColor="@android:color/black"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:visibility="gone"/>
             <TextView
                 android:id="@+id/tvCountStudiesOld"
                 android:layout_width="wrap_content"
@@ -68,11 +72,13 @@
                 android:stretchMode="columnWidth"/>
 
             <TextView
+                android:id="@+id/tvStudiesSingle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Single Teachings"
                 android:textColor="@android:color/black"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:visibility="gone"/>
             <TextView
                 android:id="@+id/tvCountStudiesSingle"
                 android:layout_width="wrap_content"

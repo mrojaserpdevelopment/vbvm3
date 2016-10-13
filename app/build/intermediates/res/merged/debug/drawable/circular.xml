@@ -6,7 +6,6 @@
               android:shape="ring"
               android:useLevel="true"
               android:thicknessRatio="24.0">
-
               <gradient
                    android:startColor="#999999"
                    android:endColor="#999999"
@@ -35,11 +34,16 @@
 <!-- 	                   android:endColor="#00FF00" -->
 <!-- 	                   android:centerColor="#00FF00" -->
 <!-- 	                   android:type="sweep" /> -->
-	              <gradient
-	                   android:startColor="@android:color/holo_blue_light"
-	                   android:endColor="@android:color/holo_blue_light"
-	                   android:centerColor="@android:color/holo_blue_light"
-	                   android:type="sweep" />
+	              <!--<gradient-->
+	                   <!--android:startColor="@android:color/holo_blue_light"-->
+	                   <!--android:endColor="@android:color/holo_blue_light"-->
+	                   <!--android:centerColor="@android:color/holo_blue_light"-->
+	                   <!--android:type="sweep" />-->
+				  <gradient
+				       android:startColor="@android:color/black"
+					   android:endColor="@android:color/black"
+					   android:centerColor="@android:color/black"
+					   android:type="sweep" />
 	        </shape>
         </rotate>
     </item>

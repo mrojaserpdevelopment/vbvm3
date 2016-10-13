@@ -12,38 +12,46 @@ public class ConstantsVbvm {
 	public static String DEFAULT_DESCRIPTION = "";
 	public static String DEFAULT_TITLE = "";
 	public static int DEFAULT_SIZE = 0;
-	public static String FILENAME_CONTACT = "contact.txt";
-	public static String FILENAME_MISSION = "mission.txt";
-	public static String FILENAME_BELIEFS = "beliefs.txt";
-	public static String FILENAME_SERVICES = "services.txt";
-	public static String FILENAME_HISTORY = "history.txt";
-	public static String FILENAME_HOW = "how.txt";
-	public static String FILENAME_WHERE = "where.txt";
-	public static String FILENAME_ABOUT = "about.txt";
+	public static final String FILENAME_CONTACT = "contact.txt";
+	public static final String FILENAME_MISSION = "mission.txt";
+	public static final String FILENAME_BELIEFS = "beliefs.txt";
+	public static final String FILENAME_SERVICES = "services.txt";
+	public static final String FILENAME_HISTORY = "history.txt";
+	public static final String FILENAME_HOW = "how.txt";
+	public static final String FILENAME_WHERE = "where.txt";
+	public static final String FILENAME_ABOUT = "about.txt";
 	
-	public static String FILENAME_STAFF_KATHRYN = "staff_kathryn.txt";
-	public static String FILENAME_STAFF_MELISSA = "staff_melissa.txt";
-	public static String FILENAME_STAFF_FEDERICO = "staff_federico.txt";
-	public static String FILENAME_STAFF_TONYA = "staff_tonya.txt";
-	public static String FILENAME_STAFF_BRADY = "staff_brady.txt";
+	public static final String FILENAME_STAFF_KATHRYN = "staff_kathryn.txt";
+	public static final String FILENAME_STAFF_MELISSA = "staff_melissa.txt";
+	public static final String FILENAME_STAFF_FEDERICO = "staff_federico.txt";
+	public static final String FILENAME_STAFF_TONYA = "staff_tonya.txt";
+	public static final String FILENAME_STAFF_BRADY = "staff_brady.txt";
 	
-	public static String FILENAME_BOARD_STEPHEN = "board_stephen.txt";
-	public static String FILENAME_BOARD_BRIAN = "board_brian.txt";
-	public static String FILENAME_BOARD_JOE = "board_joe.txt";
-	public static String FILENAME_BOARD_RON = "board_ron.txt";
-	public static String FILENAME_BOARD_JERRY = "board_jerry.txt";
-	public static String FILENAME_BOARD_ANONYMOUS = "board_anonymous.txt";
+	public static final String FILENAME_BOARD_STEPHEN = "board_stephen.txt";
+	public static final String FILENAME_BOARD_BRIAN = "board_brian.txt";
+	public static final String FILENAME_BOARD_JOE = "board_joe.txt";
+	public static final String FILENAME_BOARD_RON = "board_ron.txt";
+	public static final String FILENAME_BOARD_JERRY = "board_jerry.txt";
+	public static final String FILENAME_BOARD_ANONYMOUS = "board_anonymous.txt";
 
 	//Database tables	
-	public static String TABLE_STUDY = "study";
-	public static String TABLE_LESSON = "lesson";
-	public static String TABLE_TOPIC_LESSON = "topic_lesson";
-	public static String TABLE_ARTICLE = "article";
-	public static String TABLE_EVENT = "event";
-	public static String TABLE_POST = "post";
-	public static String TABLE_TOPIC_POST = "topic_post";
-	public static String TABLE_RECENTLY_VIEWED = "recently_viewed";
-	public static String TABLE_CHANNEL = "channel";
-	public static String TABLE_VIDEO = "video";		
-	
+	public static final String TABLE_STUDY = "study";
+	public static final String TABLE_LESSON = "lesson";
+	public static final String TABLE_TOPIC_LESSON = "topic_lesson";
+	public static final String TABLE_ARTICLE = "article";
+	public static final String TABLE_EVENT = "event";
+	public static final String TABLE_POST = "post";
+	public static final String TABLE_TOPIC_POST = "topic_post";
+	public static final String TABLE_RECENTLY_VIEWED = "recently_viewed";
+	public static final String TABLE_CHANNEL = "channel";
+	public static final String TABLE_VIDEO = "video";
+
+	//LessonsListAdapter - DownloadThread
+//	// Used to communicate state changes in the DownloaderThread
+//	public static final int MESSAGE_DOWNLOAD_STARTED = 1000;
+//	public static final int MESSAGE_DOWNLOAD_COMPLETE = 1001;
+//	public static final int MESSAGE_UPDATE_PROGRESS_BAR = 1002;
+//	public static final int MESSAGE_DOWNLOAD_CANCELED = 1003;
+//	public static final int MESSAGE_CONNECTING_STARTED = 1004;
+//	public static final int MESSAGE_ENCOUNTERED_ERROR = 1005;
 }

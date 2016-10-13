@@ -428,6 +428,7 @@
     <string name="error_message_general">Error downloading file!</string>
     <string name="eula"/>
     <string name="fa_icon_play_mini"></string>
+    <string name="fa_icon_stop"></string>
     <string name="fa_icon_teacher_aid"></string>
     <string name="fa_icon_transcript"></string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
