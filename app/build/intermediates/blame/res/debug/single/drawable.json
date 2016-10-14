@@ -184,6 +184,10 @@
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\custom_progressbar.xml"
     },
     {
+        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\toggle_play.xml",
+        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\toggle_play.xml"
+    },
+    {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\img_btn_pause_pressed.png",
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\img_btn_pause_pressed.png"
     },
@@ -624,12 +628,12 @@
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\bottom_bar_icon_library.png"
     },
     {
-        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\icon_qa_posts.jpg",
-        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\icon_qa_posts.jpg"
-    },
-    {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\icon_favorited.png",
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\icon_favorited.png"
+    },
+    {
+        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\icon_qa_posts.jpg",
+        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\icon_qa_posts.jpg"
     },
     {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\download_cloud_32.png",

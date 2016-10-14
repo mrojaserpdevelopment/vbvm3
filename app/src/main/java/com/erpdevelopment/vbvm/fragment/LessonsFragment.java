@@ -83,7 +83,7 @@ public class LessonsFragment extends Fragment {
         imageLoader = new ImageLoader(getActivity());
         activity = getActivity();
         activity.registerReceiver(receiverDownloadComplete, new IntentFilter(DownloadService.NOTIFICATION_COMPLETE));
-        activity.registerReceiver(receiverDownloadProgress, new IntentFilter(DownloadService.NOTIFICATION_PROGRESS));
+//        activity.registerReceiver(receiverDownloadProgress, new IntentFilter(DownloadService.NOTIFICATION_PROGRESS));
     }
 
     private BroadcastReceiver receiverDownloadComplete = new BroadcastReceiver() {
@@ -119,24 +119,24 @@ public class LessonsFragment extends Fragment {
         }
     };
 
-    private BroadcastReceiver receiverDownloadProgress = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Bundle bundle = intent.getExtras();
-            if (bundle != null) {
-                String idLesson = bundle.getString("idLesson");
-                int downloadProgress = bundle.getInt("downloadProgress");
-                List<Lesson> listLessons = mStudy.getLessons();
-                for (int i=0; i<listLessons.size(); i++) {
-                    if (listLessons.get(i).getIdProperty().equals(idLesson)) {
-                        listLessons.get(i).setDownloadProgress(downloadProgress);
-                        break;
-                    }
-                }
-                adapter.setStudyDetailsListItems(listLessons);
-            }
-        }
-    };
+//    private BroadcastReceiver receiverDownloadProgress = new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            Bundle bundle = intent.getExtras();
+//            if (bundle != null) {
+//                String idLesson = bundle.getString("idLesson");
+//                int downloadProgress = bundle.getInt("downloadProgress");
+//                List<Lesson> listLessons = mStudy.getLessons();
+//                for (int i=0; i<listLessons.size(); i++) {
+//                    if (listLessons.get(i).getIdProperty().equals(idLesson)) {
+//                        listLessons.get(i).setDownloadProgress(downloadProgress);
+//                        break;
+//                    }
+//                }
+//                adapter.setStudyDetailsListItems(listLessons);
+//            }
+//        }
+//    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
