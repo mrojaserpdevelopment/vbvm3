@@ -106,23 +106,23 @@ public class LessonListAdapter extends BaseAdapter {
 		ProgressBar pbPlayer = (ProgressBar) convertView.findViewById(R.id.pb_player);
 //		if (DownloadService.lesson!=null && lesson.getIdProperty().equals(DownloadService.lesson.getIdProperty())) {
 //			System.out.println("LessonListAdapter.getView Progress: " + lesson.getDownloadProgress());
-			if (lesson.getDownloadProgress() > 0) {
+//			if (lesson.getDownloadProgress() > 0) {
 //				System.out.println("LessonListAdapter.getView Progress: " + lesson.getDownloadProgress());
 				pbPlayer.setProgress(lesson.getDownloadProgress());
-			}
+//			}
 //		}
 
 		tvIconPlayMini.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
 //				onClickLesson(view, lesson);
-				if (tvIconPlayMini.getVisibility() == View.VISIBLE) {
-					tvIconPlayMini.setVisibility(View.GONE);
-					tvIconStop.setVisibility(View.VISIBLE);
-				} else {
-					tvIconPlayMini.setVisibility(View.VISIBLE);
-					tvIconStop.setVisibility(View.GONE);
-				}
+//				if (tvIconPlayMini.getVisibility() == View.VISIBLE) {
+//					tvIconPlayMini.setVisibility(View.GONE);
+//					tvIconStop.setVisibility(View.VISIBLE);
+//				} else {
+//					tvIconPlayMini.setVisibility(View.VISIBLE);
+//					tvIconStop.setVisibility(View.GONE);
+//				}
 				onClickItemLessons(view,lesson);
 			}
 		});
@@ -269,6 +269,7 @@ public class LessonListAdapter extends BaseAdapter {
 				status = lesson.getDownloadStatusAudio();
 				System.out.println("LessonListAdapter.onClickItemLessons: " + status);
 				if (status == 0) {
+					((TextView) view).setText(context.getResources().getString(R.string.fa_icon_stop));
 					thread = new DownloaderThread2(activityHandler, lesson, lesson.getAudioSource(), "audio");
 					DownloadService2.downloaderThread = thread;
 					System.out.println("thread.getId(): " + thread.getId());
@@ -292,6 +293,7 @@ public class LessonListAdapter extends BaseAdapter {
 //					DownloadService.incrementCount();
 				}
 				if (status == 2) {
+					((TextView) view).setText(context.getResources().getString(R.string.fa_icon_play_mini));
 					System.out.println("stopping download...");
 					Thread t = DownloadService2.threadMap.get(lesson.getIdProperty());
 					if (t != null) {
@@ -301,6 +303,7 @@ public class LessonListAdapter extends BaseAdapter {
 						for (int i=0; i<lessons.size(); i++) {
 							if (lessons.get(i).getIdProperty().equals(lesson.getIdProperty())) {
 								lesson.setDownloadStatusAudio(0);
+//								lesson.setDownloadProgress(0);
 								System.out.println("updating status: 0...");
 								break;
 							}
@@ -311,6 +314,30 @@ public class LessonListAdapter extends BaseAdapter {
 					}
 				}
 				break;
+//			case R.id.tv_icon_stop:
+//				if (status == 2) {
+//					((TextView) view).setText(context.getResources().getString(R.string.fa_icon_play_mini));
+//					System.out.println("stopping download...");
+//					Thread t = DownloadService2.threadMap.get(lesson.getIdProperty());
+//					if (t != null) {
+//						System.out.println("getId(): " + t.getId());
+//						System.out.println("getName(): " + t.getName());
+//						t.interrupt();
+//						for (int i=0; i<lessons.size(); i++) {
+//							if (lessons.get(i).getIdProperty().equals(lesson.getIdProperty())) {
+//								lesson.setDownloadStatusAudio(0);
+//								System.out.println("updating status: 0...");
+//								break;
+//							}
+//						}
+//						setStudyDetailsListItems(lessons);
+//					} else {
+//						System.out.println("Thread is null...");
+//					}
+//				}
+//
+////				thread = new DownloaderThread2(lesson, lesson.getTeacherAid(), "teacher");
+//				break;
 			case R.id.tv_icon_teacher_aid:
 //				thread = new DownloaderThread2(lesson, lesson.getTeacherAid(), "teacher");
 				break;
@@ -340,6 +367,10 @@ public class LessonListAdapter extends BaseAdapter {
 
 					String idLesson = msg.getData().getString("idLesson");
 					int downloadProgress = msg.getData().getInt("downloadProgress");
+
+					if (downloadProgress==0)
+						System.out.println("progress is 0...");
+
 					List<Lesson> listLessons = lessons;
 					for (int i=0; i<listLessons.size(); i++) {
 						if (listLessons.get(i).getIdProperty().equals(idLesson)) {
