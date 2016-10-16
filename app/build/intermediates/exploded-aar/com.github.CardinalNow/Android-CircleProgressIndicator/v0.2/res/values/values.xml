@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#ff000000</color>
+    <color name="circleProgressCompleteEndGradient">@color/coral_blue</color>
+    <color name="circleProgressCompleteStartGradient">@color/dark_blue</color>
+    <color name="circleProgressIncompleteEndGradient">@color/light_gray</color>
+    <color name="circleProgressIncompleteStartGradient">@color/light_gray</color>
+    <color name="coral_blue">#1DAEFA</color>
+    <color name="dark_blue">#125D9D</color>
+    <color name="light_gray">#ABBAC2</color>
+    <color name="text_gray">#6B767D</color>
+    <color name="white">#FFFFFF</color>
+    <dimen name="circleProgressRadius">60dp</dimen>
+    <dimen name="circleProgressThickness">7dp</dimen>
+    <dimen name="curvedTextPadding">3dp</dimen>
+    <dimen name="curvedTextRadius">70dp</dimen>
+    <dimen name="curvedTextViewTextSize">15sp</dimen>
+    <string name="app_name">Circle Progress Indicator</string>
+    <string name="content_description">This is an image…</string>
+    <string name="curved_text_value">In/Out Facility</string>
+    <string name="home_screen_observations">OBSERVATIONS</string>
+    <string name="home_screen_observed_compliance">OBSERVED\nCOMPLIANCE</string>
+    <string name="percent_value">65%</string>
+    <string name="total_observations">2375</string>
+    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+		<item name="android:windowNoTitle">true</item>
+    </style>
+</resources>
