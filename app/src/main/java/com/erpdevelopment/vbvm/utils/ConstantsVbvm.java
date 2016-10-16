@@ -47,7 +47,7 @@ public class ConstantsVbvm {
 	public static final String TABLE_VIDEO = "video";
 
 	//LessonsListAdapter - DownloadThread
-//	// Used to communicate state changes in the DownloaderThread
+//	// Used to communicate state changes in the DownloaderThreadTest
 //	public static final int MESSAGE_DOWNLOAD_STARTED = 1000;
 //	public static final int MESSAGE_DOWNLOAD_COMPLETE = 1001;
 //	public static final int MESSAGE_UPDATE_PROGRESS_BAR = 1002;

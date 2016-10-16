@@ -27,7 +27,7 @@ import com.erpdevelopment.vbvm.model.Lesson;
 import com.erpdevelopment.vbvm.utils.BitmapManager;
 import com.erpdevelopment.vbvm.utils.imageloading.FileCache;
 
-public class DownloadService extends IntentService {
+public class DownloadServiceTest extends IntentService {
 
 	  private int result = Activity.RESULT_CANCELED;
 	  public static final String URL = "urlpath";
@@ -45,8 +45,8 @@ public class DownloadService extends IntentService {
 
 	  public static Lesson lesson;
 
-	  public DownloadService() {
-	    super("DownloadService");
+	  public DownloadServiceTest() {
+	    super("DownloadServiceTest");
 	    fileCache = new FileCache(MainActivity.mainCtx);
 	    downloading = true;
 	  }
@@ -63,7 +63,7 @@ public class DownloadService extends IntentService {
 	public void onCreate() {
 		super.onCreate();
 
-		registerReceiver(receiverStopDownload, new IntentFilter(DownloadService.NOTIFICATION_COMPLETE));
+		registerReceiver(receiverStopDownload, new IntentFilter(DownloadServiceTest.NOTIFICATION_COMPLETE));
 	}
 
 	// will be called asynchronously by Android
@@ -215,8 +215,8 @@ public class DownloadService extends IntentService {
 			Bundle bundle = intent.getExtras();
 			boolean oneDownloadComplete = false; //At least one download has finished successfully
 			if (bundle != null) {
-//                int resultCode = bundle.getInt(DownloadService.RESULT);
-//                String fileName = bundle.getString(DownloadService.FILENAME);
+//                int resultCode = bundle.getInt(DownloadServiceTest.RESULT);
+//                String fileName = bundle.getString(DownloadServiceTest.FILENAME);
 //                if (resultCode == RESULT_OK) {
 //                    System.out.println("Downloaded: " + fileName);
 //                    Toast.makeText(BibleStudyLessonsActivity.this,
@@ -228,10 +228,10 @@ public class DownloadService extends IntentService {
 //                    Toast.makeText(BibleStudyLessonsActivity.this, "Download failed!: " + fileName,
 //                            Toast.LENGTH_LONG).show();
 //                }
-//                DownloadService.decrementCount();
+//                DownloadServiceTest.decrementCount();
 //                if (oneDownloadComplete) {
-//                    if (DownloadService.countDownloads == 0){
-//                        DownloadService.downloading = false;
+//                    if (DownloadServiceTest.countDownloads == 0){
+//                        DownloadServiceTest.downloading = false;
 //                        tvDownloading.setVisibility(View.GONE);
 //                        tvDownloading.setText("");
 //                        tvTitle.setVisibility(View.VISIBLE);

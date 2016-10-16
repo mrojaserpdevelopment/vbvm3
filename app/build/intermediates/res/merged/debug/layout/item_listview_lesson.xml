@@ -75,6 +75,7 @@
 			android:orientation="horizontal">
 
 			<RelativeLayout
+				android:id="@+id/rl_teacher_aid"
 				android:layout_width="wrap_content"
 				android:layout_height="match_parent"
 				android:layout_marginRight="10dp">
@@ -102,6 +103,7 @@
 			</RelativeLayout>
 
 			<RelativeLayout
+				android:id="@+id/rl_transcript"
 				android:layout_width="wrap_content"
 				android:layout_height="match_parent"
 				android:layout_marginRight="10dp">
@@ -128,6 +130,7 @@
 			</RelativeLayout>
 
 			<RelativeLayout
+				android:id="@+id/rl_play_mini"
 				android:layout_width="wrap_content"
 				android:layout_height="match_parent"
 				android:layout_marginRight="10dp">

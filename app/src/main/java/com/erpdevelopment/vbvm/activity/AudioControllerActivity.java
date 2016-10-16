@@ -17,7 +17,7 @@ import com.erpdevelopment.vbvm.model.Favorite;
 import com.erpdevelopment.vbvm.model.ItemInfo;
 import com.erpdevelopment.vbvm.model.Lesson;
 import com.erpdevelopment.vbvm.model.Study;
-import com.erpdevelopment.vbvm.service.DownloadService;
+import com.erpdevelopment.vbvm.service.DownloadServiceTest;
 import com.erpdevelopment.vbvm.utils.CheckConnectivity;
 import com.erpdevelopment.vbvm.utils.FavoritesLRU;
 import com.erpdevelopment.vbvm.utils.FilesManager;
@@ -465,7 +465,7 @@ public class AudioControllerActivity extends Activity implements OnSeekBarChange
 		    	if ( !CheckConnectivity.isOnline(AudioControllerActivity.this)) {
 					CheckConnectivity.showMessage(AudioControllerActivity.this);
 				} else {
-			    	if ( !DownloadService.downloading ) {
+			    	if ( !DownloadServiceTest.downloading ) {
 			    		int downloadStatus = AudioPlayerService.listTempLesson2.get(currentSongIndex).getDownloadStatus();
 			    		if ( downloadStatus == 0 ){
 							String audioUrl = AudioPlayerService.listTempLesson2.get(currentSongIndex).getAudioSource();

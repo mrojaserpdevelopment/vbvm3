@@ -10,7 +10,7 @@ import com.erpdevelopment.vbvm.adapter.LessonListAdapter;
 import com.erpdevelopment.vbvm.db.DBHandleLessons;
 import com.erpdevelopment.vbvm.model.Lesson;
 import com.erpdevelopment.vbvm.model.Study;
-import com.erpdevelopment.vbvm.service.DownloadService;
+import com.erpdevelopment.vbvm.service.DownloadServiceTest;
 import com.erpdevelopment.vbvm.service.WebServiceCall;
 import com.erpdevelopment.vbvm.utils.BitmapManager;
 import com.erpdevelopment.vbvm.utils.CheckConnectivity;
@@ -130,8 +130,8 @@ public class BibleStudyLessonsActivity extends Activity {
 		
 	    fileCache = new FileCache(MainActivity.mainCtx);
 		
-	    registerReceiver(receiver, new IntentFilter(DownloadService.NOTIFICATION_COMPLETE));
-    	registerReceiver(receiverDownloading, new IntentFilter(DownloadService.NOTIFICATION2));
+	    registerReceiver(receiver, new IntentFilter(DownloadServiceTest.NOTIFICATION_COMPLETE));
+    	registerReceiver(receiverDownloading, new IntentFilter(DownloadServiceTest.NOTIFICATION2));
 	}
 	
     private class asyncGetStudyLessons extends AsyncTask< Study, String, String > {
@@ -178,7 +178,7 @@ public class BibleStudyLessonsActivity extends Activity {
             pDialog.dismiss();//ocultamos progess dialog.  	            	
             
             if (result != ""){
-            	adapter.setStudyDetailsListItems(mStudy.getLessons());
+            	adapter.setLessonListItems(mStudy.getLessons());
             	//remember selected row
 //            	prefs = getSharedPreferences(ConstantsVbvm.VBVM_PREFS, Context.MODE_PRIVATE);
         		//int position = prefs.getInt("posLesson", -1);
@@ -319,9 +319,9 @@ public class BibleStudyLessonsActivity extends Activity {
     @Override
     protected void onResume() {
     	new asyncGetStudyLessons().execute(mStudy);
-    	adapter.setStudyDetailsListItems(mStudy.getLessons());
-    	if ( DownloadService.downloading ){
-    		tvDownloading.setText("Downloading all: " + DownloadService.downloadAllTitle);
+    	adapter.setLessonListItems(mStudy.getLessons());
+    	if ( DownloadServiceTest.downloading ){
+    		tvDownloading.setText("Downloading all: " + DownloadServiceTest.downloadAllTitle);
 	        tvDownloading.setVisibility(View.VISIBLE);
 	        tvTitle.setVisibility(View.GONE);
 	        imgMenuBarOptions.setVisibility(View.GONE);
@@ -362,11 +362,11 @@ public class BibleStudyLessonsActivity extends Activity {
 //    		}
 	    	lessons.add(lesson);	    		
     	}
-    	adapter.setStudyDetailsListItems(lessons);
+    	adapter.setLessonListItems(lessons);
     }
     
     private void downloadAllLessons() {
-        if ( !DownloadService.downloading ) {
+        if ( !DownloadServiceTest.downloading ) {
         	// Check if there's at least one lesson not downloaded
         	boolean allDownloaded = true;
         	for ( int i=0; i<mStudy.getLessons().size(); i++ ) {
@@ -378,7 +378,7 @@ public class BibleStudyLessonsActivity extends Activity {
         		}
         	}        	
         	if ( !allDownloaded ) {
-        		tvDownloading.setText("Downloading all: " + DownloadService.downloadAllTitle);
+        		tvDownloading.setText("Downloading all: " + DownloadServiceTest.downloadAllTitle);
 			    tvDownloading.setVisibility(View.VISIBLE);
 			    tvTitle.setVisibility(View.GONE);
 			    imgMenuBarOptions.setVisibility(View.GONE);
@@ -388,12 +388,12 @@ public class BibleStudyLessonsActivity extends Activity {
 		        	if ( lesson.getDownloadStatus() == 0 || lesson.getDownloadStatus() == 2 )
 		        	{
 		        		if ( !lesson.getAudioSource().equals("") ) {
-			        		Intent intent = new Intent(this, DownloadService.class);
+			        		Intent intent = new Intent(this, DownloadServiceTest.class);
 						    intent.putExtra("lesson", lesson);
 						    intent.putExtra("studyTitle", mStudy.getTitle());
 						    startService(intent);	
-						    DownloadService.incrementCount();
-//						    tvDownloading.setText("Downloading all: " + DownloadService.downloadAllTitle);
+						    DownloadServiceTest.incrementCount();
+//						    tvDownloading.setText("Downloading all: " + DownloadServiceTest.downloadAllTitle);
 //						    tvDownloading.setVisibility(View.VISIBLE);
 //						    tvTitle.setVisibility(View.GONE);
 //						    imgMenuBarOptions.setVisibility(View.GONE);
@@ -414,7 +414,7 @@ public class BibleStudyLessonsActivity extends Activity {
     
     private void deleteAllLessons() {
     	
-    	if ( !DownloadService.downloading ) {
+    	if ( !DownloadServiceTest.downloading ) {
 	    	boolean deleted = false;
 	    	int count = 0;
 	    	for (int i=0; i<mStudy.getLessons().size(); i++){
@@ -459,8 +459,8 @@ public class BibleStudyLessonsActivity extends Activity {
 	      Bundle bundle = intent.getExtras();
 	      boolean oneDownloadComplete = false; //At least one download has finished successfully 
 	      if (bundle != null) {
-		    int resultCode = bundle.getInt(DownloadService.RESULT);
-	        String fileName = bundle.getString(DownloadService.FILENAME);
+		    int resultCode = bundle.getInt(DownloadServiceTest.RESULT);
+	        String fileName = bundle.getString(DownloadServiceTest.FILENAME);
 	        if (resultCode == RESULT_OK) {
 	        	System.out.println("Downloaded: " + fileName);
 	          Toast.makeText(BibleStudyLessonsActivity.this,
@@ -472,10 +472,10 @@ public class BibleStudyLessonsActivity extends Activity {
 	          Toast.makeText(BibleStudyLessonsActivity.this, "Download failed!: " + fileName,
 	              Toast.LENGTH_LONG).show();
 	        }
-	        DownloadService.decrementCount();
+	        DownloadServiceTest.decrementCount();
 	        if (oneDownloadComplete) {
-	        	if (DownloadService.countDownloads == 0){
-	        		DownloadService.downloading = false;
+	        	if (DownloadServiceTest.countDownloads == 0){
+	        		DownloadServiceTest.downloading = false;
 	        		tvDownloading.setVisibility(View.GONE);
 				    tvDownloading.setText("");
 				    tvTitle.setVisibility(View.VISIBLE);
@@ -496,14 +496,14 @@ public class BibleStudyLessonsActivity extends Activity {
 			    boolean updateDownloadingStatus = bundle.getBoolean("updateDownloadingStatus");
 			    if (updateDownloadingStatus)
 			    	new asyncGetStudyLessons().execute(mStudy);			    
-			    tvDownloading.setText("Downloading all: " + DownloadService.downloadAllTitle);
+			    tvDownloading.setText("Downloading all: " + DownloadServiceTest.downloadAllTitle);
 		        tvDownloading.setVisibility(View.VISIBLE);
 		    }	
 		}
 	  };
 	  
 	  private void resetDownloadingState() {
-		  if ( !DownloadService.downloading ){
+		  if ( !DownloadServiceTest.downloading ){
 	    		// if not downloading study, check and reset state for each lesson
 	    		for (Lesson lesson: mStudy.getLessons()){
 	    			if ( lesson.getDownloadStatus() == 2 )

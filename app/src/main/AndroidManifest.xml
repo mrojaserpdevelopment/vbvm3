@@ -134,7 +134,7 @@
 
         <service android:name=".activity.AudioPlayerService">
         </service>
-        <service android:name=".service.DownloadService">
+        <service android:name=".service.DownloadServiceTest">
         </service>
 
         <!-- <receiver android:name=".ShutdownReceiver"> -->
@@ -149,7 +149,7 @@
         <!-- android:label="@string/title_activity_mail_sender"> -->
         <!-- </activity> -->
         <service
-            android:name=".service.DownloadService2"
+            android:name=".service.downloader.DownloadService"
             android:enabled="true"
             android:exported="true">
         </service>

@@ -32,7 +32,7 @@ import com.erpdevelopment.vbvm.adapter.LessonListAdapter;
 import com.erpdevelopment.vbvm.db.DBHandleLessons;
 import com.erpdevelopment.vbvm.model.Lesson;
 import com.erpdevelopment.vbvm.model.Study;
-import com.erpdevelopment.vbvm.service.DownloadService;
+import com.erpdevelopment.vbvm.service.DownloadServiceTest;
 import com.erpdevelopment.vbvm.service.WebServiceCall;
 import com.erpdevelopment.vbvm.utils.CheckConnectivity;
 import com.erpdevelopment.vbvm.utils.imageloading.ImageLoader;
@@ -40,7 +40,6 @@ import com.roughike.bottombar.BottomBar;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class LessonsFragment extends Fragment {
@@ -82,8 +81,8 @@ public class LessonsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         imageLoader = new ImageLoader(getActivity());
         activity = getActivity();
-        activity.registerReceiver(receiverDownloadComplete, new IntentFilter(DownloadService.NOTIFICATION_COMPLETE));
-//        activity.registerReceiver(receiverDownloadProgress, new IntentFilter(DownloadService.NOTIFICATION_PROGRESS));
+        activity.registerReceiver(receiverDownloadComplete, new IntentFilter(DownloadServiceTest.NOTIFICATION_COMPLETE));
+//        activity.registerReceiver(receiverDownloadProgress, new IntentFilter(DownloadServiceTest.NOTIFICATION_PROGRESS));
     }
 
     private BroadcastReceiver receiverDownloadComplete = new BroadcastReceiver() {
@@ -93,8 +92,8 @@ public class LessonsFragment extends Fragment {
             Bundle bundle = intent.getExtras();
 //            boolean oneDownloadComplete = false; //At least one download has finished successfully
             if (bundle != null) {
-                int resultCode = bundle.getInt(DownloadService.RESULT);
-                String fileName = bundle.getString(DownloadService.FILENAME);
+                int resultCode = bundle.getInt(DownloadServiceTest.RESULT);
+                String fileName = bundle.getString(DownloadServiceTest.FILENAME);
                 if (resultCode == activity.RESULT_OK) {
 //                    System.out.println("Downloaded: " + fileName);
                     Toast.makeText(activity, "Downloaded: " + fileName, Toast.LENGTH_LONG).show();
@@ -104,10 +103,10 @@ public class LessonsFragment extends Fragment {
 //                    Toast.makeText(BibleStudyLessonsActivity.this, "Download failed!: " + fileName,
 //                            Toast.LENGTH_LONG).show();
                 }
-//                DownloadService.decrementCount();
+//                DownloadServiceTest.decrementCount();
 //                if (oneDownloadComplete) {
-//                    if (DownloadService.countDownloads == 0){
-//                        DownloadService.downloading = false;
+//                    if (DownloadServiceTest.countDownloads == 0){
+//                        DownloadServiceTest.downloading = false;
 //                        tvDownloading.setVisibility(View.GONE);
 //                        tvDownloading.setText("");
 //                        tvTitle.setVisibility(View.VISIBLE);
@@ -133,7 +132,7 @@ public class LessonsFragment extends Fragment {
 //                        break;
 //                    }
 //                }
-//                adapter.setStudyDetailsListItems(listLessons);
+//                adapter.setLessonListItems(listLessons);
 //            }
 //        }
 //    };
@@ -197,7 +196,7 @@ public class LessonsFragment extends Fragment {
 
         slidingLayout.addPanelSlideListener(onSlideListener());
         new asyncGetStudyLessons().execute(mStudy);
-//        adapter.setStudyDetailsListItems(mStudy.getLessons());
+//        adapter.setLessonListItems(mStudy.getLessons());
     }
 
     private SlidingUpPanelLayout.PanelSlideListener onSlideListener() {
@@ -278,8 +277,8 @@ public class LessonsFragment extends Fragment {
             pDialog.dismiss();//ocultamos progess dialog.
 
             if (result != ""){
-//                adapter.setStudyDetailsListItems(mStudy.getLessons());
-                adapter.setStudyDetailsListItems(mStudy.getLessons());
+//                adapter.setLessonListItems(mStudy.getLessons());
+                adapter.setLessonListItems(mStudy.getLessons());
                 //lvLessons.setAdapter(adapter);
                 tvLessonCount.setText(String.valueOf(mStudy.getLessons().size()));
                 lvLessons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -378,7 +377,7 @@ public class LessonsFragment extends Fragment {
 
 //    private void deleteAllLessons() {
 //
-//        if ( !DownloadService.downloading ) {
+//        if ( !DownloadServiceTest.downloading ) {
 //            boolean deleted = false;
 //            int count = 0;
 //            for (int i=0; i<mStudy.getLessons().size(); i++){
@@ -425,9 +424,9 @@ public class LessonsFragment extends Fragment {
     @Override
     public void onResume() {
 //        new asyncGetStudyLessons().execute(mStudy);
-//        adapter.setStudyDetailsListItems(mStudy.getLessons());
-//        if ( DownloadService.downloading ){
-//            tvDownloading.setText("Downloading all: " + DownloadService.downloadAllTitle);
+//        adapter.setLessonListItems(mStudy.getLessons());
+//        if ( DownloadServiceTest.downloading ){
+//            tvDownloading.setText("Downloading all: " + DownloadServiceTest.downloadAllTitle);
 //            tvDownloading.setVisibility(View.VISIBLE);
 //            tvTitle.setVisibility(View.GONE);
 //            imgMenuBarOptions.setVisibility(View.GONE);
