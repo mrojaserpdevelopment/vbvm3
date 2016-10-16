@@ -132,7 +132,7 @@
 
         <service android:name="com.erpdevelopment.vbvm.activity.AudioPlayerService" >
         </service>
-        <service android:name="com.erpdevelopment.vbvm.service.DownloadService" >
+        <service android:name="com.erpdevelopment.vbvm.service.DownloadServiceTest" >
         </service>
 
         <!-- <receiver android:name=".ShutdownReceiver"> -->
@@ -147,7 +147,7 @@
         <!-- android:label="@string/title_activity_mail_sender"> -->
         <!-- </activity> -->
         <service
-            android:name="com.erpdevelopment.vbvm.service.DownloadService2"
+            android:name="com.erpdevelopment.vbvm.service.downloader.DownloadService"
             android:enabled="true"
             android:exported="true" >
         </service>

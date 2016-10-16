@@ -653,15 +653,15 @@ service#com.erpdevelopment.vbvm.activity.AudioPlayerService
 ADDED from C:\androidstudio\vbvm3\app\src\main\AndroidManifest.xml:135:9-136:19
 	android:name
 		ADDED from C:\androidstudio\vbvm3\app\src\main\AndroidManifest.xml:135:18-61
-service#com.erpdevelopment.vbvm.service.DownloadService
+service#com.erpdevelopment.vbvm.service.DownloadServiceTest
 ADDED from C:\androidstudio\vbvm3\app\src\main\AndroidManifest.xml:137:9-138:19
 	android:name
-		ADDED from C:\androidstudio\vbvm3\app\src\main\AndroidManifest.xml:137:18-57
-service#com.erpdevelopment.vbvm.service.DownloadService2
+		ADDED from C:\androidstudio\vbvm3\app\src\main\AndroidManifest.xml:137:18-61
+service#com.erpdevelopment.vbvm.service.downloader.DownloadService
 ADDED from C:\androidstudio\vbvm3\app\src\main\AndroidManifest.xml:151:9-155:19
 	android:enabled
 		ADDED from C:\androidstudio\vbvm3\app\src\main\AndroidManifest.xml:153:13-35
 	android:exported
 		ADDED from C:\androidstudio\vbvm3\app\src\main\AndroidManifest.xml:154:13-36
 	android:name
-		ADDED from C:\androidstudio\vbvm3\app\src\main\AndroidManifest.xml:152:13-53
+		ADDED from C:\androidstudio\vbvm3\app\src\main\AndroidManifest.xml:152:13-63

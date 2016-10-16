@@ -312,12 +312,12 @@
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\layout\\drawer_list_item.xml"
     },
     {
-        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\layout\\bb_bottom_bar_item_fixed_tablet.xml",
-        "source": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.roughike\\bottom-bar\\2.0.2\\res\\layout\\bb_bottom_bar_item_fixed_tablet.xml"
-    },
-    {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_list_menu_item_icon.xml",
         "source": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.2.1\\res\\layout\\abc_list_menu_item_icon.xml"
+    },
+    {
+        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\layout\\bb_bottom_bar_item_fixed_tablet.xml",
+        "source": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.roughike\\bottom-bar\\2.0.2\\res\\layout\\bb_bottom_bar_item_fixed_tablet.xml"
     },
     {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_list_menu_item_radio.xml",
