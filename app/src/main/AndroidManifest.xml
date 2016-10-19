@@ -9,7 +9,7 @@
         android:minSdkVersion="14"
         android:targetSdkVersion="24"
         tools:overrideLibrary="com.cardinalsolutions.progressindicator"/>
-    m
+
     <supports-screens
         android:largeScreens="false"
         android:normalScreens="true"

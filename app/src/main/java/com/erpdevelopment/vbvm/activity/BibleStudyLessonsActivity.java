@@ -205,7 +205,8 @@ public class BibleStudyLessonsActivity extends Activity {
 							int position, long id) {
 						
 						Lesson lesson = (Lesson) parentView.getItemAtPosition(position);
-						if ( !CheckConnectivity.isOnline(BibleStudyLessonsActivity.this) && lesson.getDownloadStatus() != 1 ) {
+//						if ( !CheckConnectivity.isOnline(BibleStudyLessonsActivity.this) && lesson.getDownloadStatus() != 1 ) {
+						if ( !CheckConnectivity.isOnline(BibleStudyLessonsActivity.this) && lesson.getDownloadStatusAudio() != 1 ) {
 							CheckConnectivity.showMessage(BibleStudyLessonsActivity.this);
 						} else {
 							adapter.setSelectedPosition(position);
@@ -328,7 +329,8 @@ public class BibleStudyLessonsActivity extends Activity {
     	} else {
     		// if not downloading study, check and reset state for each lesson
     		for (Lesson lesson: mStudy.getLessons()){
-    			if ( lesson.getDownloadStatus() == 2 )
+//    			if ( lesson.getDownloadStatus() == 2 )
+				if ( lesson.getDownloadStatusAudio() == 2 )
     				DBHandleLessons.updateLessonDownloadStatus( lesson.getIdProperty(), 0);
     		}
     		fileCache.clearTempFolder();
@@ -371,7 +373,8 @@ public class BibleStudyLessonsActivity extends Activity {
         	boolean allDownloaded = true;
         	for ( int i=0; i<mStudy.getLessons().size(); i++ ) {
         		if ( !mStudy.getLessons().get(i).getAudioSource().equals("") ){
-        			if ( mStudy.getLessons().get(i).getDownloadStatus() == 0 ) {
+//        			if ( mStudy.getLessons().get(i).getDownloadStatus() == 0 ) {
+					if ( mStudy.getLessons().get(i).getDownloadStatusAudio() == 0 ) {
         				allDownloaded = false;
         				break;
         			}
@@ -385,7 +388,8 @@ public class BibleStudyLessonsActivity extends Activity {
 		        for ( int i=0; i<mStudy.getLessons().size(); i++ ) {
 		        	Lesson lesson = mStudy.getLessons().get(i);
 		        	//Download if lesson is not downloaded or is downloading
-		        	if ( lesson.getDownloadStatus() == 0 || lesson.getDownloadStatus() == 2 )
+//		        	if ( lesson.getDownloadStatus() == 0 || lesson.getDownloadStatus() == 2 )
+					if ( lesson.getDownloadStatusAudio() == 0 || lesson.getDownloadStatusAudio() == 2 )
 		        	{
 		        		if ( !lesson.getAudioSource().equals("") ) {
 			        		Intent intent = new Intent(this, DownloadServiceTest.class);
@@ -423,7 +427,8 @@ public class BibleStudyLessonsActivity extends Activity {
 	    		String pdfUrl1 = mStudy.getLessons().get(i).getTranscript();
 	    		String pdfUrl2 = mStudy.getLessons().get(i).getTeacherAid();
 	    		String pdfUrl3 = mStudy.getLessons().get(i).getStudentAid();
-	    		int status = mStudy.getLessons().get(i).getDownloadStatus();
+//	    		int status = mStudy.getLessons().get(i).getDownloadStatus();
+				int status = mStudy.getLessons().get(i).getDownloadStatusAudio();
 	    		String idLesson = mStudy.getLessons().get(i).getIdProperty();
 	    		if ( status==1 || status==2 ){
 	    			if (!audioUrl.equals(""))
@@ -506,7 +511,8 @@ public class BibleStudyLessonsActivity extends Activity {
 		  if ( !DownloadServiceTest.downloading ){
 	    		// if not downloading study, check and reset state for each lesson
 	    		for (Lesson lesson: mStudy.getLessons()){
-	    			if ( lesson.getDownloadStatus() == 2 )
+//	    			if ( lesson.getDownloadStatus() == 2 )
+					if ( lesson.getDownloadStatusAudio() == 2 )
 	    				DBHandleLessons.updateLessonDownloadStatus( lesson.getIdProperty(), 0);
 	    		}
 	    		List<Lesson> list = DBHandleLessons.getLessons(mStudy.getIdProperty());

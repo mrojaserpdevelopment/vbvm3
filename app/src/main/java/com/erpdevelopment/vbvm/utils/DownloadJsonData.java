@@ -127,7 +127,7 @@ public class DownloadJsonData {
 //            asyncJsonArticles();
 //            asyncJsonQAndAPosts();
 //            asyncJsonVideos();
-
+            mScroll.scrollTo(0, 0);
             pDialog.dismiss();
         } else {
             if ( !CheckConnectivity.isOnline(activity)) {
@@ -228,6 +228,7 @@ public class DownloadJsonData {
             mScroll.scrollTo(0, 0);
 //            pDialog.dismiss();
         }
+//        mScroll.scrollTo(0, 0);
     }
 
     private class asyncGetAllLessons extends AsyncTask< Study, String, String > {

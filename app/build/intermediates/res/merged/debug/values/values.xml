@@ -427,10 +427,14 @@
     <string name="error_message_file_not_found">Error: File not found!</string>
     <string name="error_message_general">Error downloading file!</string>
     <string name="eula"/>
+    <string name="fa_icon_arrow_circle_down"></string>
+    <string name="fa_icon_ellipsis_h"></string>
     <string name="fa_icon_play_mini"></string>
     <string name="fa_icon_stop"></string>
     <string name="fa_icon_teacher_aid"></string>
     <string name="fa_icon_transcript"></string>
+    <string name="fa_icon_volume_down"></string>
+    <string name="fa_icon_volume_up"></string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="hello_world">Hello world!</string>
     <string name="home_screen_observations">OBSERVATIONS</string>

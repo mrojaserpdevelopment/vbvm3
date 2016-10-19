@@ -40,10 +40,10 @@ public final class R {
 		public static final int app_name = 0x7f060029;
 		public static final int content_description = 0x7f060031;
 		public static final int curved_text_value = 0x7f060032;
-		public static final int home_screen_observations = 0x7f060043;
-		public static final int home_screen_observed_compliance = 0x7f060044;
-		public static final int percent_value = 0x7f060050;
-		public static final int total_observations = 0x7f060078;
+		public static final int home_screen_observations = 0x7f060047;
+		public static final int home_screen_observed_compliance = 0x7f060048;
+		public static final int percent_value = 0x7f060054;
+		public static final int total_observations = 0x7f06007c;
 	}
 	public static final class style {
 		public static final int AppTheme = 0x7f080093;

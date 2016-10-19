@@ -188,6 +188,7 @@ public class StudiesFragment extends Fragment {
     public void onResume() {
         super.onResume();
 //        checkUserFirstVisit();
+        FilesManager.lastLessonId = MainActivity.settings.getString("currentLessonId", "");
     }
 
 

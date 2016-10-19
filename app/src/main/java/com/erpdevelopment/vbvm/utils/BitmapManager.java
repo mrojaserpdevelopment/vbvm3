@@ -60,6 +60,18 @@ public class BitmapManager {
         return bmpScaled;
 	}
 
+	public static Bitmap getBitmapFromFile(File f, int size) {
+		Bitmap bmp = decodeFile(f);
+		if ( bmp == null )
+			return null;
+		Bitmap bmpScaled = null;
+		if ( size > 0 )
+			bmpScaled = Bitmap.createScaledBitmap(bmp, size, size, true);
+		else
+			bmpScaled = Bitmap.createScaledBitmap(bmp, 100, 100, true);
+		return bmpScaled;
+	}
+
 	public static String getFileNameFromUrl(String url) {
 		// get the filename
         int lastSlash = url.toString().lastIndexOf('/');

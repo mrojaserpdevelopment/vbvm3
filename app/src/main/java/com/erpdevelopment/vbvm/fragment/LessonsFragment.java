@@ -28,13 +28,16 @@ import android.widget.Toast;
 
 import com.erpdevelopment.vbvm.MainActivity;
 import com.erpdevelopment.vbvm.R;
+import com.erpdevelopment.vbvm.activity.AudioPlayerService;
 import com.erpdevelopment.vbvm.adapter.LessonListAdapter;
 import com.erpdevelopment.vbvm.db.DBHandleLessons;
+import com.erpdevelopment.vbvm.helper.AudioPlayerHelper;
 import com.erpdevelopment.vbvm.model.Lesson;
 import com.erpdevelopment.vbvm.model.Study;
 import com.erpdevelopment.vbvm.service.DownloadServiceTest;
 import com.erpdevelopment.vbvm.service.WebServiceCall;
 import com.erpdevelopment.vbvm.utils.CheckConnectivity;
+import com.erpdevelopment.vbvm.utils.FilesManager;
 import com.erpdevelopment.vbvm.utils.imageloading.ImageLoader;
 import com.roughike.bottombar.BottomBar;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -50,8 +53,8 @@ public class LessonsFragment extends Fragment {
     private BottomBar bottomBar;
     private RelativeLayout viewMiniPlayer;
     private RelativeLayout rootViewMain;
-    private LinearLayout llDragView;
-    private TextView tvSlide;
+//    private LinearLayout llDragView;
+//    private TextView tvSlide;
     private TextView tvLessonCount;
     private ImageButton btnPlay;
     private ImageButton btnSlideUp;
@@ -63,10 +66,10 @@ public class LessonsFragment extends Fragment {
     private Study mStudy;
     private ImageLoader imageLoader;
     private Activity activity;
+    private ArrayList<Lesson> listTempLesson = new ArrayList<Lesson>();
+    private RelativeLayout rlAudioPlayerSlide;
 
-    public LessonsFragment() {
-        // Required empty public constructor
-    }
+    public LessonsFragment() {}
 
     public static LessonsFragment newInstance(int index) {
         LessonsFragment f = new LessonsFragment();
@@ -95,7 +98,6 @@ public class LessonsFragment extends Fragment {
                 int resultCode = bundle.getInt(DownloadServiceTest.RESULT);
                 String fileName = bundle.getString(DownloadServiceTest.FILENAME);
                 if (resultCode == activity.RESULT_OK) {
-//                    System.out.println("Downloaded: " + fileName);
                     Toast.makeText(activity, "Downloaded: " + fileName, Toast.LENGTH_LONG).show();
 //                    oneDownloadComplete = true;
 //                    new asyncGetStudyLessons().execute(mStudy);
@@ -128,7 +130,7 @@ public class LessonsFragment extends Fragment {
 //                List<Lesson> listLessons = mStudy.getLessons();
 //                for (int i=0; i<listLessons.size(); i++) {
 //                    if (listLessons.get(i).getIdProperty().equals(idLesson)) {
-//                        listLessons.get(i).setDownloadProgress(downloadProgress);
+//                        listLessons.get(i).setDownloadProgressAudio(downloadProgress);
 //                        break;
 //                    }
 //                }
@@ -148,90 +150,93 @@ public class LessonsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         rootView = getView();
-        rootViewMain = (RelativeLayout) (rootView.getParent()).getParent();
-        actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
-        bottomBar = (BottomBar) rootViewMain.findViewById(R.id.bottomBar);
-        slidingLayout = (SlidingUpPanelLayout)rootView.findViewById(R.id.sliding_layout);
-        llDragView = (LinearLayout) rootView.findViewById(R.id.dragView);
-        btnPlay = (ImageButton) rootView.findViewById(R.id.btnPlay);
-        tvSlide = (TextView) rootView.findViewById(R.id.tvTitleChapter);
-        btnSlideUp = (ImageButton) rootView.findViewById(R.id.btnSlideUp);
-        btnSlideDown = (ImageButton) rootView.findViewById(R.id.btnSlideDown);
-        viewMiniPlayer = (RelativeLayout) rootView.findViewById(R.id.viewMiniPlayer);
+//        rootViewMain = (RelativeLayout) (rootView.getParent()).getParent();
+//        actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+//        bottomBar = (BottomBar) rootViewMain.findViewById(R.id.bottomBar);
+//        slidingLayout = (SlidingUpPanelLayout)rootView.findViewById(R.id.sliding_layout);
+////        llDragView = (LinearLayout) rootView.findViewById(R.id.dragView);
+//        btnPlay = (ImageButton) rootView.findViewById(R.id.btn_play_mini);
+////        tvSlide = (TextView) rootView.findViewById(R.id.tv_title_chapter);
+//        btnSlideUp = (ImageButton) rootView.findViewById(R.id.btn_slide_up);
+//        btnSlideDown = (ImageButton) rootView.findViewById(R.id.btn_slide_down);
+//        viewMiniPlayer = (RelativeLayout) rootView.findViewById(R.id.view_mini_player);
         lvLessons = (ListView) rootView.findViewById(R.id.lv_lessons);
         imgStudy = (ImageView) rootView.findViewById(R.id.img_study);
         tvLessonCount = (TextView) rootView.findViewById(R.id.tv_lesson_count);
+//        rlAudioPlayerSlide = (RelativeLayout) rootView.findViewById(R.id.rl_audio_player_slide);
 
         listLessons = new ArrayList<>();
-        adapter = new LessonListAdapter(getActivity(), listLessons);
+        adapter = new LessonListAdapter(getActivity(), listLessons, rootView);
         lvLessons.setAdapter(adapter);
 
         imageLoader.DisplayImage(mStudy.getThumbnailSource(), imgStudy);
 
 //        btnPlay = (ImageButton) rootView.findViewById(R.id.btnPlayTest);
-        btnSlideUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                System.out.println("slide has been clicked");
-//                ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
-//                actionBar.hide();
-//                bottomBar.setVisibility(View.GONE);
-//                viewMiniPlayer.setVisibility(View.GONE);
-//                btnSlideDown.setVisibility(View.VISIBLE);
-                slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-            }
-        });
-
-        btnSlideDown.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
-//                actionBar.show();
-//                viewMiniPlayer.setVisibility(View.VISIBLE);
-                slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-//                btnSlideDown.setVisibility(View.GONE);
-//                bottomBar.setVisibility(View.VISIBLE);
-            }
-        });
-
-        slidingLayout.addPanelSlideListener(onSlideListener());
+//        btnSlideUp.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                System.out.println("slide has been clicked");
+////                ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+////                actionBar.hide();
+////                bottomBar.setVisibility(View.GONE);
+////                viewMiniPlayer.setVisibility(View.GONE);
+////                btnSlideDown.setVisibility(View.VISIBLE);
+//                slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+//            }
+//        });
+//
+//        btnSlideDown.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+////                actionBar.show();
+////                viewMiniPlayer.setVisibility(View.VISIBLE);
+//                slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+////                btnSlideDown.setVisibility(View.GONE);
+////                bottomBar.setVisibility(View.VISIBLE);
+//            }
+//        });
+//
+//        slidingLayout.addPanelSlideListener(onSlideListener());
         new asyncGetStudyLessons().execute(mStudy);
 //        adapter.setLessonListItems(mStudy.getLessons());
     }
 
-    private SlidingUpPanelLayout.PanelSlideListener onSlideListener() {
-        return new SlidingUpPanelLayout.PanelSlideListener() {
-            @Override
-            public void onPanelSlide(View view, float v) {
-                System.out.println("sliding...");
-            }
-
-            @Override
-            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-                System.out.println("State has changed: " + newState.toString());
-                if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) {
-                    System.out.println("slide up has been clicked");
-//                ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
-                    actionBar.hide();
-                    bottomBar.setVisibility(View.GONE);
-                    viewMiniPlayer.setVisibility(View.GONE);
-                    btnSlideDown.setVisibility(View.VISIBLE);
-//                    slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-                }
-                if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
-                    System.out.println("slide down " +
-                            "has been clicked");
-//                ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
-                    actionBar.show();
-//                    slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-                    viewMiniPlayer.setVisibility(View.VISIBLE);
-                    btnSlideDown.setVisibility(View.GONE);
-                    bottomBar.setVisibility(View.VISIBLE);
-                }
-            }
-
-        };
-    }
+//    private SlidingUpPanelLayout.PanelSlideListener onSlideListener() {
+//        return new SlidingUpPanelLayout.PanelSlideListener() {
+//            @Override
+//            public void onPanelSlide(View view, float v) {
+//                System.out.println("sliding...");
+//            }
+//
+//            @Override
+//            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+//                System.out.println("State has changed: " + newState.toString());
+//                if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) {
+//                    System.out.println("slide up has been clicked");
+////                ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+//                    actionBar.hide();
+//                    bottomBar.setVisibility(View.GONE);
+//                    viewMiniPlayer.setVisibility(View.GONE);
+//                    btnSlideDown.setVisibility(View.VISIBLE);
+//                    rlAudioPlayerSlide.setVisibility(View.VISIBLE);
+////                    slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+//                }
+//                if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+//                    System.out.println("slide down " +
+//                            "has been clicked");
+////                ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+//                    actionBar.show();
+////                    slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+//                    viewMiniPlayer.setVisibility(View.VISIBLE);
+//                    btnSlideDown.setVisibility(View.GONE);
+//                    rlAudioPlayerSlide.setVisibility(View.GONE);
+//                    bottomBar.setVisibility(View.VISIBLE);
+//                }
+//            }
+//
+//        };
+//    }
 
     private class asyncGetStudyLessons extends AsyncTask<Study, String, String > {
 
@@ -281,13 +286,14 @@ public class LessonsFragment extends Fragment {
                 adapter.setLessonListItems(mStudy.getLessons());
                 //lvLessons.setAdapter(adapter);
                 tvLessonCount.setText(String.valueOf(mStudy.getLessons().size()));
+/*
                 lvLessons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                     @Override
                     public void onItemClick(AdapterView<?> parentView, View view,
                                             int position, long id) {
 
-//                        Lesson lesson = (Lesson) parentView.getItemAtPosition(position);
+                        Lesson lesson = (Lesson) parentView.getItemAtPosition(position);
 //                        if ( !CheckConnectivity.isOnline(BibleStudyLessonsActivity.this) && lesson.getDownloadStatus() != 1 ) {
 //                            CheckConnectivity.showMessage(BibleStudyLessonsActivity.this);
 //                        } else {
@@ -306,48 +312,59 @@ public class LessonsFragment extends Fragment {
 //                            edit.remove("indexLesson").commit();
 //                            edit.putInt("indexLesson", index).commit();
 //
-//                            lesson.setStudyThumbnailSource(study.getThumbnailSource());
-//                            lesson.setStudyLessonsSize(study.getLessons().size());
+                            lesson.setStudyThumbnailSource(study.getThumbnailSource());
+                            lesson.setStudyLessonsSize(study.getLessons().size());
 //
-//                            if (!(lesson.getIdProperty().equals(FilesManager.lastLessonId))){
-//                                AudioPlayerService.created = false;
-//                                //save current/old position in track before updating to new position
-//                                if (!FilesManager.lastLessonId.equals("")) {
-//                                    System.out.println("old lesson Id is: " + FilesManager.lastLessonId);
-//                                    DBHandleLessons.saveCurrentPositionInTrack(FilesManager.lastLessonId, (int)AudioPlayerService.currentPositionInTrack);
-//                                    System.out.println("position saved is: " + AudioPlayerService.currentPositionInTrack);
-//                                }
-//                                Lesson oldLesson = DBHandleLessons.getLessonById(FilesManager.lastLessonId);
-////								if ( !oldLesson.getState().equals("complete") )
-//                                if ( oldLesson.getState().equals("playing") )
-//                                    DBHandleLessons.updateLessonState(FilesManager.lastLessonId, AudioPlayerService.currentPositionInTrack, "partial");
-//                                //Update position in track with new selected lesson's
-//                                Lesson newLesson = DBHandleLessons.getLessonById(lesson.getIdProperty());
-////								DBHandleLessons.updateLessonState(newLesson.getIdProperty(), newLesson.getCurrentPosition(), "playing");
-//                                AudioPlayerService.currentPositionInTrack = newLesson.getCurrentPosition();
-//                                AudioPlayerService.savedOldPositionInTrack = AudioPlayerService.currentPositionInTrack;
-//                                System.out.println("position restored is: " + AudioPlayerService.currentPositionInTrack);
-//                            }
+                            if (!(lesson.getIdProperty().equals(FilesManager.lastLessonId))){
+                                AudioPlayerService.created = false;
+                                //save current/old position in track before updating to new position
+                                if (!FilesManager.lastLessonId.equals("")) {
+                                    System.out.println("old lesson Id is: " + FilesManager.lastLessonId);
+                                    DBHandleLessons.saveCurrentPositionInTrack(FilesManager.lastLessonId, (int)AudioPlayerService.currentPositionInTrack);
+                                    System.out.println("position saved is: " + AudioPlayerService.currentPositionInTrack);
+                                }
+                                Lesson oldLesson = DBHandleLessons.getLessonById(FilesManager.lastLessonId);
+//								if ( !oldLesson.getState().equals("complete") )
+                                if ( oldLesson.getState().equals("playing") )
+                                    DBHandleLessons.updateLessonState(FilesManager.lastLessonId, AudioPlayerService.currentPositionInTrack, "partial");
+                                //Update position in track with new selected lesson's
+                                Lesson newLesson = DBHandleLessons.getLessonById(lesson.getIdProperty());
+//								DBHandleLessons.updateLessonState(newLesson.getIdProperty(), newLesson.getCurrentPosition(), "playing");
+                                AudioPlayerService.currentPositionInTrack = newLesson.getCurrentPosition();
+                                AudioPlayerService.savedOldPositionInTrack = AudioPlayerService.currentPositionInTrack;
+                                System.out.println("position restored is: " + AudioPlayerService.currentPositionInTrack);
+                            }
 //
 //                            FilesManager.positionLessonInList = position;
-//                            FilesManager.lastLessonId = lesson.getIdProperty();
+                            FilesManager.lastLessonId = lesson.getIdProperty();
 //
-//                            Lesson les = null;
-//                            for (int i=0; i<study.getLessons().size(); i++){
-//                                les = new Lesson();
-//                                les.setIdProperty(study.getLessons().get(i).getIdProperty());
-//                                les.setAudioSource(study.getLessons().get(i).getAudioSource());
-//                                les.setTitle(study.getLessons().get(i).getTitle());
-//                                les.setLessonsDescription(study.getLessons().get(i).getLessonsDescription());
-//                                les.setStudyThumbnailSource(study.getThumbnailSource());
-//                                les.setStudyLessonsSize(study.getLessons().size());
-//                                les.setTranscript(study.getLessons().get(i).getTranscript());
-//                                les.setStudentAid(study.getLessons().get(i).getStudentAid());
-//                                les.setTeacherAid(study.getLessons().get(i).getTeacherAid());
-//                                listTempLesson.add(les);
-//                            }
+                            Lesson les = null;
+                            for (int i=0; i<study.getLessons().size(); i++){
+                                les = new Lesson();
+                                les.setIdProperty(study.getLessons().get(i).getIdProperty());
+                                les.setAudioSource(study.getLessons().get(i).getAudioSource());
+                                les.setTitle(study.getLessons().get(i).getTitle());
+                                les.setLessonsDescription(study.getLessons().get(i).getLessonsDescription());
+                                les.setStudyThumbnailSource(study.getThumbnailSource());
+                                les.setStudyLessonsSize(study.getLessons().size());
+                                les.setTranscript(study.getLessons().get(i).getTranscript());
+                                les.setStudentAid(study.getLessons().get(i).getStudentAid());
+                                les.setTeacherAid(study.getLessons().get(i).getTeacherAid());
+                                listTempLesson.add(les);
+                            }
 //
-//                            AudioPlayerService.listTempLesson2 = listTempLesson;
+                            AudioPlayerService.listTempLesson2 = listTempLesson;
+
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("position", position);
+                        bundle.putString("thumbnailSource", study.getThumbnailSource());
+                        bundle.putString("description", study.getStudiesDescription());
+                        bundle.putString("title", study.getLessons().get(position).getTitle());
+                        bundle.putInt("size", study.getLessons().size());
+
+                        AudioPlayerHelper helper = new AudioPlayerHelper(getActivity());
+                        helper.setBundleExtras(bundle);
+                        helper.initContext(getView());
 //
 //                            Intent i = new Intent(BibleStudyLessonsActivity.this, AudioControllerActivity.class);
 ////			                Intent i = getIntent();
@@ -369,6 +386,7 @@ public class LessonsFragment extends Fragment {
 //                        }
                     }
                 });
+                */
             }else{
                 Log.e("onPostExecute=", "List is null");
             }

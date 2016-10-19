@@ -31,14 +31,15 @@ public class Lesson implements Parcelable {
 	private int studyLessonsSize;
 	private String state;
 	private int positionInList;
-	private int downloadStatus;
+//	private int downloadStatus;
 	private int downloadStatusAudio;
 	private int downloadStatusTeacherAid;
 	private int downloadStatusTranscript;
 //	private Study study;
-	private int downloadProgress;
-	private String downloadThreadName;
-	
+	private int downloadProgressAudio;
+	private int downloadProgressTeacher;
+	private int downloadProgressTranscript;
+
 	public Lesson() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -234,13 +235,13 @@ public class Lesson implements Parcelable {
 		this.positionInList = positionInList;
 	}
 
-	public int getDownloadStatus() {
-		return downloadStatus;
-	}
-
-	public void setDownloadStatus(int downloadStatus) {
-		this.downloadStatus = downloadStatus;
-	}
+//	public int getDownloadStatus() {
+//		return downloadStatus;
+//	}
+//
+//	public void setDownloadStatus(int downloadStatus) {
+//		this.downloadStatus = downloadStatus;
+//	}
 
 	public int getDownloadStatusAudio() {
 		return downloadStatusAudio;
@@ -270,20 +271,28 @@ public class Lesson implements Parcelable {
 //
 //	public void setStudy(Study study) { this.study = study; }
 
-	public int getDownloadProgress() {
-		return downloadProgress;
+	public int getDownloadProgressAudio() {
+		return downloadProgressAudio;
 	}
 
-	public void setDownloadProgress(int downloadProgress) {
-		this.downloadProgress = downloadProgress;
+	public void setDownloadProgressAudio(int downloadProgressAudio) {
+		this.downloadProgressAudio = downloadProgressAudio;
 	}
 
-	public String getDownloadThreadName() {
-		return downloadThreadName;
+	public int getDownloadProgressTeacher() {
+		return downloadProgressTeacher;
 	}
 
-	public void setDownloadThreadName(String downloadThreadName) {
-		this.downloadThreadName = downloadThreadName;
+	public void setDownloadProgressTeacher(int downloadProgressTeacher) {
+		this.downloadProgressTeacher = downloadProgressTeacher;
+	}
+
+	public int getDownloadProgressTranscript() {
+		return downloadProgressTranscript;
+	}
+
+	public void setDownloadProgressTranscript(int downloadProgressTranscript) {
+		this.downloadProgressTranscript = downloadProgressTranscript;
 	}
 
 	@Override
@@ -315,13 +324,14 @@ public class Lesson implements Parcelable {
 		dest.writeInt(studyLessonsSize);
 		dest.writeString(state);
 		dest.writeInt(positionInList);
-		dest.writeInt(downloadStatus);
+//		dest.writeInt(downloadStatus);
 		dest.writeInt(downloadStatusAudio);
 		dest.writeInt(downloadStatusTeacherAid);
 		dest.writeInt(downloadStatusTranscript);
 //		dest.writeParcelable(study, flags);
-		dest.writeInt(downloadProgress);
-		dest.writeString(downloadThreadName);
+		dest.writeInt(downloadProgressAudio);
+		dest.writeInt(downloadProgressTeacher);
+		dest.writeInt(downloadProgressTranscript);
 	}	
 	
 	private void readFromParcel(Parcel in) {
@@ -348,13 +358,14 @@ public class Lesson implements Parcelable {
 		studyLessonsSize = in.readInt();
 		state = in.readString();
 		positionInList = in.readInt();
-		downloadStatus = in.readInt();
+//		downloadStatus = in.readInt();
 		downloadStatusAudio = in.readInt();
 		downloadStatusTeacherAid = in.readInt();
 		downloadStatusTranscript = in.readInt();
 //		study = (Study) in.readParcelable(Study.class.getClassLoader());
-		downloadProgress = in.readInt();
-		downloadThreadName = in.readString();
+		downloadProgressAudio = in.readInt();
+		downloadProgressTeacher = in.readInt();
+		downloadProgressTranscript = in.readInt();
 	}
 	
 	/**

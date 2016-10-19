@@ -163,7 +163,7 @@ public class WebServiceCall {
 				lesson.setIdStudy(study.getIdProperty());
 				lesson.setStudyThumbnailSource(study.getThumbnailSource());
 				lesson.setStudyLessonsSize(lessonArray.length());
-				lesson.setDownloadStatus(0);
+//				lesson.setDownloadStatus(0);
 				lesson.setDownloadStatusAudio(0);
 				lesson.setDownloadStatusTeacherAid(0);
 				lesson.setDownloadStatusTranscript(0);

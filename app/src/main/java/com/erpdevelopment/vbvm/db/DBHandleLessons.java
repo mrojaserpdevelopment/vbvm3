@@ -74,7 +74,7 @@ public class DBHandleLessons {
 	        	lesson.setStudyThumbnailSource(c.getString((c.getColumnIndex(COLUMN_STUDY_THUMBNAIL_SOURCE))));
 	        	lesson.setState(c.getString((c.getColumnIndex(COLUMN_STATE_LESSON))));
 	        	lesson.setPositionInList(c.getInt((c.getColumnIndex(COLUMN_POSITION_IN_LIST))));
-	        	lesson.setDownloadStatus(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS))));
+//	        	lesson.setDownloadStatus(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS))));
 				lesson.setDownloadStatusAudio(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_AUDIO))));
 				lesson.setDownloadStatusTeacherAid(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_TEACHER))));
 				lesson.setDownloadStatusTranscript(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_TRANSCRIPT))));
@@ -116,7 +116,7 @@ public class DBHandleLessons {
 	    	lesson.setStudyThumbnailSource(c.getString((c.getColumnIndex(COLUMN_STUDY_THUMBNAIL_SOURCE))));
 	    	lesson.setState(c.getString((c.getColumnIndex(COLUMN_STATE_LESSON))));	 
         	lesson.setPositionInList(c.getInt((c.getColumnIndex(COLUMN_POSITION_IN_LIST))));
-        	lesson.setDownloadStatus(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS))));
+//        	lesson.setDownloadStatus(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS))));
 			lesson.setDownloadStatusAudio(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_AUDIO))));
 			lesson.setDownloadStatusTeacherAid(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_TEACHER))));
 			lesson.setDownloadStatusTranscript(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_TRANSCRIPT))));

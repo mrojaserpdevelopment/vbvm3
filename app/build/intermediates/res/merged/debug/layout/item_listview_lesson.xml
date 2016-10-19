@@ -7,12 +7,6 @@
      android:orientation="horizontal"
      android:padding="5dp" >
 
-	<!--<ImageView-->
-	    <!--android:id="@+id/img_lesson"-->
-	    <!--android:layout_width="wrap_content"-->
-	    <!--android:layout_height="wrap_content"-->
-	    <!--android:background="@drawable/play_color" />-->
-
     <LinearLayout 
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -43,15 +37,6 @@
 		
 	</LinearLayout>
 	
-    <!--<ImageView-->
-        <!--android:id="@+id/img_download_1"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginRight="10dp"-->
-        <!--android:background="@drawable/download_cloud_32"-->
-        <!--android:visibility="gone" />-->
-
-
 	<RelativeLayout
 		android:layout_width="0dp"
 		android:layout_height="match_parent"
@@ -87,8 +72,8 @@
 					android:layout_weight="1"
 					android:text="@string/fa_icon_teacher_aid"
 					android:textSize="18sp"
+					android:textColor="@color/black"
 					android:layout_centerInParent="true"/>
-
 				<ProgressBar
 					android:id="@+id/pb_teacher"
 					android:layout_width="40dp"
@@ -100,6 +85,15 @@
 					android:secondaryProgress="0"
 					android:progressDrawable="@drawable/circular"
 					android:layout_centerInParent="true" />
+				<View
+					android:id="@+id/vw_downloaded_teach"
+					android:layout_width="2dp"
+					android:layout_height="2dp"
+					android:layout_below="@id/tv_icon_teacher_aid"
+					android:layout_marginTop="5dp"
+					android:background="@color/black"
+					android:layout_centerHorizontal="true"
+					android:visibility="gone"/>
 			</RelativeLayout>
 
 			<RelativeLayout
@@ -115,6 +109,7 @@
 					android:layout_weight="1"
 					android:text="@string/fa_icon_transcript"
 					android:textSize="18sp"
+					android:textColor="@color/black"
 					android:layout_centerInParent="true"/>
 				<ProgressBar
 					android:id="@+id/pb_transcript"
@@ -127,6 +122,15 @@
 					android:secondaryProgress="0"
 					android:progressDrawable="@drawable/circular"
 					android:layout_centerInParent="true" />
+				<View
+					android:id="@+id/vw_downloaded_trans"
+					android:layout_width="2dp"
+					android:layout_height="2dp"
+					android:layout_below="@id/tv_icon_transcript"
+					android:layout_marginTop="5dp"
+					android:background="@color/black"
+					android:layout_centerHorizontal="true"
+					android:visibility="gone"/>
 			</RelativeLayout>
 
 			<RelativeLayout
@@ -142,56 +146,10 @@
 					android:layout_weight="1"
 					android:text="@string/fa_icon_play_mini"
 					android:textSize="18sp"
-					android:textStyle="bold"
+					android:textColor="@color/black"
 					android:layout_centerInParent="true"/>
-				<TextView
-					android:id="@+id/tv_icon_stop"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:gravity="center"
-					android:layout_weight="1"
-					android:text="@string/fa_icon_stop"
-					android:textSize="18sp"
-					android:textStyle="bold"
-					android:layout_centerInParent="true"
-					android:visibility="gone"/>
-				<!--<ImageButton-->
-					<!--android:id="@+id/img_btn_play_mini"-->
-					<!--android:layout_width="wrap_content"-->
-					<!--android:layout_height="wrap_content"-->
-					<!--android:src="@drawable/icon_mini_player"-->
-					<!--android:gravity="center"-->
-					<!--android:layout_marginRight="30dp"-->
-					<!--android:layout_centerInParent="true"-->
-					<!--android:background="@android:color/transparent"/>-->
-
-				<!--<ToggleButton-->
-					<!--android:id="@+id/toggle_play_mini"-->
-					<!--android:layout_width="wrap_content"-->
-					<!--android:layout_height="wrap_content"-->
-					<!--android:background="@null"-->
-					<!--android:textOn=""-->
-					<!--android:textOff=""-->
-					<!--android:focusable="false"-->
-					<!--android:focusableInTouchMode="false"-->
-					<!--android:layout_marginRight="0dp"-->
-					<!--android:layout_centerInParent="true"-->
-					<!--android:button="@drawable/toggle_play"-->
-					<!--android:gravity="center"-->
-					<!--/>-->
-
-				<!--<ImageButton-->
-					<!--android:id="@+id/img_btn_stop"-->
-					<!--android:layout_width="wrap_content"-->
-					<!--android:layout_height="wrap_content"-->
-					<!--android:src="@drawable/media_stop"-->
-					<!--android:gravity="center"-->
-					<!--android:layout_marginRight="30dp"-->
-					<!--android:layout_centerInParent="true"-->
-					<!--android:background="@android:color/transparent"-->
-					<!--android:visibility="gone"/>-->
 				<ProgressBar
-					android:id="@+id/pb_player"
+					android:id="@+id/pb_audio"
 					android:layout_width="40dp"
 					android:layout_height="40dp"
 					style="?android:attr/progressBarStyleHorizontal"
@@ -201,32 +159,18 @@
 					android:secondaryProgress="0"
 					android:progressDrawable="@drawable/circular"
 					android:layout_centerInParent="true" />
+				<View
+					android:id="@+id/vw_downloaded_audio"
+					android:layout_width="2dp"
+					android:layout_height="2dp"
+					android:layout_below="@id/tv_icon_play_mini"
+					android:layout_marginTop="5dp"
+					android:background="@color/black"
+					android:layout_centerHorizontal="true"
+					android:visibility="gone"/>
 			</RelativeLayout>
 
-
-
 		</LinearLayout>
-
-		<!--<ProgressBar-->
-			<!--style="?android:attr/progressBarStyleHorizontal"-->
-			<!--android:layout_width="match_parent"-->
-			<!--android:layout_height="match_parent"-->
-			<!--android:layout_centerInParent="true"-->
-			<!--android:indeterminate="false"-->
-			<!--android:max="100"-->
-			<!--android:progress="100"-->
-			<!--android:progressDrawable="@drawable/circle_progress_background" />-->
-
-		<!--<ProgressBar-->
-			<!--android:id="@+id/circle_progress_bar"-->
-			<!--style="?android:attr/progressBarStyleHorizontal"-->
-			<!--android:layout_width="match_parent"-->
-			<!--android:layout_height="match_parent"-->
-			<!--android:layout_centerInParent="true"-->
-			<!--android:max="100"-->
-			<!--android:rotation="-90"-->
-			<!--android:indeterminate="false"-->
-			<!--android:progressDrawable="@drawable/circle_progress_foreground" />-->
 
 	</RelativeLayout>
 

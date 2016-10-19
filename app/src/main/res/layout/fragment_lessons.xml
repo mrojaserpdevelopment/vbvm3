@@ -76,7 +76,7 @@
                         android:id="@+id/tv_lesson_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0"
+                        android:text=""
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"/>
                 </RelativeLayout>
@@ -94,74 +94,264 @@
 
         <!-- Sliding Layout -->
 
-        <LinearLayout
-            android:id="@+id/dragView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#ffffff"
-            android:clickable="true"
-            android:focusable="false"
-            android:orientation="vertical">
+        <include layout="@layout/audio_player2" android:id="@+id/layout_audio_player"/>
 
-            <ImageButton
-                android:id="@+id/btnSlideDown"
-                android:src="@drawable/arrow_down"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"/>
+        <!--<LinearLayout-->
+            <!--android:id="@+id/dragView"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:background="#ffffff"-->
+            <!--android:clickable="true"-->
+            <!--android:focusable="false"-->
+            <!--android:orientation="vertical">-->
 
-            <RelativeLayout
-                android:id="@+id/viewMiniPlayer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#ffffff"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp">
-                <ImageButton
-                    android:id="@+id/btnPlay"
-                    android:src="@drawable/icon_mini_player"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"/>
+                <!--<RelativeLayout-->
+                    <!--android:id="@+id/rl_audio_player_slide"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="@android:color/white"-->
+                    <!--android:visibility="gone">-->
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_centerInParent="true">
+                    <!--<ImageButton-->
+                        <!--android:id="@+id/btnSlideDown"-->
+                        <!--android:src="@drawable/arrow_down"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:visibility="gone"/>-->
 
-                    <TextView
-                        android:id="@+id/tvTitleLesson"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Title Lesson"
-                        android:textSize="14sp"
-                        android:gravity="center"/>
+                    <!--&lt;!&ndash; Song Thumbnail Image &ndash;&gt;-->
+                    <!--<LinearLayout-->
+                        <!--android:id="@+id/ll_study_thumbnail"-->
+                        <!--android:layout_width="fill_parent"-->
+                        <!--android:layout_height="170dp"-->
+                        <!--android:paddingTop="0dp"-->
+                        <!--android:paddingBottom="0dp"-->
+                        <!--android:gravity="center"-->
+                        <!--android:orientation="vertical"-->
+                        <!--android:layout_marginLeft="10dp"-->
+                        <!--android:layout_marginRight="10dp"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_alignParentTop="true">-->
+                        <!--<ImageView-->
+                            <!--android:id="@+id/img_player_study"-->
+                            <!--android:layout_width="150dp"-->
+                            <!--android:layout_height="150dp"-->
+                            <!--android:src="@drawable/adele"/>-->
+                        <!--<SeekBar-->
+                            <!--android:id="@+id/songProgressBar"-->
+                            <!--android:layout_width="fill_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_marginRight="5dp"-->
+                            <!--android:layout_marginLeft="5dp"-->
+                            <!--android:paddingLeft="15dp"-->
+                            <!--android:paddingRight="15dp"/>-->
+                    <!--</LinearLayout>-->
 
-                    <TextView
-                        android:id="@+id/tvTitleChapter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Title Chapter"
-                        android:textSize="14sp"
-                        android:gravity="center"/>
+                    <!--&lt;!&ndash; Timer Display &ndash;&gt;-->
+                    <!--<LinearLayout-->
+                        <!--android:id="@+id/ll_timer_display"-->
+                        <!--android:layout_width="fill_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_margin="10dp"-->
+                        <!--android:layout_below="@id/ll_study_thumbnail">-->
+                        <!--&lt;!&ndash; Current Duration Label &ndash;&gt;-->
+                        <!--<TextView-->
+                            <!--android:id="@+id/songCurrentDurationLabel"-->
+                            <!--android:layout_width="fill_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_weight="1"-->
+                            <!--android:gravity="start"-->
+                            <!--android:text="0:00"-->
+                            <!--android:textColor="@android:color/holo_blue_light"-->
+                            <!--android:textStyle="bold"/>-->
+                        <!--&lt;!&ndash; Total Duration Label &ndash;&gt;-->
+                        <!--<TextView-->
+                            <!--android:id="@+id/songTotalDurationLabel"-->
+                            <!--android:layout_width="fill_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_weight="1"-->
+                            <!--android:gravity="end"-->
+                            <!--android:text="0:00"-->
+                            <!--android:textColor="#bbbbbb"-->
+                            <!--android:textStyle="bold"/>-->
+                    <!--</LinearLayout>-->
 
-                </LinearLayout>
+                    <!--&lt;!&ndash; Player Lesson Description &ndash;&gt;-->
+                    <!--<LinearLayout-->
+                        <!--android:id="@+id/ll_player_lesson_title"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:orientation="vertical"-->
+                        <!--android:layout_marginLeft="10dp"-->
+                        <!--android:gravity="center"-->
+                        <!--android:layout_below="@id/ll_timer_display">-->
+                        <!--<TextView-->
+                            <!--android:id="@+id/tv_player_lesson_title"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="Title"-->
+                            <!--android:textSize="20sp"-->
+                            <!--android:textColor="@android:color/black"-->
+                            <!--android:layout_marginBottom="5dp" />-->
+                        <!--<TextView-->
+                            <!--android:id="@+id/tv_player_lesson_description"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="Description"-->
+                            <!--android:textColor="#bbbbbb"-->
+                            <!--android:layout_marginBottom="0dp" />-->
+                    <!--</LinearLayout>-->
 
-                <ImageButton
-                    android:id="@+id/btnSlideUp"
-                    android:src="@drawable/icon_slide_player"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"/>
+                    <!--<RelativeLayout-->
+                        <!--android:id="@+id/rl_player_control"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="10dp"-->
+                        <!--android:layout_below="@id/ll_player_lesson_title">-->
 
-            </RelativeLayout>
+                        <!--<TextView-->
+                            <!--android:id="@+id/tv_player_speed"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:textSize="14sp"-->
+                            <!--android:text="1x"-->
+                            <!--android:layout_alignParentLeft="true"-->
+                            <!--android:layout_marginLeft="40dp"/>-->
 
-        </LinearLayout>
+                        <!--&lt;!&ndash; Player Footer &ndash;&gt;-->
+                        <!--<LinearLayout-->
+                            <!--android:id="@+id/ll_player_control"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:background="@android:color/transparent"-->
+                            <!--android:layout_marginTop="0dp"-->
+                            <!--android:layout_marginBottom="0dp"-->
+                            <!--android:layout_centerHorizontal="true">-->
+
+                            <!--&lt;!&ndash; Backward Button &ndash;&gt;-->
+                            <!--<ImageButton-->
+                                <!--android:id="@+id/btnBackward"-->
+                                <!--android:src="@drawable/media_fast_backward"-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:background="@null"-->
+                                <!--android:layout_marginLeft="10dp"-->
+                                <!--android:layout_marginRight="10dp" />-->
+                            <!--&lt;!&ndash; Play Button &ndash;&gt;-->
+                            <!--<ImageButton-->
+                                <!--android:id="@+id/btnPlay"-->
+                                <!--android:src="@drawable/media_play"-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:background="@null"-->
+                                <!--android:paddingLeft="2dp"-->
+                                <!--android:paddingRight="2dp"-->
+                                <!--android:layout_marginLeft="10dp"-->
+                                <!--android:layout_marginRight="10dp" />-->
+                            <!--&lt;!&ndash; Forward Button &ndash;&gt;-->
+                            <!--<ImageButton-->
+                                <!--android:id="@+id/btnForward"-->
+                                <!--android:src="@drawable/media_fast_forward"-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:background="@null"-->
+                                <!--android:layout_marginLeft="10dp"-->
+                                <!--android:layout_marginRight="10dp" />-->
+                        <!--</LinearLayout>-->
+
+                        <!--<LinearLayout-->
+                            <!--android:id="@+id/ll_player_volume"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:background="@android:color/transparent"-->
+                            <!--android:layout_marginTop="20dp"-->
+                            <!--android:layout_marginBottom="20dp"-->
+                            <!--android:layout_below="@id/ll_player_control"-->
+                            <!--android:layout_centerHorizontal="true">-->
+                            <!--<TextView-->
+                                <!--android:id="@+id/tv_icon_volume_down"-->
+                                <!--android:layout_width="0dp"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_weight="0.1"-->
+                                <!--android:text="@string/fa_icon_volume_down"-->
+                                <!--android:textSize="18sp"-->
+                                <!--android:textColor="@color/black"-->
+                                <!--android:gravity="right"/>-->
+                            <!--<SeekBar-->
+                                <!--android:id="@+id/sb_volume_control"-->
+                                <!--android:layout_width="0dp"-->
+                                <!--android:layout_weight="0.9"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_marginRight="5dp"-->
+                                <!--android:layout_marginLeft="5dp"-->
+                                <!--android:paddingLeft="15dp"-->
+                                <!--android:paddingRight="15dp"/>-->
+                            <!--<TextView-->
+                                <!--android:id="@+id/tv_icon_volume_up"-->
+                                <!--android:layout_width="0dp"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_weight="0.1"-->
+                                <!--android:text="@string/fa_icon_volume_up"-->
+                                <!--android:textSize="18sp"-->
+                                <!--android:textColor="@color/black"/>-->
+                        <!--</LinearLayout>-->
+
+                    <!--</RelativeLayout>-->
+
+                <!--</RelativeLayout>-->
+
+            <!--<RelativeLayout-->
+                <!--android:id="@+id/viewMiniPlayer"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="#ffffff"-->
+                <!--android:paddingLeft="20dp"-->
+                <!--android:paddingRight="20dp">-->
+                <!--<ImageButton-->
+                    <!--android:id="@+id/btnPlayMini"-->
+                    <!--android:src="@drawable/icon_mini_player"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:background="@null"-->
+                    <!--android:layout_alignParentLeft="true"-->
+                    <!--android:layout_centerVertical="true"/>-->
+
+                <!--<LinearLayout-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="vertical"-->
+                    <!--android:layout_centerInParent="true">-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/tvTitleLesson"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Title Lesson"-->
+                        <!--android:textSize="14sp"-->
+                        <!--android:gravity="center"/>-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/tvTitleChapter"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Title Chapter"-->
+                        <!--android:textSize="14sp"-->
+                        <!--android:gravity="center"/>-->
+
+                <!--</LinearLayout>-->
+
+                <!--<ImageButton-->
+                    <!--android:id="@+id/btnSlideUp"-->
+                    <!--android:src="@drawable/icon_slide_player"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:background="@null"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_centerVertical="true"/>-->
+
+            <!--</RelativeLayout>-->
+
+        <!--</LinearLayout>-->
 
     </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 

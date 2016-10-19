@@ -35,7 +35,9 @@ public class ImageLoader {
      
     //handler to display images in UI thread
     Handler handler = new Handler();
-     
+
+    private int size = 0;
+
     public ImageLoader(Activity activity){
          
         fileCache = new FileCache(activity.getApplicationContext());
@@ -45,12 +47,12 @@ public class ImageLoader {
         executorService = Executors.newFixedThreadPool(5);
          
     }
-     
+
     // default image show in list (Before online image download)
     final int stub_id = R.drawable.placeholder;
-     
-    public void DisplayImage(String url, ImageView imageView)
-    {
+
+    public void DisplayImage(String url, ImageView imageView)    {
+
         //Store image and url in Map
         imageViews.put(imageView, url);
          
@@ -71,6 +73,12 @@ public class ImageLoader {
             //imageView.setImageResource(stub_id);
             BitmapManager.setImageBitmap(activity, imageView, R.drawable.image_placeholder);
         }
+    }
+
+    public void DisplayImage(String url, ImageView imageView,int size)
+    {
+        this.size = size;
+        DisplayImage(url,imageView);
     }
          
     private void queuePhoto(String url, ImageView imageView)
@@ -135,17 +143,14 @@ public class ImageLoader {
     private Bitmap getBitmap(String url) 
     {
         File f = fileCache.getFile(url);
-         
-        //from SD cache
-        //CHECK : if trying to decode file which not exist in cache return null
-//        Bitmap b = decodeFile(f);
-        Bitmap b = BitmapManager.getBitmapFromFile(f);
+
+        //Bitmap b = BitmapManager.getBitmapFromFile(f);
+        Bitmap b = BitmapManager.getBitmapFromFile(f,size);
         if( b != null )
             return b;
          
         // Download image file from web
         try {
-             
             Bitmap bitmap = null;
             URL imageUrl = new URL(url);
             HttpURLConnection conn = (HttpURLConnection)imageUrl.openConnection();

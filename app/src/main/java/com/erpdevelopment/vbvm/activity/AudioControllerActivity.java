@@ -137,7 +137,7 @@ public class AudioControllerActivity extends Activity implements OnSeekBarChange
             
             //send this instance to the service, so it can make callbacks on this instance as a client
             mService.setClient(AudioControllerActivity.this);
-            mService.playLesson(currentSongIndex);
+            mService.playAudio(currentSongIndex);
         } 
         @Override
         public void onServiceDisconnected(ComponentName arg0) {
@@ -152,7 +152,7 @@ public class AudioControllerActivity extends Activity implements OnSeekBarChange
         Utilities.setActionBar(this, null);
         
 		imgStudy = (ImageView) findViewById(R.id.img_study);
-        btnPlay = (ImageButton) findViewById(R.id.btnPlay);
+        btnPlay = (ImageButton) findViewById(R.id.btn_play_mini);
         btnStop = (ImageButton) findViewById(R.id.btnStop);
         btnNext = (ImageButton) findViewById(R.id.btnNext);
         btnPrevious = (ImageButton) findViewById(R.id.btnPrevious);
@@ -237,11 +237,11 @@ public class AudioControllerActivity extends Activity implements OnSeekBarChange
 				}else{					
 					// Resume song
 					if(mService.isCreated()){
-						mService.playLesson();
+						mService.playAudio();
 					}else{
 						if (mService.isStopped())
 							AudioPlayerService.playAfterStop = true;
-						mService.playLesson(currentSongIndex);
+						mService.playAudio(currentSongIndex);
 						AudioPlayerService.currentPositionInTrack = 0;
 					}
 					DBHandleLessons.updateLessonState(FilesManager.lastLessonId, 0, "partial");
@@ -291,7 +291,8 @@ public class AudioControllerActivity extends Activity implements OnSeekBarChange
 					tempCurrentSOngIndex = 0;
 				}
 				Lesson nextLessonDB = DBHandleLessons.getLessonById(AudioPlayerService.listTempLesson2.get(tempCurrentSOngIndex).getIdProperty());
-				int nextLessonDownloadStatus = nextLessonDB.getDownloadStatus();
+//				int nextLessonDownloadStatus = nextLessonDB.getDownloadStatus();
+				int nextLessonDownloadStatus = nextLessonDB.getDownloadStatusAudio();
 				if ( !CheckConnectivity.isOnline(AudioControllerActivity.this) && (nextLessonDownloadStatus != 1) ) {
 					CheckConnectivity.showMessage(AudioControllerActivity.this);
 				} else {
@@ -318,7 +319,7 @@ public class AudioControllerActivity extends Activity implements OnSeekBarChange
 					FilesManager.lastLessonId = nextLesson.getIdProperty();
 					updateDownloadImage();
 					updateFavorites(menuActionbar);
-					mService.playLesson(currentSongIndex);
+					mService.playAudio(currentSongIndex);
 					if ( AudioPlayerService.listTempLesson2.get(currentSongIndex).getAudioSource().equals("") ) {
 			        	btnPlay.setEnabled(false);
 			        	btnStop.setEnabled(false);
@@ -355,7 +356,8 @@ public class AudioControllerActivity extends Activity implements OnSeekBarChange
 					tempCurrentSOngIndex = size - 1;
 				}
 				Lesson nextLessonDB = DBHandleLessons.getLessonById(AudioPlayerService.listTempLesson2.get(tempCurrentSOngIndex).getIdProperty());
-				int nextLessonDownloadStatus = nextLessonDB.getDownloadStatus();
+//				int nextLessonDownloadStatus = nextLessonDB.getDownloadStatus();
+				int nextLessonDownloadStatus = nextLessonDB.getDownloadStatusAudio();
 				if ( !CheckConnectivity.isOnline(AudioControllerActivity.this) && (nextLessonDownloadStatus != 1) ) {
 					CheckConnectivity.showMessage(AudioControllerActivity.this);
 				} else {
@@ -381,7 +383,7 @@ public class AudioControllerActivity extends Activity implements OnSeekBarChange
 					FilesManager.lastLessonId = nextLesson.getIdProperty();
 					updateDownloadImage();
 					updateFavorites(menuActionbar);
-					mService.playLesson(currentSongIndex);
+					mService.playAudio(currentSongIndex);
 					if ( AudioPlayerService.listTempLesson2.get(currentSongIndex).getAudioSource().equals("") ) {
 			        	btnPlay.setEnabled(false);
 			        	btnStop.setEnabled(false);
@@ -466,7 +468,8 @@ public class AudioControllerActivity extends Activity implements OnSeekBarChange
 					CheckConnectivity.showMessage(AudioControllerActivity.this);
 				} else {
 			    	if ( !DownloadServiceTest.downloading ) {
-			    		int downloadStatus = AudioPlayerService.listTempLesson2.get(currentSongIndex).getDownloadStatus();
+//			    		int downloadStatus = AudioPlayerService.listTempLesson2.get(currentSongIndex).getDownloadStatus();
+						int downloadStatus = AudioPlayerService.listTempLesson2.get(currentSongIndex).getDownloadStatusAudio();
 			    		if ( downloadStatus == 0 ){
 							String audioUrl = AudioPlayerService.listTempLesson2.get(currentSongIndex).getAudioSource();
 							String pdfUrl1 = AudioPlayerService.listTempLesson2.get(currentSongIndex).getTranscript();
@@ -517,7 +520,8 @@ public class AudioControllerActivity extends Activity implements OnSeekBarChange
     
     private void updateDownloadImage() {
     	Lesson lesson = DBHandleLessons.getLessonById(AudioPlayerService.listTempLesson2.get(currentSongIndex).getIdProperty());
-    	int downloadStatus = lesson.getDownloadStatus();
+//    	int downloadStatus = lesson.getDownloadStatus();
+		int downloadStatus = lesson.getDownloadStatusAudio();
     	String audioSource = lesson.getIdProperty();
         // Check if already downloaded, not downloaded or in progress
         if ( downloadStatus == 0 && !audioSource.equals(""))

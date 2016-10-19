@@ -20,6 +20,10 @@
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\counter_bg.xml"
     },
     {
+        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\icon_vol_up.png",
+        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\icon_vol_up.png"
+    },
+    {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\img_btn_play_pressed.png",
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\img_btn_play_pressed.png"
     },
@@ -552,6 +556,10 @@
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\img_btn_backward_pressed_48.png"
     },
     {
+        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\icon_vol_down.png",
+        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\icon_vol_down.png"
+    },
+    {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\bottom_bar_icon_vbvm.png",
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\bottom_bar_icon_vbvm.png"
     },
@@ -628,12 +636,12 @@
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\bottom_bar_icon_library.png"
     },
     {
-        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\icon_favorited.png",
-        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\icon_favorited.png"
-    },
-    {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\icon_qa_posts.jpg",
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\icon_qa_posts.jpg"
+    },
+    {
+        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\icon_favorited.png",
+        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\icon_favorited.png"
     },
     {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\download_cloud_32.png",

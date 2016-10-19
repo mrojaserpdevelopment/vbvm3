@@ -47,8 +47,6 @@ public class AudioPlayerService extends Service implements OnPreparedListener{
 	public static long currentPositionInTrack = 0;
 	public static long savedOldPositionInTrack = 0;	
 	private Handler handlerUI = new Handler();
-//	private long totalDurationSec;
-//	private long currentDurationSec;
 	private String totalDurationLabel;
 	private String currentDurationLabel;
 	private Utilities utils = new Utilities();
@@ -96,7 +94,7 @@ public class AudioPlayerService extends Service implements OnPreparedListener{
 	  intent.putExtra("totalDurationLabel", totalDurationLabel);
 	  intent.putExtra("currentDurationLabel", currentDurationLabel);
 	  intent.putExtra("progress", progress);
-	  System.out.println("currentTitle: " + currentTitle);
+//	  System.out.println("currentTitle: " + currentTitle);
 	  intent.putExtra("currentDescription", currentDescription);
 	  intent.putExtra("currentTitle", currentTitle);
 	  intent.putExtra("isLessonComplete", isLessonComplete);
@@ -127,62 +125,67 @@ public class AudioPlayerService extends Service implements OnPreparedListener{
 		 
 	/**
 	 * Function to play a song
-	 * @param songIndex - index of song
+	 * @param audioIndex - index of song
 	 * */
-	public void  playLesson(int songIndex){
+	public void playAudio(int audioIndex){
 		stopped = false;
-		String filename = BitmapManager.getFileNameFromUrl(listTempLesson2.get(songIndex).getAudioSource());
+		String filename = BitmapManager.getFileNameFromUrl(listTempLesson2.get(audioIndex).getAudioSource());
+		System.out.println("AudioPlayerService.playAudio filename: " + filename + " -audioIndex- " + audioIndex);
 		// Play lesson
 		try {	
-			currentLesson = listTempLesson2.get(songIndex).getAudioSource();
-			currentDescription = listTempLesson2.get(songIndex).getLessonsDescription();
-			currentTitle = listTempLesson2.get(songIndex).getTitle();
-//			FilesManager.positionLessonInList = songIndex;
+			currentLesson = listTempLesson2.get(audioIndex).getAudioSource();
+			currentDescription = listTempLesson2.get(audioIndex).getLessonsDescription();
+			currentTitle = listTempLesson2.get(audioIndex).getTitle();
+//			FilesManager.positionLessonInList = audioIndex;
 //			DBHandleLessons.updateLessonState(FilesManager.lastLessonId, 0, "partial");
-			FilesManager.lastLessonId = listTempLesson2.get(songIndex).getIdProperty();
+			FilesManager.lastLessonId = listTempLesson2.get(audioIndex).getIdProperty();
 //			DBHandleLessons.updateLessonState(FilesManager.lastLessonId, 0, "playing");
 			Editor e = MainActivity.settings.edit();
 			e.putString("currentLessonId", FilesManager.lastLessonId);
 			e.commit();
-			
+			System.out.println("step 1...");
 			if(!created){
 				created = true;	
 				mClient.onInitializePlayerStart("Connecting...");
 				handlerUI.removeCallbacks(mUpdateTimeTask);
 				resetMediaPlayer();
-				Lesson lesson = listTempLesson2.get(songIndex);
-				int downloadStatus = DBHandleLessons.getLessonById(lesson.getIdProperty()).getDownloadStatus();
+				Lesson lesson = listTempLesson2.get(audioIndex);
+//				int downloadStatus = DBHandleLessons.getLessonById(lesson.getIdProperty()).getDownloadStatus();
+				int downloadStatus = DBHandleLessons.getLessonById(lesson.getIdProperty()).getDownloadStatusAudio();
+				System.out.println("AudioPlayerService.playAudio: " + downloadStatus);
 				// Check if lesson is downloaded
 				if ( downloadStatus == 1) {
-					mp.setDataSource(FileCache.cacheDirAudio.getAbsolutePath() + "/"+ filename);
-				} else {
-					if ( !CheckConnectivity.isOnline(this)) {
-						CheckConnectivity.showMessage(MainActivity.mainCtx);
-						return;
-					} else {
-						mp.setDataSource(listTempLesson2.get(songIndex).getAudioSource());
-					}
+					System.out.println("filename: " + FileCache.cacheDirAudio.getAbsolutePath() + "/" + filename);
+					mp.setDataSource(FileCache.cacheDirAudio.getAbsolutePath() + "/" + filename);
+//				} else {
+//					if ( !CheckConnectivity.isOnline(this)) {
+//						CheckConnectivity.showMessage(MainActivity.mainCtx);
+//						return;
+//					} else {
+//						mp.setDataSource(listTempLesson2.get(audioIndex).getAudioSource());
+//					}
+//				}
+					mp.setOnPreparedListener(this);
+					mp.prepareAsync();
+					isLessonComplete = false;
+					mp.setOnCompletionListener(new OnCompletionListener() {
+						@Override
+						public void onCompletion(MediaPlayer arg0) {
+							DBHandleLessons.updateLessonState(FilesManager.lastLessonId, 0, "complete");
+							FilesManager.lastLessonId = "";
+							isLessonComplete = true;
+						}
+					});
 				}
-	        	mp.setOnPreparedListener(this);
-	        	mp.prepareAsync();
-	        	isLessonComplete = false;
-	        	mp.setOnCompletionListener(new OnCompletionListener() {					
-					@Override
-					public void onCompletion(MediaPlayer arg0) {
-						DBHandleLessons.updateLessonState(FilesManager.lastLessonId, 0, "complete");
-						FilesManager.lastLessonId = "";
-						isLessonComplete = true;
-					}
-				});
 			}else{
 //				startMediaPlayer();
 			}
-//			currentLesson = listTempLesson2.get(songIndex).getAudioSource();
-//			currentDescription = listTempLesson2.get(songIndex).getLessonsDescription();
-//			currentTitle = listTempLesson2.get(songIndex).getTitle();
-////			FilesManager.positionLessonInList = songIndex;
+//			currentLesson = listTempLesson2.get(audioIndex).getAudioSource();
+//			currentDescription = listTempLesson2.get(audioIndex).getLessonsDescription();
+//			currentTitle = listTempLesson2.get(audioIndex).getTitle();
+////			FilesManager.positionLessonInList = audioIndex;
 ////			DBHandleLessons.updateLessonState(FilesManager.lastLessonId, 0, "partial");
-//			FilesManager.lastLessonId = listTempLesson2.get(songIndex).getIdProperty();
+//			FilesManager.lastLessonId = listTempLesson2.get(audioIndex).getIdProperty();
 ////			DBHandleLessons.updateLessonState(FilesManager.lastLessonId, 0, "playing");
 //			Editor e = MainActivity.settings.edit();
 //			e.putString("currentLessonId", FilesManager.lastLessonId);
@@ -190,10 +193,10 @@ public class AudioPlayerService extends Service implements OnPreparedListener{
 			
         	//Add lesson to Recently Viewed Items
 //        	ItemInfo item = new ItemInfo();
-//        	item.setId(listTempLesson2.get(songIndex).getIdProperty());
+//        	item.setId(listTempLesson2.get(audioIndex).getIdProperty());
 //        	item.setType("lesson");
-//        	item.setItem(listTempLesson2.get(songIndex));
-//        	RecentlyViewedLRU.addLruItem(listTempLesson2.get(songIndex).getIdProperty(), item);        	
+//        	item.setItem(listTempLesson2.get(audioIndex));
+//        	RecentlyViewedLRU.addLruItem(listTempLesson2.get(audioIndex).getIdProperty(), item);
 			
 		} catch (IllegalArgumentException e) {
 			Log.e("IllegalArgumentExcept", "error setting data source 1");
@@ -202,8 +205,8 @@ public class AudioPlayerService extends Service implements OnPreparedListener{
 		} catch (IOException e) {
 			Log.e("IOException", "error setting data source 3");
 			if ( currentLesson.trim().equals("") ) {
-				currentDescription = listTempLesson2.get(songIndex).getLessonsDescription();
-				currentTitle = listTempLesson2.get(songIndex).getTitle();
+				currentDescription = listTempLesson2.get(audioIndex).getLessonsDescription();
+				currentTitle = listTempLesson2.get(audioIndex).getTitle();
 				sendMessageEmptyLesson();
 			}
 		}
@@ -218,7 +221,7 @@ public class AudioPlayerService extends Service implements OnPreparedListener{
 	    sendMessage();
 	}
 	
-	public void  playLesson(){
+	public void playAudio(){
 		stopped = false;
 		startMediaPlayer();
 	}
@@ -293,10 +296,10 @@ public class AudioPlayerService extends Service implements OnPreparedListener{
 	
 	public void onPrepared(MediaPlayer mp) {
 		mClient.onInitializePlayerSuccess();
-		if ( playAfterStop ) {
+//		if ( playAfterStop ) {
 			startMediaPlayer();
 			playAfterStop = false;
-		}
+//		}
 		setSeekToPosition(savedOldPositionInTrack);
 		updateProgressBar();
 	};
@@ -306,8 +309,8 @@ public class AudioPlayerService extends Service implements OnPreparedListener{
      * persisted background playback.
      */
     public void startMediaPlayer() {
-        
-      //Playing audio forever even after clearing memory
+		System.out.println("AudioPlayerService.startMediaPlayer");
+		//Playing audio forever even after clearing memory
 		Intent intent = new Intent(this, MainActivity.class);
 //        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

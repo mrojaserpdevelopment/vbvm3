@@ -1,7 +1,6 @@
 package com.erpdevelopment.vbvm.service.downloader;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -24,9 +23,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-/**
- * Created by manuel on 10/10/2016.
- */
 public class DownloaderThread extends Thread {
 
     private int result = Activity.RESULT_CANCELED;
@@ -38,16 +34,16 @@ public class DownloaderThread extends Thread {
     private FileCache fileCache;
     public static boolean downloading = false;
     public int downloadProgress = 0;
-
     //private static final int DOWNLOAD_BUFFER_SIZE = 4096;
     private static final int DOWNLOAD_BUFFER_SIZE = 16*1024;
 
     private Lesson mLesson;
     private String mUrl;
     private String mDownloadType;
-    private Handler activityHandler;
+//    private Handler activityHandler;
     private Activity mActivity;
     private LessonListAdapter mAdapter;
+    private int downloadStatus = 0;
 
     private int totalRead = 0;
     private int lengthOfFile = 0;
@@ -58,7 +54,7 @@ public class DownloaderThread extends Thread {
         mLesson = lesson;
         mUrl = url;
         mDownloadType = downloadType;
-        activityHandler = handler;
+//        activityHandler = handler;
         mActivity = activity;
         mAdapter = adapter;
     }
@@ -67,32 +63,30 @@ public class DownloaderThread extends Thread {
     public void run() {
         DownloadService.incrementCount();
         System.out.println("Increment - Count downloads: " + DownloadService.countDownloads);
-        System.out.println("Thread started: " + currentThread().getName());
-
-        String urlPath = mUrl;
+//        String urlPath = mUrl;
         String idLesson = mLesson.getIdProperty();
-
+//        int downloadStatus = 0;
+        Log.d("DownloadManager", "downloading url:" + mUrl);
         File outputTemp = null;
         File output = null;
         try {
+
             DBHandleLessons.updateLessonDownloadStatus(idLesson, 2, mDownloadType);
-            outputTemp = fileCache.getFileTempFolder(urlPath);
+            outputTemp = fileCache.getFileTempFolder(mUrl);
             if (outputTemp.exists()) {
                 outputTemp.delete();
-                outputTemp = fileCache.getFileTempFolder(urlPath);
+                outputTemp = fileCache.getFileTempFolder(mUrl);
             }
-            URL url = new URL(urlPath);
-            System.out.println("url = " + url);
+            URL url = new URL(mUrl);
             long startTime = System.currentTimeMillis();
-            Log.d("DownloadManager", "downloading url:" + url);
+//            Log.d("DownloadManager", "downloading url:" + url);
 
             URLConnection conn = url.openConnection();
-            conn.setConnectTimeout(30000);
+            conn.setConnectTimeout(20000);
             lengthOfFile = conn.getContentLength();
 
             // start download
             InputStream inStream = new BufferedInputStream(conn.getInputStream());
-            //outFile = new File(Environment.getExternalStorageDirectory() + "/" + fileName);
             FileOutputStream fileStream = new FileOutputStream(outputTemp);
             BufferedOutputStream outStream = new BufferedOutputStream(fileStream, DOWNLOAD_BUFFER_SIZE);
             byte[] data = new byte[DOWNLOAD_BUFFER_SIZE];
@@ -122,38 +116,46 @@ public class DownloaderThread extends Thread {
 //                    @Override
 //                    public void run() {
 //                        System.out.println("mActivity.runOnUiThread");
-//                        mLesson.setDownloadProgress(downloadProgress);
+//                        mLesson.setDownloadProgressAudio(downloadProgress);
 //                        mAdapter.notifyDataSetChanged();
 //                    }
 //                });
-
+//                updateUiDownloadProgress();
             }
-
+            System.out.println("right after interrupt...");
+            downloadProgress = 0;
+            handler.removeCallbacks(runnable);
             outStream.close();
             fileStream.close();
             inStream.close();
 
-            result = Activity.RESULT_OK;
-            //copy downloaded file from temp to audio folder
-            output = fileCache.getFileAudioFolder(urlPath);
-            fileCache.copyFile(outputTemp, output);
-            outputTemp.delete();
-
             if(isInterrupted())
             {
-                // the download was canceled, so let's delete the partially downloaded file
-                output.delete();
-                outputTemp.delete();
                 System.out.println("Thread was interrupted");
-                handler.removeCallbacks(runnable);
-                Bundle msgBundle = new Bundle();
-                msgBundle.putString("idLesson", mLesson.getIdProperty());
-                msgBundle.putInt("downloadProgress", 0);
-                Message msg = new Message();
-                msg.setData(msgBundle);
-                msg.what = LessonListAdapter.MESSAGE_UPDATE_PROGRESS_BAR;
-                activityHandler.sendMessage(msg);
-                DBHandleLessons.updateLessonDownloadStatus(idLesson, 0, mDownloadType);
+                // the download was canceled, so let's delete the partially downloaded file
+//                output.delete();
+                outputTemp.delete();
+//                handler.removeCallbacks(runnable);
+//                Bundle msgBundle = new Bundle();
+//                msgBundle.putString("idLesson", mLesson.getIdProperty());
+//                msgBundle.putInt("downloadProgress", 0);
+//                Message msg = new Message();
+//                msg.setData(msgBundle);
+//                msg.what = LessonListAdapter.MESSAGE_UPDATE_PROGRESS_BAR;
+//                activityHandler.sendMessage(msg);
+
+//                downloadProgress = 0;
+//                mActivity.runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+////                        System.out.println("mActivity.runOnUiThread");
+//                        mLesson.setDownloadProgressAudio(downloadProgress);
+//                        mAdapter.notifyDataSetChanged();
+//                    }
+//                });
+//                updateUiDownloadProgress();
+//                DBHandleLessons.updateLessonDownloadStatus(idLesson, 0, mDownloadType);
+                downloadStatus = 0;
             }
             else
             {
@@ -162,37 +164,54 @@ public class DownloaderThread extends Thread {
 //                        AndroidFileDownloader.MESSAGE_DOWNLOAD_COMPLETE, fileName);
 //                parentActivity.activityHandler.sendMessage(msg);
                 System.out.println("Download is completed");
-                DBHandleLessons.updateLessonDownloadStatus(idLesson, 1, mDownloadType);
+//                downloadProgress = 0;
+//                updateUiDownloadProgress();
+//                DBHandleLessons.updateLessonDownloadStatus(idLesson, 1, mDownloadType);
+                downloadStatus = 1;
+                result = Activity.RESULT_OK;
+                //copy downloaded file from temp to audio folder
+                output = fileCache.getFileAudioFolder(mUrl);
+                fileCache.copyFile(outputTemp, output);
+                outputTemp.delete();
             }
+//            updateUiDownloadProgress();
+
+
+
         }
         catch(MalformedURLException e)
         {
             System.out.println("MalformedURLException");
-            DBHandleLessons.updateLessonDownloadStatus(idLesson, 0, mDownloadType);
+//            DBHandleLessons.updateLessonDownloadStatus(idLesson, 0, mDownloadType);
+            downloadStatus = 0;
             e.printStackTrace();
-//            output.delete();
             outputTemp.delete();
         }
         catch(FileNotFoundException e)
         {
             System.out.println("FileNotFoundException");
-            DBHandleLessons.updateLessonDownloadStatus(idLesson, 0, mDownloadType);
+//            DBHandleLessons.updateLessonDownloadStatus(idLesson, 0, mDownloadType);
+            downloadStatus = 0;
             outputTemp.delete();
         }
         catch(IOException e)
         {
             System.out.println("IOException");
-            DBHandleLessons.updateLessonDownloadStatus(idLesson, 0, mDownloadType);
+//            DBHandleLessons.updateLessonDownloadStatus(idLesson, 0, mDownloadType);
+            downloadStatus = 0;
             outputTemp.delete();
-            e.printStackTrace();
         }
         catch(Exception e)
         {
             System.out.println("Exception");
-            DBHandleLessons.updateLessonDownloadStatus(idLesson, 0, mDownloadType);
+//            DBHandleLessons.updateLessonDownloadStatus(idLesson, 0, mDownloadType);
+            downloadStatus = 0;
             outputTemp.delete();
-            e.printStackTrace();
         }finally {
+//            setDownloadStatusByType();
+            System.out.println("finally: " + downloadStatus);
+            updateUiDownloadProgress();
+            DBHandleLessons.updateLessonDownloadStatus(idLesson, downloadStatus, mDownloadType);
             DownloadService.decrementCount();
             System.out.println("Decrement - Count downloads: " + DownloadService.countDownloads);
         }
@@ -208,28 +227,44 @@ public class DownloaderThread extends Thread {
             Message msg = new Message();
             msg.setData(msgBundle);
             msg.what = LessonListAdapter.MESSAGE_UPDATE_PROGRESS_BAR;
-//            activityHandler.sendMessage(msg);
-
-            mActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    System.out.println("mActivity.runOnUiThread");
-                    mLesson.setDownloadProgress(downloadProgress);
-                    mAdapter.notifyDataSetChanged();
-                }
-            });
-
+//            mActivity.runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+////                    System.out.println("mActivity.runOnUiThread");
+//                    mLesson.setDownloadProgressAudio(downloadProgress);
+//                    mAdapter.notifyDataSetChanged();
+//                }
+//            });
+            updateUiDownloadProgress();
             handler.postDelayed(this, 1000);
         }
     };
 
-    private void publishResults(String idLesson, String fileName, String urlPath) {
-        Intent intent = new Intent(NOTIFICATION);
-        intent.putExtra(RESULT, result);
-        intent.putExtra(FILENAME, fileName);
-        intent.putExtra(URL, urlPath);
-        intent.putExtra("idLesson", idLesson);
-//        sendBroadcast(intent);
+    private void updateUiDownloadProgress() {
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                updateLessonByDownloadType();
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    private void updateLessonByDownloadType() {
+        switch (mDownloadType) {
+            case "audio":
+                mLesson.setDownloadStatusAudio(downloadStatus);
+                mLesson.setDownloadProgressAudio(downloadProgress);
+                break;
+            case "teacher":
+                mLesson.setDownloadStatusTeacherAid(downloadStatus);
+                mLesson.setDownloadProgressTeacher(downloadProgress);
+                break;
+            case "transcript":
+                mLesson.setDownloadStatusTranscript(downloadStatus);
+                mLesson.setDownloadProgressTranscript(downloadProgress);
+                break;
+        }
     }
 
 }
