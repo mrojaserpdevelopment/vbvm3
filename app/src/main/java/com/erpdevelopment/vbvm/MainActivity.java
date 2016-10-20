@@ -13,7 +13,6 @@ import com.erpdevelopment.vbvm.fragment.VideosFragment;
 import com.erpdevelopment.vbvm.model.NavDrawerItem;
 import com.erpdevelopment.vbvm.model.Study;
 import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnTabReselectListener;
 import com.roughike.bottombar.OnTabSelectListener;
 
 import android.os.Bundle;
@@ -25,21 +24,17 @@ import android.content.res.TypedArray;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.IdRes;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements StudiesFragment.OnItemSelectedListener {
 
@@ -93,14 +88,14 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
         DatabaseManager.initializeInstance(mDbHelper);
         db = DatabaseManager.getInstance().openDatabase();
 
-		actionBar = getSupportActionBar();
-		if (actionBar != null) {
-			actionBar.setHomeButtonEnabled(false); // disable the button
-			actionBar.setDisplayHomeAsUpEnabled(false); // remove the left caret
-			actionBar.setDisplayShowHomeEnabled(false); // remove the icon
-			actionBar.setDisplayShowTitleEnabled(false);
-			actionBar.show();
-		}
+//		actionBar = getSupportActionBar();
+//		if (actionBar != null) {
+//			actionBar.setHomeButtonEnabled(false); // disable the button
+//			actionBar.setDisplayHomeAsUpEnabled(false); // remove the left caret
+//			actionBar.setDisplayShowHomeEnabled(false); // remove the icon
+//			actionBar.setDisplayShowTitleEnabled(false);
+//			actionBar.show();
+//		}
 
 //		viewPagerMain = (ViewPager) findViewById(R.id.viewPagerMain);
 //		mAdapter = new CustomPagerAdapter(getSupportFragmentManager());
@@ -425,7 +420,7 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		System.out.println("creating menu...");
-		getMenuInflater().inflate(R.menu.main, menu);
+//		getMenuInflater().inflate(R.menu.menu_fragment_studies, menu);
 		return true;
 	}
 
@@ -460,7 +455,7 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 //	 * Diplaying fragment view for selected nav drawer list item
 //	 * */
 //	private void displayView(int position) {
-//		// update the main content by replacing fragments
+//		// update the menu_fragment_studies content by replacing fragments
 //		Fragment fragment = null;
 //		switch (position) {
 //		case 0:

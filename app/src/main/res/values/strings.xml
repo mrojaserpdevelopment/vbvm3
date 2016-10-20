@@ -170,7 +170,10 @@ distribution media, documentation, registration cards, and insertions.</string>
     <string name="action_events">Events</string>
     <string name="action_contact">Contact</string>
     <string name="action_donate">Donate</string>
-    <!--<string name="action_settings">Videos</string>-->
+    <string name="action_mark_all_complete">Mark all complete</string>
+    <string name="action_mark_all_incomplete">Mark all incomplete</string>
+    <string name="action_download_all">Download all</string>
+    <string name="action_delete_all_files">Delete all files</string>
 
     <!-- Formatted Messages -->
     <string name="message_count_studies">%1$d Studies</string>

@@ -59,38 +59,39 @@
 
         <!--</RelativeLayout>-->
 
-        <!--<FrameLayout-->
-            <!--android:id="@+id/fl_audio_player_1"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content">-->
-            <!--<ImageView-->
-                <!--android:id="@+id/img_player_study"-->
-                <!--android:layout_width="300dp"-->
-                <!--android:layout_height="300dp"-->
-                <!--android:src="@drawable/adele"/>-->
-            <!--<TextView-->
-                <!--android:id="@+id/tv_icon_slide_down"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="@string/fa_icon_arrow_circle_down"-->
-                <!--android:textSize="18sp"-->
-                <!--android:textColor="@color/black"-->
-                <!--android:gravity="top"/>-->
-            <!--<SeekBar-->
-                <!--android:id="@+id/sb_audio_player"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginRight="5dp"-->
-                <!--android:layout_marginLeft="5dp"-->
-                <!--android:paddingLeft="15dp"-->
-                <!--android:paddingRight="15dp"-->
-                <!--android:layout_gravity="bottom"/>-->
-        <!--</FrameLayout>-->
+        <FrameLayout
+            android:id="@+id/fl_audio_player_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/img_player_study"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:src="@drawable/adele"/>
+            <TextView
+                android:id="@+id/tv_icon_slide_down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fa_icon_arrow_circle_down"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:gravity="top"/>
+            <SeekBar
+                android:id="@+id/sb_audio_player"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:layout_gravity="bottom"/>
+        </FrameLayout>
 
         <RelativeLayout
             android:id="@+id/rl_audio_player_2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fl_audio_player_1">
 
             <!-- Timer Display -->
             <LinearLayout

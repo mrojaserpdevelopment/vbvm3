@@ -106,4 +106,8 @@ public class Utilities {
         	actionBar.setTitle(title);
         actionBar.setDisplayUseLogoEnabled(false);
 	}
+
+	public static void setSupportActionBar(ActionBar actionBar) {
+
+	}
 }

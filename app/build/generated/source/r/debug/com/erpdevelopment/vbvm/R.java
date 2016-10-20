@@ -3382,7 +3382,7 @@ containing a value of this type.
     public static final class menu {
         public static final int bible_study_lessons=0x7f0e0000;
         public static final int mail_sender=0x7f0e0001;
-        public static final int main=0x7f0e0002;
+        public static final int menu_fragment_studies =0x7f0e0002;
         public static final int menu_event_details=0x7f0e0003;
         public static final int menu_library=0x7f0e0004;
     }

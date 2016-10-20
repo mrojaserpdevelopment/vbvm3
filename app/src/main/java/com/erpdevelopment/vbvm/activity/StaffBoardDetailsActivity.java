@@ -124,7 +124,7 @@ public class StaffBoardDetailsActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
+        inflater.inflate(R.menu.menu_fragment_studies, menu);
 
         return super.onCreateOptionsMenu(menu);
 	}

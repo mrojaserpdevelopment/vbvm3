@@ -8,7 +8,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -41,6 +46,7 @@ public class StudiesFragment extends Fragment {
     private StudiesAdapter adapterStudiesNew;
     private StudiesAdapter adapterStudiesOld;
     private StudiesAdapter adapterStudiesSingle;
+    private ActionBar actionBar;
     // Define the listener of the interface type
     // listener will the activity instance containing fragment
     private OnItemSelectedListener listener;
@@ -81,6 +87,7 @@ public class StudiesFragment extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
     }
 
@@ -100,6 +107,14 @@ public class StudiesFragment extends Fragment {
         gvStudiesSingle = (ExpandableHeightGridview) rootView.findViewById(R.id.gvStudiesSingle);
         imageLoader = new ImageLoader(getActivity());
         setAdapterStudiesFragment();
+        actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(false); // disable the button
+            actionBar.setDisplayHomeAsUpEnabled(false); // remove the left caret
+            actionBar.setDisplayShowHomeEnabled(false); // remove the icon
+            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.show();
+        }
     }
 
     private void setAdapterStudiesFragment() {
@@ -191,9 +206,29 @@ public class StudiesFragment extends Fragment {
         FilesManager.lastLessonId = MainActivity.settings.getString("currentLessonId", "");
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        getActivity().getMenuInflater().inflate(R.menu.menu_fragment_studies, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_about:
+                return true;
+            case R.id.action_events:
+                return true;
+            case R.id.action_contact:
+                return true;
+            case R.id.action_donate:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
-//    /**
+    //    /**
 //     * CHECK LAST UPDATE TIME
 //     */
 //    private boolean checkUserFirstVisit(){

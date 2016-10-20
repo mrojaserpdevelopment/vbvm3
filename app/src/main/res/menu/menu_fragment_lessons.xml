@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_mark_all_complete"
+        android:title="@string/action_about"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_mark_all_incomplete"
+        android:title="@string/action_mark_all_incomplete"
+        android:orderInCategory="200"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_download_all"
+        android:title="@string/action_download_all"
+        android:orderInCategory="300"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_delete_all_files"
+        android:title="@string/action_delete_all_files"
+        android:orderInCategory="400"
+        app:showAsAction="never" />
+</menu>

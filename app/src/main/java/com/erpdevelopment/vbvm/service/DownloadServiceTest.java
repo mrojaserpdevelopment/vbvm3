@@ -82,7 +82,7 @@ public class DownloadServiceTest extends IntentService {
 			  downloadFromUrl(lesson.getIdProperty(), url, downloadType);
 			  publishResults(lesson.getIdProperty(), BitmapManager.getFileNameFromUrl(url), url);
 //		  }
-		  downloading = false;
+//		  downloading = false;
 //		  }
    	  }
 	  
