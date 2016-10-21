@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -68,6 +69,7 @@ public class LessonsFragment extends Fragment {
     private ArrayList<Lesson> listTempLesson = new ArrayList<Lesson>();
     private RelativeLayout rlAudioPlayerSlide;
     private FileCache fileCache;
+    public Intent intentDownloadAll;
 
     public LessonsFragment() {}
 
@@ -79,6 +81,10 @@ public class LessonsFragment extends Fragment {
         return f;
     }
 
+    public Intent getIntentDownloadAll() {
+        return intentDownloadAll;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,9 +92,41 @@ public class LessonsFragment extends Fragment {
         imageLoader = new ImageLoader(getActivity());
         activity = getActivity();
         fileCache = new FileCache(MainActivity.mainCtx);
+        activity.registerReceiver(receiverDownloadProgress, new IntentFilter(DownloadServiceTest.NOTIFICATION_PROGRESS));
         activity.registerReceiver(receiverDownloadComplete, new IntentFilter(DownloadServiceTest.NOTIFICATION_COMPLETE));
-//        activity.registerReceiver(receiverDownloadProgress, new IntentFilter(DownloadServiceTest.NOTIFICATION_PROGRESS));
     }
+
+    private BroadcastReceiver receiverDownloadProgress = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intentDownloadAll) {
+            Bundle bundle = intentDownloadAll.getExtras();
+            if (bundle != null) {
+                String idLesson = bundle.getString("idLesson");
+                int downloadProgress = bundle.getInt("downloadProgress");
+                String downloadType = bundle.getString("downloadType");
+                List<Lesson> listLessons = mStudy.getLessons();
+                for (int i=0; i<listLessons.size(); i++) {
+                    if (listLessons.get(i).getIdProperty().equals(idLesson)) {
+                        switch (downloadType) {
+                            case "audio":
+                                listLessons.get(i).setDownloadProgressAudio(downloadProgress);
+                                listLessons.get(i).setDownloadStatusAudio(2);
+                                break;
+                            case "teacher":
+                                listLessons.get(i).setDownloadProgressTeacher(downloadProgress);
+                                listLessons.get(i).setDownloadStatusTeacherAid(2);
+                                break;
+                            case "transcript":
+                                listLessons.get(i).setDownloadProgressTranscript(downloadProgress);
+                                listLessons.get(i).setDownloadStatusTranscript(2);
+                                break;
+                        }
+                    }
+                }
+                adapter.setLessonListItems(listLessons);
+            }
+        }
+    };
 
     private BroadcastReceiver receiverDownloadComplete = new BroadcastReceiver() {
 
@@ -99,44 +137,91 @@ public class LessonsFragment extends Fragment {
             if (bundle != null) {
                 int resultCode = bundle.getInt(DownloadServiceTest.RESULT);
                 String fileName = bundle.getString(DownloadServiceTest.FILENAME);
+                String idLesson = bundle.getString("idLesson");
+                String downloadType = bundle.getString("downloadType");
+                List<Lesson> listLessonsUpdated = mStudy.getLessons();
+                int downloadStatus = 0;
                 if (resultCode == getActivity().RESULT_OK) {
                     System.out.println("Downloaded: " + fileName);
                     Toast.makeText(getActivity(), "Downloaded: " + fileName, Toast.LENGTH_LONG).show();
                     oneDownloadComplete = true;
-                    new asyncGetStudyLessons().execute(mStudy);
+                    downloadStatus = 1;
+//                    new asyncGetStudyLessons().execute(mStudy);
+//                    List<Lesson> listLessonsUpdated = mStudy.getLessons();
+//                    for (int i=0; i<listLessonsUpdated.size(); i++) {
+//                        if (listLessonsUpdated.get(i).getIdProperty().equals(idLesson)) {
+//                            switch (downloadType) {
+//                                case "audio":
+//                                    listLessonsUpdated.get(i).setDownloadStatusAudio(1);
+//                                    listLessonsUpdated.get(i).setDownloadProgressAudio(0);
+//                                    break;
+//                                case "teacher":
+//                                    listLessonsUpdated.get(i).setDownloadStatusTeacherAid(1);
+//                                    listLessonsUpdated.get(i).setDownloadProgressTeacher(0);
+//                                    break;
+//                                case "transcript":
+//                                    listLessonsUpdated.get(i).setDownloadStatusTranscript(1);
+//                                    listLessonsUpdated.get(i).setDownloadProgressTranscript(0);
+//                                    break;
+//                            }
+//                            break;
+//                        }
+//                    }
+//                    adapter.setLessonListItems(listLessons);
                 } else {
-                    Toast.makeText(getActivity(), "Download failed!: " + fileName, Toast.LENGTH_LONG).show();
+                    System.out.println("Download canceled: " + fileName);
+//                    Toast.makeText(getActivity(), "Download canceled: " + fileName, Toast.LENGTH_LONG).show();
+//                    for (int i=0; i<listLessonsUpdated.size(); i++) {
+//                        if (listLessonsUpdated.get(i).getIdProperty().equals(idLesson)) {
+//                            switch (downloadType) {
+//                                case "audio":
+//                                    listLessonsUpdated.get(i).setDownloadStatusAudio(0);
+////                                    listLessonsUpdated.get(i).setDownloadProgressAudio(0);
+//                                    break;
+//                                case "teacher":
+//                                    listLessonsUpdated.get(i).setDownloadStatusTeacherAid(0);
+////                                    listLessonsUpdated.get(i).setDownloadProgressTeacher(0);
+//                                    break;
+//                                case "transcript":
+//                                    listLessonsUpdated.get(i).setDownloadStatusTranscript(0);
+////                                    listLessonsUpdated.get(i).setDownloadProgressTranscript(0);
+//                                    break;
+//                            }
+//                            break;
+//                        }
+//                    }
                 }
+                for (int i=0; i<listLessonsUpdated.size(); i++) {
+                    if (listLessonsUpdated.get(i).getIdProperty().equals(idLesson)) {
+                        switch (downloadType) {
+                            case "audio":
+                                listLessonsUpdated.get(i).setDownloadStatusAudio(downloadStatus);
+                                listLessonsUpdated.get(i).setDownloadProgressAudio(0);
+                                break;
+                            case "teacher":
+                                listLessonsUpdated.get(i).setDownloadStatusTeacherAid(downloadStatus);
+                                listLessonsUpdated.get(i).setDownloadProgressTeacher(0);
+                                break;
+                            case "transcript":
+                                listLessonsUpdated.get(i).setDownloadStatusTranscript(downloadStatus);
+                                listLessonsUpdated.get(i).setDownloadProgressTranscript(0);
+                                break;
+                        }
+                        break;
+                    }
+                }
+                adapter.setLessonListItems(listLessonsUpdated);
                 DownloadServiceTest.decrementCount();
                 if (oneDownloadComplete) {
                     if (DownloadServiceTest.countDownloads == 0){
+                        // All lessons have been downloaded
                         DownloadServiceTest.downloading = false;
-                        new asyncGetStudyLessons().execute(mStudy);
+//                        new asyncGetStudyLessons().execute(mStudy);
                     }
                 }
             }
         }
     };
-
-//    private BroadcastReceiver receiverDownloadProgress = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            Bundle bundle = intent.getExtras();
-//            if (bundle != null) {
-//                String idLesson = bundle.getString("idLesson");
-//                int downloadProgress = bundle.getInt("downloadProgress");
-//                List<Lesson> listLessons = mStudy.getLessons();
-//                for (int i=0; i<listLessons.size(); i++) {
-//                    if (listLessons.get(i).getIdProperty().equals(idLesson)) {
-//                        listLessons.get(i).setDownloadProgressAudio(downloadProgress);
-//                        break;
-//                    }
-//                }
-//                adapter.setLessonListItems(listLessons);
-//            }
-//        }
-//    };
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -340,37 +425,31 @@ public class LessonsFragment extends Fragment {
                 Lesson lesson = mStudy.getLessons().get(i);
                 //Download if lesson is not downloaded or is downloading
                 if ( !lesson.getAudioSource().isEmpty() && (lesson.getDownloadStatusAudio()!=1) ) {
-//                    Intent intent = new Intent(getActivity(), DownloadServiceTest.class);
-//                    intent.putExtra("lesson", lesson);
-//                    getActivity().startService(intent);
-//                    DownloadServiceTest.incrementCount();
-                    startDownload(lesson,lesson.getAudioSource(),"audio");
+                    System.out.println("Downloading audio: " + lesson.getAudioSource());
+//                    TextView tvPlayMini = (TextView) rootView.findViewById(R.id.tv_icon_play_mini);
+//                    tvPlayMini.setText(activity.getResources().getString(R.string.fa_icon_stop));
+//                    tvPlayMini.setTextSize(TypedValue.COMPLEX_UNIT_SP,14);
+                    startDownload(lesson.getIdProperty(),lesson.getAudioSource(),"audio");
                 }
                 if ( !lesson.getTeacherAid().isEmpty() && (lesson.getDownloadStatusTeacherAid()!=1) ) {
-//                    Intent intent = new Intent(getActivity(), DownloadServiceTest.class);
-//                    intent.putExtra("lesson", lesson);
-//                    getActivity().startService(intent);
-//                    DownloadServiceTest.incrementCount();
-                    startDownload(lesson,lesson.getTeacherAid(),"teacher");
+                    System.out.println("Downloading teacher: " + lesson.getTeacherAid());
+                    startDownload(lesson.getIdProperty(),lesson.getTeacherAid(),"teacher");
                 }
                 if ( !lesson.getTranscript().isEmpty() && (lesson.getDownloadStatusTranscript()!=1) ) {
-//                    Intent intent = new Intent(getActivity(), DownloadServiceTest.class);
-//                    intent.putExtra("lesson", lesson);
-//                    getActivity().startService(intent);
-//                    DownloadServiceTest.incrementCount();
-                    startDownload(lesson,lesson.getTranscript(),"transcript");
+                    System.out.println("Downloading transcript: " + lesson.getTranscript());
+                    startDownload(lesson.getIdProperty(),lesson.getTranscript(),"transcript");
                 }
-
             }
         }
     }
 
-    private void startDownload(Lesson lesson, String url, String downloadType) {
-        Intent intent = new Intent(getActivity(), DownloadServiceTest.class);
-        intent.putExtra("lesson", lesson);
-        intent.putExtra("url", url);
-        intent.putExtra("downloadType", downloadType);
-        getActivity().startService(intent);
+    private void startDownload(String idLesson, String url, String downloadType) {
+        intentDownloadAll = new Intent(getActivity(), DownloadServiceTest.class);
+        intentDownloadAll.putExtra("idLesson", idLesson);
+        intentDownloadAll.putExtra("url", url);
+        intentDownloadAll.putExtra("downloadType", downloadType);
+        getActivity().startService(intentDownloadAll);
+        adapter.setIntentServiceDownloadAll(intentDownloadAll);
         DownloadServiceTest.incrementCount();
     }
 
@@ -435,6 +514,7 @@ public class LessonsFragment extends Fragment {
                 markAllLessons("new");
                 return true;
             case R.id.action_download_all:
+                downloadAllLessons();
                 return true;
             case R.id.action_delete_all_files:
                 return true;

@@ -37,13 +37,13 @@ public final class R {
 		public static final int activity_main = 0x7f030020;
 	}
 	public static final class string {
-		public static final int app_name = 0x7f060029;
-		public static final int content_description = 0x7f060031;
-		public static final int curved_text_value = 0x7f060032;
-		public static final int home_screen_observations = 0x7f060047;
-		public static final int home_screen_observed_compliance = 0x7f060048;
-		public static final int percent_value = 0x7f060054;
-		public static final int total_observations = 0x7f06007c;
+		public static final int app_name = 0x7f06002d;
+		public static final int content_description = 0x7f060035;
+		public static final int curved_text_value = 0x7f060036;
+		public static final int home_screen_observations = 0x7f06004b;
+		public static final int home_screen_observed_compliance = 0x7f06004c;
+		public static final int percent_value = 0x7f060058;
+		public static final int total_observations = 0x7f060080;
 	}
 	public static final class style {
 		public static final int AppTheme = 0x7f080093;

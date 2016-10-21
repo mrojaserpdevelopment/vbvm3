@@ -105,6 +105,9 @@ public class StudiesFragment extends Fragment {
         gvStudiesNew = (ExpandableHeightGridview) rootView.findViewById(R.id.gvStudiesNew);
         gvStudiesOld = (ExpandableHeightGridview) rootView.findViewById(R.id.gvStudiesOld);
         gvStudiesSingle = (ExpandableHeightGridview) rootView.findViewById(R.id.gvStudiesSingle);
+        gvStudiesNew.setFocusable(false);
+        gvStudiesOld.setFocusable(false);
+        gvStudiesSingle.setFocusable(false);
         imageLoader = new ImageLoader(getActivity());
         setAdapterStudiesFragment();
         actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
@@ -145,65 +148,42 @@ public class StudiesFragment extends Fragment {
             }
         });
 
-        if ( (FilesManager.listStudiesTypeNew == null) || (FilesManager.listStudiesTypeNew.size() == 0) ) {
-            DownloadJsonData.getInstance().asyncJsonGetStudies(getActivity(),
-                    adapterStudiesNew, adapterStudiesOld, adapterStudiesSingle, rootView, scroll);
-        }
+//        if ( (FilesManager.listStudiesTypeNew == null) || (FilesManager.listStudiesTypeNew.size() == 0) ) {
+//            DownloadJsonData.getInstance().asyncJsonGetStudies(getActivity(),
+//                    adapterStudiesNew, adapterStudiesOld, adapterStudiesSingle, rootView, scroll);
+//        }
     }
-
-    // Play first lesson from Studies list
-    private class asyncPlayLesson extends AsyncTask< Study, String, Lesson > {
-
-        ProgressDialog pDialog;
-        Study study;
-
-        protected void onPreExecute() {
-            pDialog = new ProgressDialog(getActivity());
-            pDialog.setMessage(getResources().getString(R.string.msg_progress_dialog));
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(false);
-            pDialog.show();
-        }
-
-        protected Lesson doInBackground(Study... params) {
-            study = params[0];
-            AudioPlayerService.listTempLesson2 = (ArrayList<Lesson>) DBHandleLessons.getLessons(study.getIdProperty());
-            Lesson lesson = AudioPlayerService.listTempLesson2.get(0);
-            return lesson;
-        }
-
-        protected void onPostExecute(Lesson resultLesson) {
-            if ( !(resultLesson.getIdProperty().equals(FilesManager.lastLessonId)) ) {
-                AudioPlayerService.created = false;
-                DBHandleLessons.saveCurrentPositionInTrack(FilesManager.lastLessonId, AudioPlayerService.currentPositionInTrack);
-                FilesManager.lastLessonId = resultLesson.getIdProperty();
-                AudioPlayerService.savedOldPositionInTrack = resultLesson.getCurrentPosition();
-            } else {
-                if (!AudioPlayerService.created)
-                    AudioPlayerService.savedOldPositionInTrack = MainActivity.settings.getLong("currentPositionInTrack", 0);
-            }
-            pDialog.dismiss();
-            Intent i = new Intent(getActivity(), AudioControllerActivity.class);
-            i.putExtra("position", resultLesson.getPositionInList());
-            i.putExtra("thumbnailSource", resultLesson.getStudyThumbnailSource());
-            i.putExtra("description", resultLesson.getLessonsDescription());
-            i.putExtra("title", resultLesson.getTitle());
-            i.putExtra("size", resultLesson.getStudyLessonsSize());
-            i.putExtra("readSource", resultLesson.getTranscript());
-            i.putExtra("presentSource", resultLesson.getStudentAid());
-            i.putExtra("handoutSource", resultLesson.getTeacherAid());
-            i.putExtra("study", study);
-            startActivity(i);
-        }
-
-    }
-
 
     @Override
     public void onResume() {
         super.onResume();
 //        checkUserFirstVisit();
+        System.out.println("StudiesFragment.onResume");
         FilesManager.lastLessonId = MainActivity.settings.getString("currentLessonId", "");
+        System.out.println("FilesManager.listStudiesTypeNew.size(): " + FilesManager.listStudiesTypeNew.size());
+        if ( (FilesManager.listStudiesTypeNew == null) || (FilesManager.listStudiesTypeNew.size() == 0) ) {
+            DownloadJsonData.getInstance().asyncJsonGetStudies(getActivity(),
+                    adapterStudiesNew, adapterStudiesOld, adapterStudiesSingle, rootView, scroll);
+        } else {
+            TextView tvCountStudiesNew = (TextView) rootView.findViewById(R.id.tvCountStudiesNew);
+            TextView tvCountStudiesOld = (TextView) rootView.findViewById(R.id.tvCountStudiesOld);
+            TextView tvCountStudiesSingle = (TextView) rootView.findViewById(R.id.tvCountStudiesSingle);
+            TextView tvStudiesNew = (TextView) rootView.findViewById(R.id.tvStudiesNew);
+            TextView tvStudiesOld = (TextView) rootView.findViewById(R.id.tvStudiesOld);
+            TextView tvStudiesSingle = (TextView) rootView.findViewById(R.id.tvStudiesSingle);
+
+            Resources res = getActivity().getResources();
+            String messageCountStudies = res.getString(R.string.message_count_studies, FilesManager.listStudiesTypeNew.size());
+            tvCountStudiesNew.setText(messageCountStudies);
+            messageCountStudies = res.getString(R.string.message_count_studies, FilesManager.listStudiesTypeOld.size());
+            tvCountStudiesOld.setText(messageCountStudies);
+            messageCountStudies = res.getString(R.string.message_count_studies, FilesManager.listStudiesTypeSingle.size());
+            tvCountStudiesSingle.setText(messageCountStudies);
+
+            tvStudiesNew.setVisibility(View.VISIBLE);
+            tvStudiesOld.setVisibility(View.VISIBLE);
+            tvStudiesSingle.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
