@@ -8,18 +8,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.ViewParent;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.erpdevelopment.vbvm.MainActivity;
 import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.activity.AudioPlayerService;
 import com.erpdevelopment.vbvm.db.DBHandleLessons;
@@ -41,6 +45,9 @@ public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMedi
     private TextView tvTotalDuration;
     private TextView tvPlayerLessonTitle;
     private TextView tvPlayerLessonDescription;
+    private TextView tvPlayerLessonTitleMini;
+    private TextView tvPlayerLessonDescriptionMini;
+
     private TextView tvPlayerSpeed;
     private ImageButton btnBackward;
     private ImageButton btnPlay;
@@ -49,8 +56,6 @@ public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMedi
     private SeekBar sbVolumeControl;
     private TextView tvIconVolumeUp;
     private ImageButton btnPlayMini;
-    private TextView tvLessonTitleMini;
-    private TextView tvLessonDescriptionMini;
     private ImageButton btnSlideUp;
 
     private RelativeLayout viewMiniPlayer;
@@ -72,6 +77,17 @@ public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMedi
     private ImageLoader imageLoader;
     private Utilities utils = new Utilities();
 
+//    private static AudioPlayerHelper sInstance;
+//
+//    public static AudioPlayerHelper getInstance()
+//    {
+//        if (sInstance == null)
+//        {
+//            sInstance = new AudioPlayerHelper();
+//        }
+//        return sInstance;
+//    }
+
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName arg0, IBinder binder) {
@@ -86,16 +102,22 @@ public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMedi
 //            }
             //send this instance to the service, so it can make callbacks on this instance as a client
             mService.setClient(AudioPlayerHelper.this);
+            System.out.println("AudioPlayerHelper.onServiceConnected - currentSongIndex: " + currentSongIndex);
             mService.playAudio(currentSongIndex);
+
+            setSlidingPanelStateExpanded();
+            viewMiniPlayer.setVisibility(View.VISIBLE);
+            int pixels = activity.getResources().getDimensionPixelSize(R.dimen.sliding_panel_shadow_height);
+            slidingLayout.setShadowHeight(pixels);
         }
         @Override
         public void onServiceDisconnected(ComponentName arg0) {
         }
     };
 
-    public AudioPlayerHelper(Activity activity) {
-        this.activity = activity;
-    }
+//    public AudioPlayerHelper(Activity activity) {
+//        this.activity = activity;
+//    }
 
     public void setBundleExtras(Bundle extras) {
         currentSongIndex = extras.getInt("position");
@@ -105,38 +127,57 @@ public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMedi
         size = extras.getInt("size");
     }
 
-    public void initContext(View rootView) {
+    public void initContext(Activity activity, View rootView) {
 //        btnSlideDown = (ImageButton) activity.findViewById(R.id.btn_slide_down);
-        tvIconSlideDown = (TextView) activity.findViewById(R.id.tv_icon_slide_down);
-        imgPlayerStudy = (ImageView) activity.findViewById(R.id.img_player_study);
-        sbAudioPlayer = (SeekBar) activity.findViewById(R.id.sb_audio_player);
-        tvCurrentDuration = (TextView) activity.findViewById(R.id.tv_current_duration);
-        tvTotalDuration = (TextView) activity.findViewById(R.id.tv_total_duration);
-        tvPlayerLessonTitle = (TextView) activity.findViewById(R.id.tv_player_lesson_title);
-        tvPlayerLessonDescription = (TextView) activity.findViewById(R.id.tv_player_lesson_description);
-        tvPlayerSpeed = (TextView) activity.findViewById(R.id.tv_player_speed);
-        btnBackward = (ImageButton) activity.findViewById(R.id.btn_backward);
-        btnPlay = (ImageButton) activity.findViewById(R.id.btn_play);
-        btnForward = (ImageButton) activity.findViewById(R.id.btn_forward);
-        tvIconVolumeDown = (TextView) activity.findViewById(R.id.tv_icon_volume_down);
-        tvIconVolumeUp = (TextView) activity.findViewById(R.id.tv_icon_volume_up);
-        sbVolumeControl = (SeekBar) activity.findViewById(R.id.sb_volume_control);
-        btnPlayMini = (ImageButton) activity.findViewById(R.id.btn_play_mini);
-        tvLessonTitleMini = (TextView) activity.findViewById(R.id.tv_lesson_title_mini);
-        tvLessonDescriptionMini = (TextView) activity.findViewById(R.id.tv_lesson_description_mini);
-        btnSlideUp = (ImageButton) activity.findViewById(R.id.btn_slide_up);
-        viewMiniPlayer = (RelativeLayout) rootView.findViewById(R.id.view_mini_player);
-        actionBar = ((AppCompatActivity)activity).getSupportActionBar();
-        rlAudioPlayerSlide = (RelativeLayout) rootView.findViewById(R.id.rl_audio_player_slide);
-        RelativeLayout rootViewMain = (RelativeLayout) (rootView.getParent()).getParent();
-        bottomBar = (BottomBar) rootViewMain.findViewById(R.id.bottomBar);
-        slidingLayout = (SlidingUpPanelLayout)rootView.findViewById(R.id.sliding_layout);
-        imageLoader = new ImageLoader(activity);
-        imageLoader.DisplayImage(thumbnailSource,imgPlayerStudy,300);
+        this.activity = activity;
+        tvIconSlideDown = (TextView) this.activity.findViewById(R.id.tv_icon_slide_down);
+        imgPlayerStudy = (ImageView) this.activity.findViewById(R.id.img_player_study);
+        sbAudioPlayer = (SeekBar) this.activity.findViewById(R.id.sb_audio_player);
+        tvCurrentDuration = (TextView) this.activity.findViewById(R.id.tv_current_duration);
+        tvTotalDuration = (TextView) this.activity.findViewById(R.id.tv_total_duration);
+        tvPlayerLessonTitle = (TextView) this.activity.findViewById(R.id.tv_player_lesson_title);
+        tvPlayerLessonDescription = (TextView) this.activity.findViewById(R.id.tv_player_lesson_description);
+        tvPlayerSpeed = (TextView) this.activity.findViewById(R.id.tv_player_speed);
+        btnBackward = (ImageButton) this.activity.findViewById(R.id.btn_backward);
+        btnPlay = (ImageButton) this.activity.findViewById(R.id.btn_play);
+        btnForward = (ImageButton) this.activity.findViewById(R.id.btn_forward);
+        tvIconVolumeDown = (TextView) this.activity.findViewById(R.id.tv_icon_volume_down);
+        tvIconVolumeUp = (TextView) this.activity.findViewById(R.id.tv_icon_volume_up);
+        sbVolumeControl = (SeekBar) this.activity.findViewById(R.id.sb_volume_control);
+        btnPlayMini = (ImageButton) this.activity.findViewById(R.id.btn_play_mini);
+        btnSlideUp = (ImageButton) this.activity.findViewById(R.id.btn_slide_up);
+//        viewMiniPlayer = (RelativeLayout) rootView.findViewById(R.id.view_mini_player);
+        actionBar = ((AppCompatActivity) this.activity).getSupportActionBar();
+//        rlAudioPlayerSlide = (RelativeLayout) rootView.findViewById(R.id.rl_audio_player_slide);
 
-        tvIconVolumeDown.setTypeface(FontManager.getTypeface(activity,FontManager.FONTAWESOME));
-        tvIconVolumeUp.setTypeface(FontManager.getTypeface(activity,FontManager.FONTAWESOME));
-        tvIconSlideDown.setTypeface(FontManager.getTypeface(activity,FontManager.FONTAWESOME));
+        RelativeLayout rootViewMain = (RelativeLayout) ((rootView.getParent()).getParent()).getParent();
+        bottomBar = (BottomBar) rootViewMain.findViewById(R.id.bottomBar);
+        slidingLayout = (SlidingUpPanelLayout)rootViewMain.findViewById(R.id.sliding_layout);
+        imageLoader = new ImageLoader(this.activity);
+
+        viewMiniPlayer = (RelativeLayout) rootViewMain.findViewById(R.id.view_mini_player);
+        rlAudioPlayerSlide = (RelativeLayout) rootViewMain.findViewById(R.id.rl_audio_player_slide);
+        tvPlayerLessonTitleMini = (TextView) viewMiniPlayer.findViewById(R.id.tv_player_lesson_title_mini);
+        tvPlayerLessonDescriptionMini = (TextView) viewMiniPlayer.findViewById(R.id.tv_player_lesson_description_mini);
+
+//        DisplayMetrics displayMetrics = activity.getResources().getDisplayMetrics();
+//        float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
+//        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+//        System.out.println("DisplayMetrics width: " + dpWidth);
+//
+//        Configuration configuration = activity.getResources().getConfiguration();
+//        int screenWidthDp = configuration.screenWidthDp;
+//        System.out.println("Configuration width: " + screenWidthDp);
+
+        // Get 90% of full screen width
+//        int size = screenWidthDp;
+//        System.out.println("size form full screen: " + size);
+//        imageLoader.DisplayImage(thumbnailSource,imgPlayerStudy,500,false);
+        imageLoader.DisplayImage(thumbnailSource,imgPlayerStudy,600,false);
+
+        tvIconVolumeDown.setTypeface(FontManager.getTypeface(this.activity,FontManager.FONTAWESOME));
+        tvIconVolumeUp.setTypeface(FontManager.getTypeface(this.activity,FontManager.FONTAWESOME));
+        tvIconSlideDown.setTypeface(FontManager.getTypeface(this.activity,FontManager.FONTAWESOME));
 
         btnSlideUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,6 +202,7 @@ public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMedi
 //        btnSlideDown = (ImageButton) rootView.findViewById(R.id.btn_slide_down);
 //        viewMiniPlayer = (RelativeLayout) rootView.findViewById(R.id.view_mini_player);
 
+        System.out.println("register listener...");
         sbAudioPlayer.setOnSeekBarChangeListener(this); // Register listener for updating progress bar when playing audio
 
 //        Bundle b = getIntent().getExtras();
@@ -265,7 +307,7 @@ public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMedi
         return new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
             public void onPanelSlide(View view, float v) {
-                System.out.println("sliding...");
+
             }
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
@@ -281,12 +323,28 @@ public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMedi
                     actionBar.show();
                     viewMiniPlayer.setVisibility(View.VISIBLE);
 //                    btnSlideDown.setVisibility(View.GONE);
-                    tvIconSlideDown.setVisibility(View.GONE);
-//                    rlAudioPlayerSlide.setVisibility(View.GONE);
+//                    tvIconSlideDown.setVisibility(View.GONE);
+                    rlAudioPlayerSlide.setVisibility(View.GONE);
                     bottomBar.setVisibility(View.VISIBLE);
+                    if (mService.isPlayingLesson()) {
+                        slidingLayout.setShadowHeight(2);
+                    }
                 }
             }
         };
+    }
+
+    public void setSlidingPanelStateExpanded() {
+        slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+        slidingLayout.setShadowHeight(2);
+    }
+
+    public void setSlidingPanelStateCollapsed() {
+        slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+    }
+
+    public void setViewMiniPlayerVisibility(int visibility) {
+        viewMiniPlayer.setVisibility(visibility);
     }
 
     /**
@@ -295,7 +353,7 @@ public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMedi
      */
     public void bindToService() {
         Intent intent = new Intent(activity, AudioPlayerService.class);
-//        intent.putExtra("currentSongIndex", currentSongIndex);
+        intent.putExtra("currentSongIndex", currentSongIndex);
 
         if (AudioPlayerServiceRunning()) {
             // Bind to LocalService
@@ -312,8 +370,12 @@ public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMedi
     private boolean AudioPlayerServiceRunning() {
         ActivityManager manager = (ActivityManager) activity.getSystemService(activity.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if ("com.erpdevelopment.vbvm.activity.AudioPlayerService".equals(service.service.getClassName()))
+            System.out.println("AudioPlayerHelper.AudioPlayerServiceRunning: " + service.service.getClassName());
+//            if ("com.erpdevelopment.vbvm.activity.AudioPlayerService".equals(service.service.getClassName())) {
+            if ("com.speakingcode.example.android.MediaPlayerService".equals(service.service.getClassName())) {
+                System.out.println("AudioPlayerHelper.AudioPlayerServiceRunning: " + true);
                 return true;
+            }
         }
         return false;
     }
@@ -321,24 +383,28 @@ public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMedi
     private BroadcastReceiver progressReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String totalDurationLabel = intent.getStringExtra("totalDurationLabel");
-            String currentDurationLabel = intent.getStringExtra("currentDurationLabel");
+//            String totalDurationLabel = intent.getStringExtra("totalDurationLabel");
+//            String currentDurationLabel = intent.getStringExtra("currentDurationLabel");
             int progress = intent.getIntExtra("progress", -1);
-            tvCurrentDuration.setText(currentDurationLabel);
-            tvTotalDuration.setText(totalDurationLabel);
+            tvCurrentDuration.setText(intent.getStringExtra("currentDurationLabel"));
+            tvTotalDuration.setText(intent.getStringExtra("totalDurationLabel"));
             sbAudioPlayer.setProgress(progress);
-            String currentTitleLabel = intent.getStringExtra("currentTitle");
-            String currentDescriptionLabel = intent.getStringExtra("currentDescription");
-            tvPlayerLessonTitle.setText(currentTitleLabel);
-            tvPlayerLessonDescription.setText(currentDescriptionLabel);
+            String title = intent.getStringExtra("currentTitle");
+            String description = intent.getStringExtra("currentDescription");
+            tvPlayerLessonTitle.setText(title);
+            tvPlayerLessonDescription.setText(description);
+            tvPlayerLessonTitleMini.setText(title);
+            tvPlayerLessonDescriptionMini.setText(description);
             boolean isLessonComplete = intent.getBooleanExtra("isLessonComplete", false);
-//            if ( isLessonComplete )
+            if ( isLessonComplete )
+                btnPlay.setImageResource(R.drawable.media_play);
 //                updateBibleStudyProgress();
         }
     };
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        System.out.println("New progress is: " + progress);
         seekBar.setProgress(progress);
     }
     /**
@@ -346,6 +412,8 @@ public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMedi
      * */
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
+
+        System.out.println("starting tracking touch...");
         sendStartTrackingTouch();
     }
 
@@ -354,8 +422,10 @@ public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMedi
      * */
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
+        System.out.println("stopping tracking touch...");
         int totalDuration = (int) FilesManager.totalDuration;
         int currentPosition = utils.progressToTimer(seekBar.getProgress(), totalDuration);
+        System.out.println("AudioPlayerHelper.onStopTrackingTouch: " + currentPosition);
         sendStopTrackingTouch(currentPosition);
     }
 
@@ -368,6 +438,13 @@ public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMedi
         Intent intent = new Intent("StopTrackingTouch");
         intent.putExtra("currentPosition", currentPosition);
         LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
+    }
+
+    public void unregisterReceiverProgress(Activity a) {
+//        if ( progressReceiver != null )
+//            activity.unregisterReceiver(progressReceiver);
+        if ( progressReceiver != null )
+            LocalBroadcastManager.getInstance(a).unregisterReceiver(progressReceiver);
     }
 
 //    @Override
@@ -394,6 +471,11 @@ public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMedi
     public void onError() {
 
     }
+
+    public AudioPlayerService getInstanceAudioPlayerService() {
+        return mService;
+    }
+
 
 //    @Override
 //    protected void onResume() {

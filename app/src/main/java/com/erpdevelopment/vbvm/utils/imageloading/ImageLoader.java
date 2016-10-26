@@ -36,7 +36,9 @@ public class ImageLoader {
     //handler to display images in UI thread
     Handler handler = new Handler();
 
+    // Set a custom scale on image
     private int size = 0;
+    private boolean useCache = true;
 
     public ImageLoader(Activity activity){
          
@@ -55,9 +57,11 @@ public class ImageLoader {
 
         //Store image and url in Map
         imageViews.put(imageView, url);
-         
+
+        Bitmap bitmap = null;
         //Check image is stored in MemoryCache Map or not (see MemoryCache.java)
-        Bitmap bitmap = memoryCache.get(url);
+        if (useCache)
+            bitmap = memoryCache.get(url);
 
 	    if(bitmap != null){
             // if image is stored in MemoryCache Map then
@@ -75,9 +79,10 @@ public class ImageLoader {
         }
     }
 
-    public void DisplayImage(String url, ImageView imageView,int size)
+    public void DisplayImage(String url, ImageView imageView, int size, boolean useCache)
     {
         this.size = size;
+        this.useCache = useCache;
         DisplayImage(url,imageView);
     }
          
@@ -145,7 +150,11 @@ public class ImageLoader {
         File f = fileCache.getFile(url);
 
         //Bitmap b = BitmapManager.getBitmapFromFile(f);
-        Bitmap b = BitmapManager.getBitmapFromFile(f,size);
+        Bitmap b = null;
+        if (size > 0)
+            b = BitmapManager.getBitmapFromFile(f,size);
+        else
+            b = BitmapManager.getBitmapFromFile(f);
         if( b != null )
             return b;
          
@@ -174,8 +183,11 @@ public class ImageLoader {
             //Now file created and going to resize file with defined height
             // Decodes image and scales it to reduce memory consumption
 //            bitmap = decodeFile(f);
-             
-            bitmap = BitmapManager.getBitmapFromFile(f);
+
+            if (size>0)
+                bitmap = BitmapManager.getBitmapFromFile(f);
+            else
+                bitmap = BitmapManager.getBitmapFromFile(f,size);
             
             return bitmap;
              

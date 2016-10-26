@@ -362,18 +362,18 @@ public class AudioPlayerService extends Service implements OnPreparedListener{
 	        	
     	@Override
 	    public void onCallStateChanged(int state, String incomingNumber) {
-	        if (state == TelephonyManager.CALL_STATE_RINGING) {
-	            //Incoming call: Pause music	        	
+	        if (state == TelephonyManager.CALL_STATE_RINGING || state == TelephonyManager.CALL_STATE_OFFHOOK) {
+	            //Incoming call: Pause audio
 	        	if(isPlayingLesson()){
 					if(isCreated())
 						pauseLesson();
 				}
-	        	
 	        } else if(state == TelephonyManager.CALL_STATE_IDLE) {
-	            //Not in call: Play music	  
-	        } else if(state == TelephonyManager.CALL_STATE_OFFHOOK) {
-	            //A call is dialing, active or on hold
+	            //Not in call: Play audio
 	        }
+//			else if(state == TelephonyManager.CALL_STATE_OFFHOOK) {
+//	            //A call is dialing, active or on hold
+//	        }
 	        super.onCallStateChanged(state, incomingNumber);
 	    }
 	};

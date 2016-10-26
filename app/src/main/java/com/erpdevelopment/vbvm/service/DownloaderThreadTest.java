@@ -1,17 +1,13 @@
 package com.erpdevelopment.vbvm.service;
 
-import android.app.Activity;
 import android.os.Message;
 
-import com.erpdevelopment.vbvm.R;
-import com.erpdevelopment.vbvm.adapter.LessonListAdapter;
+import com.erpdevelopment.vbvm.adapter.LessonsAdapter;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -24,10 +20,10 @@ public class DownloaderThreadTest extends Thread {
     private static final int DOWNLOAD_BUFFER_SIZE = 4096;
 
     // instance variables
-    private LessonListAdapter parentActivity;
+    private LessonsAdapter parentActivity;
     private String downloadUrl;
 
-    public DownloaderThreadTest(LessonListAdapter inParentActivity, String inUrl)
+    public DownloaderThreadTest(LessonsAdapter inParentActivity, String inUrl)
     {
         downloadUrl = "";
         if(inUrl != null)

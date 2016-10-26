@@ -26,6 +26,7 @@ import com.erpdevelopment.vbvm.activity.AudioControllerActivity;
 import com.erpdevelopment.vbvm.activity.AudioPlayerService;
 import com.erpdevelopment.vbvm.adapter.StudiesAdapter;
 import com.erpdevelopment.vbvm.db.DBHandleLessons;
+import com.erpdevelopment.vbvm.helper.AudioPlayerHelper;
 import com.erpdevelopment.vbvm.model.Lesson;
 import com.erpdevelopment.vbvm.model.Study;
 import com.erpdevelopment.vbvm.utils.DownloadJsonData;
@@ -109,7 +110,6 @@ public class StudiesFragment extends Fragment {
         gvStudiesOld.setFocusable(false);
         gvStudiesSingle.setFocusable(false);
         imageLoader = new ImageLoader(getActivity());
-        setAdapterStudiesFragment();
         actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setHomeButtonEnabled(false); // disable the button
@@ -118,6 +118,7 @@ public class StudiesFragment extends Fragment {
             actionBar.setDisplayShowTitleEnabled(false);
             actionBar.show();
         }
+        setAdapterStudiesFragment();
     }
 
     private void setAdapterStudiesFragment() {
@@ -147,11 +148,6 @@ public class StudiesFragment extends Fragment {
 
             }
         });
-
-//        if ( (FilesManager.listStudiesTypeNew == null) || (FilesManager.listStudiesTypeNew.size() == 0) ) {
-//            DownloadJsonData.getInstance().asyncJsonGetStudies(getActivity(),
-//                    adapterStudiesNew, adapterStudiesOld, adapterStudiesSingle, rootView, scroll);
-//        }
     }
 
     @Override
@@ -206,6 +202,23 @@ public class StudiesFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        System.out.println("StudiesFragment.onHiddenChanged: " + hidden);
+//        if (!hidden) {
+////            AudioPlayerHelper helper = AudioPlayerHelper.getInstance();
+//            AudioPlayerHelper helper = new AudioPlayerHelper();
+//            AudioPlayerService service = helper.getInstanceAudioPlayerService();
+//            if (service != null) {
+//                System.out.println("not null");
+//            } else {
+//                System.out.println("null");
+//            }
+//        }
+
     }
 
     //    /**

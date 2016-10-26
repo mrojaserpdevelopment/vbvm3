@@ -41,6 +41,30 @@ public class BitmapManager {
 	    } catch (FileNotFoundException e) {}
 	    return null;
 	}
+
+	public static Bitmap decodeFile(File f, int size){
+		try {
+			//Decode image size
+			BitmapFactory.Options o = new BitmapFactory.Options();
+			o.inJustDecodeBounds = true;
+			BitmapFactory.decodeStream(new FileInputStream(f),null,o);
+
+			//The new size we want to scale to
+//			final int REQUIRED_SIZE=70;
+			final int REQUIRED_SIZE=size;
+
+			//Find the correct scale value. It should be the power of 2.
+			int scale=1;
+			while(o.outWidth/scale/2>=REQUIRED_SIZE && o.outHeight/scale/2>=REQUIRED_SIZE)
+				scale*=2;
+
+			//Decode with inSampleSize
+			BitmapFactory.Options o2 = new BitmapFactory.Options();
+			o2.inSampleSize=scale;
+			return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
+			} catch (FileNotFoundException e) {}
+		return null;
+	}
 	
 	public static Bitmap getBitmapFromUrl(String url) {
 //		String SD_CARD_PATH = Environment.getExternalStorageDirectory().toString();
@@ -61,14 +85,14 @@ public class BitmapManager {
 	}
 
 	public static Bitmap getBitmapFromFile(File f, int size) {
-		Bitmap bmp = decodeFile(f);
+		Bitmap bmp = decodeFile(f, size);
 		if ( bmp == null )
 			return null;
 		Bitmap bmpScaled = null;
-		if ( size > 0 )
+//		if ( size > 0 )
 			bmpScaled = Bitmap.createScaledBitmap(bmp, size, size, true);
-		else
-			bmpScaled = Bitmap.createScaledBitmap(bmp, 100, 100, true);
+//		else
+//			bmpScaled = Bitmap.createScaledBitmap(bmp, 100, 100, true);
 		return bmpScaled;
 	}
 

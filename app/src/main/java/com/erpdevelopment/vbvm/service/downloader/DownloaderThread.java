@@ -1,13 +1,11 @@
 package com.erpdevelopment.vbvm.service.downloader;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 
 import com.erpdevelopment.vbvm.MainActivity;
-import com.erpdevelopment.vbvm.adapter.LessonListAdapter;
+import com.erpdevelopment.vbvm.adapter.LessonsAdapter;
 import com.erpdevelopment.vbvm.db.DBHandleLessons;
 import com.erpdevelopment.vbvm.model.Lesson;
 import com.erpdevelopment.vbvm.utils.imageloading.FileCache;
@@ -32,7 +30,7 @@ public class DownloaderThread extends Thread {
     public static final String NOTIFICATION = "com.erpdevelopment.vbvm2.service.receiver";
     public static final String NOTIFICATION2 = "com.erpdevelopment.vbvm2.service.receiver2";
     private FileCache fileCache;
-    public static boolean downloading = false;
+//    public static boolean downloading = false;
     public int downloadProgress = 0;
     //private static final int DOWNLOAD_BUFFER_SIZE = 4096;
     private static final int DOWNLOAD_BUFFER_SIZE = 16*1024;
@@ -42,15 +40,15 @@ public class DownloaderThread extends Thread {
     private String mDownloadType;
 //    private Handler activityHandler;
     private Activity mActivity;
-    private LessonListAdapter mAdapter;
+    private LessonsAdapter mAdapter;
     private int downloadStatus = 0;
 
     private int totalRead = 0;
     private int lengthOfFile = 0;
 
-    public DownloaderThread(Handler handler, Lesson lesson, String url, String downloadType, Activity activity, LessonListAdapter adapter) {
+    public DownloaderThread(Handler handler, Lesson lesson, String url, String downloadType, Activity activity, LessonsAdapter adapter) {
         fileCache = new FileCache(MainActivity.mainCtx);
-        downloading = true;
+//        downloading = true;
         mLesson = lesson;
         mUrl = url;
         mDownloadType = downloadType;
@@ -63,15 +61,14 @@ public class DownloaderThread extends Thread {
     public void run() {
         DownloadService.incrementCount();
         System.out.println("Increment - Count downloads: " + DownloadService.countDownloads);
-//        String urlPath = mUrl;
         String idLesson = mLesson.getIdProperty();
-//        int downloadStatus = 0;
         Log.d("DownloadManager", "downloading url:" + mUrl);
         File outputTemp = null;
         File output = null;
         try {
 
             DBHandleLessons.updateLessonDownloadStatus(idLesson, 2, mDownloadType);
+            downloadStatus = 2;
             outputTemp = fileCache.getFileTempFolder(mUrl);
             if (outputTemp.exists()) {
                 outputTemp.delete();
@@ -107,7 +104,7 @@ public class DownloaderThread extends Thread {
 //                msgBundle.putInt("downloadProgress", (int)((totalRead*100)/lengthOfFile));
 //                msg = new Message();
 //                msg.setData(msgBundle);
-//                msg.what = LessonListAdapter.MESSAGE_UPDATE_PROGRESS_BAR;
+//                msg.what = LessonsAdapter.MESSAGE_UPDATE_PROGRESS_BAR;
 //                activityHandler.sendMessage(msg);
 
                 downloadProgress = (int)((totalRead*100)/lengthOfFile);
@@ -141,7 +138,7 @@ public class DownloaderThread extends Thread {
 //                msgBundle.putInt("downloadProgress", 0);
 //                Message msg = new Message();
 //                msg.setData(msgBundle);
-//                msg.what = LessonListAdapter.MESSAGE_UPDATE_PROGRESS_BAR;
+//                msg.what = LessonsAdapter.MESSAGE_UPDATE_PROGRESS_BAR;
 //                activityHandler.sendMessage(msg);
 
 //                downloadProgress = 0;
@@ -221,12 +218,12 @@ public class DownloaderThread extends Thread {
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            Bundle msgBundle = new Bundle();
-            msgBundle.putString("idLesson", mLesson.getIdProperty());
-            msgBundle.putInt("downloadProgress", downloadProgress);
-            Message msg = new Message();
-            msg.setData(msgBundle);
-            msg.what = LessonListAdapter.MESSAGE_UPDATE_PROGRESS_BAR;
+//            Bundle msgBundle = new Bundle();
+//            msgBundle.putString("idLesson", mLesson.getIdProperty());
+//            msgBundle.putInt("downloadProgress", downloadProgress);
+//            Message msg = new Message();
+//            msg.setData(msgBundle);
+//            msg.what = LessonsAdapter.MESSAGE_UPDATE_PROGRESS_BAR;
 //            mActivity.runOnUiThread(new Runnable() {
 //                @Override
 //                public void run() {

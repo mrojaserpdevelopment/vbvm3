@@ -27,9 +27,9 @@ public final class R {
 		public static final int curvedTextViewTextSize = 0x7f070078;
 	}
 	public static final class drawable {
-		public static final int cardinal_bird = 0x7f020067;
-		public static final int circle_progress_background = 0x7f020068;
-		public static final int circle_progress_foreground = 0x7f020069;
+		public static final int cardinal_bird = 0x7f020068;
+		public static final int circle_progress_background = 0x7f020069;
+		public static final int circle_progress_foreground = 0x7f02006a;
 	}
 	public static final class id {
 	}

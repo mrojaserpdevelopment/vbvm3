@@ -92,4 +92,15 @@ public class ArticlesFragment extends Fragment implements TextWatcher {
     public void afterTextChanged(Editable s) {
 
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        System.out.println("ArticlesFragment.setUserVisibleHint: " + isVisibleToUser);
+        if (isVisibleToUser) {
+
+        } else {
+
+        }
+    }
 }

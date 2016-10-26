@@ -21,70 +21,26 @@
         android:background="@android:color/white"
         android:visibility="gone">
 
-        <!--<RelativeLayout-->
-            <!--android:id="@+id/rl_audio_player_1"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginBottom="10dp">-->
-
-            <!--<ImageButton-->
-                <!--android:id="@+id/btn_slide_down"-->
-                <!--android:src="@drawable/arrow_down"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:visibility="gone"/>-->
-
-            <!--&lt;!&ndash; Song Thumbnail Image &ndash;&gt;-->
-            <!--<LinearLayout-->
-                <!--android:id="@+id/ll_study_thumbnail"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:gravity="center_horizontal"-->
-                <!--android:orientation="vertical"-->
-                <!--android:layout_alignParentTop="true">-->
-                <!--<ImageView-->
-                    <!--android:id="@+id/img_player_study"-->
-                    <!--android:layout_width="300dp"-->
-                    <!--android:layout_height="300dp"-->
-                    <!--android:src="@drawable/adele"/>-->
-                <!--<SeekBar-->
-                    <!--android:id="@+id/sb_audio_player"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginRight="5dp"-->
-                    <!--android:layout_marginLeft="5dp"-->
-                    <!--android:paddingLeft="15dp"-->
-                    <!--android:paddingRight="15dp"/>-->
-            <!--</LinearLayout>-->
-
-        <!--</RelativeLayout>-->
-
         <FrameLayout
             android:id="@+id/fl_audio_player_1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@color/black">
             <ImageView
                 android:id="@+id/img_player_study"
-                android:layout_width="300dp"
-                android:layout_height="300dp"
-                android:src="@drawable/adele"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/adele"
+                android:layout_gravity="center"/>
             <TextView
                 android:id="@+id/tv_icon_slide_down"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/fa_icon_arrow_circle_down"
                 android:textSize="18sp"
-                android:textColor="@color/black"
+                android:textColor="@color/light_gray"
                 android:gravity="top"/>
-            <SeekBar
-                android:id="@+id/sb_audio_player"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:layout_gravity="bottom"/>
         </FrameLayout>
 
         <RelativeLayout
@@ -98,6 +54,7 @@
                 android:id="@+id/ll_timer_display"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="10dp"
                 android:layout_margin="0dp">
                 <!-- Current Duration Label -->
                 <TextView
@@ -108,7 +65,7 @@
                     android:gravity="start"
                     android:text="0:00"
                     android:textColor="@android:color/holo_blue_light"
-                    android:textStyle="bold"/>
+                    android:textStyle="normal"/>
                 <!-- Total Duration Label -->
                 <TextView
                     android:id="@+id/tv_total_duration"
@@ -118,7 +75,7 @@
                     android:gravity="end"
                     android:text="0:00"
                     android:textColor="#bbbbbb"
-                    android:textStyle="bold"/>
+                    android:textStyle="normal"/>
             </LinearLayout>
 
             <!-- Player Lesson Description -->
@@ -245,6 +202,19 @@
 
         </RelativeLayout>
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_above="@id/rl_audio_player_2"
+            android:layout_alignBottom="@id/fl_audio_player_1"
+            android:layout_marginBottom="-20dp">
+            <SeekBar
+                android:id="@+id/sb_audio_player"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"/>
+        </FrameLayout>
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -253,7 +223,8 @@
         android:layout_height="wrap_content"
         android:background="#ffffff"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:paddingRight="20dp"
+        android:visibility="visible">
         <ImageButton
             android:id="@+id/btn_play_mini"
             android:src="@drawable/icon_mini_player"
@@ -268,14 +239,14 @@
             android:orientation="vertical"
             android:layout_centerInParent="true">
             <TextView
-                android:id="@+id/tv_lesson_title_mini"
+                android:id="@+id/tv_player_lesson_title_mini"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Title Lesson"
                 android:textSize="14sp"
                 android:gravity="center"/>
             <TextView
-                android:id="@+id/tv_lesson_description_mini"
+                android:id="@+id/tv_player_lesson_description_mini"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Title Chapter"

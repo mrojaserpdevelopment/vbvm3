@@ -7,5 +7,7 @@
     <dimen name="circleProgressRadius">60dp</dimen>
     <dimen name="circleProgressThickness">7dp</dimen>
 
+    <dimen name="sliding_panel_height">45dp</dimen>
+    <dimen name="sliding_panel_shadow_height">2dp</dimen>
 
 </resources>

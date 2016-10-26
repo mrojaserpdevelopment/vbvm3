@@ -2,6 +2,7 @@ package com.erpdevelopment.vbvm;
 
 import java.util.ArrayList;
 
+import com.erpdevelopment.vbvm.activity.AudioPlayerService;
 import com.erpdevelopment.vbvm.adapter.NavDrawerListAdapter;
 import com.erpdevelopment.vbvm.db.DatabaseManager;
 import com.erpdevelopment.vbvm.db.VbvmDatabaseOpenHelper;
@@ -10,10 +11,13 @@ import com.erpdevelopment.vbvm.fragment.ArticlesFragment;
 import com.erpdevelopment.vbvm.fragment.LessonsFragment;
 import com.erpdevelopment.vbvm.fragment.StudiesFragment;
 import com.erpdevelopment.vbvm.fragment.VideosFragment;
+import com.erpdevelopment.vbvm.helper.AudioPlayerHelper;
 import com.erpdevelopment.vbvm.model.NavDrawerItem;
 import com.erpdevelopment.vbvm.model.Study;
+import com.erpdevelopment.vbvm.utils.Utilities;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import android.os.Bundle;
 import android.os.Environment;
@@ -33,8 +37,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 public class MainActivity extends AppCompatActivity implements StudiesFragment.OnItemSelectedListener {
 
@@ -51,8 +57,6 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
 
-	private ViewPager viewPagerMain;
-//	private CustomPagerAdapter mAdapter;
 	private ActionBar actionBar;
 
 	private StudiesFragment fragmentStudies;
@@ -61,7 +65,8 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 	private VideosFragment fragmentVideos;
 	private LessonsFragment fragmentLessons;
 
-//	private FragmentTransaction ft;
+	private RelativeLayout viewMiniPlayer;
+	private SlidingUpPanelLayout slidingLayout;
 
     // nav drawer title
     private CharSequence mDrawerTitle;
@@ -76,6 +81,9 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
 
+//	private static final int PIXELS_SHADOW_HEIGHT = 0;
+//	private static final int PIXELS_PANEL_HEIGHT = 0;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -87,6 +95,9 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
         VbvmDatabaseOpenHelper mDbHelper = VbvmDatabaseOpenHelper.getInstance(mainCtx);
         DatabaseManager.initializeInstance(mDbHelper);
         db = DatabaseManager.getInstance().openDatabase();
+
+		viewMiniPlayer = (RelativeLayout) findViewById(R.id.view_mini_player);
+		slidingLayout = (SlidingUpPanelLayout)findViewById(R.id.sliding_layout);
 
 //		actionBar = getSupportActionBar();
 //		if (actionBar != null) {
@@ -216,9 +227,29 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 	@Override
 	protected void onStart() {
 		super.onStart();
+		if (AudioPlayerService.created) {
+			viewMiniPlayer.setVisibility(View.VISIBLE);
+			slidingLayout.setShadowHeight(getResources().getDimensionPixelSize(R.dimen.sliding_panel_shadow_height));
+			slidingLayout.setPanelHeight(getResources().getDimensionPixelSize(R.dimen.sliding_panel_height));
+			System.out.println("MainActivity.onStart 1");
+//			slidingLayout.setVisibility(View.VISIBLE);
+		} else {
+			viewMiniPlayer.setVisibility(View.GONE);
+			slidingLayout.setShadowHeight(0);
+			slidingLayout.setPanelHeight(0);
+			System.out.println("MainActivity.onStart 2");
+//			slidingLayout.setVisibility(View.GONE);
+		}
         checkUserFirstVisit();
 	}
 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		System.out.println("MainActivity.onDestroy");
+		AudioPlayerHelper helper = new AudioPlayerHelper();
+		helper.unregisterReceiverProgress(this);
+	}
 
 	@Override
 	public void onStudyItemSelected(Study study) {
@@ -271,6 +302,11 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
         e.commit();
         return false;
     }
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+	}
 
 	//	private void initNavigationDrawer(Bundle savedInstanceState) {
 //		mTitle = mDrawerTitle = getTitle();

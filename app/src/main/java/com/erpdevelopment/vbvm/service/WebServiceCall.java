@@ -168,6 +168,7 @@ public class WebServiceCall {
 				lesson.setDownloadStatusTeacherAid(0);
 				lesson.setDownloadStatusTranscript(0);
 //				lesson.setStudy(study);
+				lesson.setState("new");
 				
 				JSONArray ltopics = lessonArray.getJSONObject(j).getJSONArray(TAG_TOPICS);
 				

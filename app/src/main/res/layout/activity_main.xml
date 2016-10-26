@@ -4,14 +4,31 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- This could be your fragment container, or something -->
-    <FrameLayout
-        android:id="@+id/frame_container"
+    <com.sothree.slidinguppanel.SlidingUpPanelLayout
+        xmlns:sothree="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/sliding_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="bottom"
+        sothree:umanoPanelHeight="0dp"
+        sothree:umanoShadowHeight="0dp"
+        sothree:umanoOverlay="false"
+        android:visibility="visible"
         android:layout_above="@+id/bottomBar"
-        android:paddingTop="0dp"
-        android:paddingBottom="0dp"/>
+        android:background="#ffffff">
+
+        <!-- This could be your fragment container, or something -->
+        <FrameLayout
+            android:id="@+id/frame_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"/>
+
+        <!-- Sliding Layout -->
+        <include layout="@layout/audio_player2" android:id="@+id/layout_audio_player"/>
+
+    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
     <com.roughike.bottombar.BottomBar
         android:id="@+id/bottomBar"

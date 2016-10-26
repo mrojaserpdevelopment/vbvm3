@@ -19,6 +19,7 @@ public class Study implements Parcelable {
 	private String lessonCount;
 	private List<Topic> topics;
 	private List<Lesson> lessons;
+	private List<Lesson> lessonsComplete;
 	
 	public Study() {
 		super();
@@ -105,6 +106,14 @@ public class Study implements Parcelable {
 		this.lessons = lessons;
 	}
 
+	public List<Lesson> getLessonsComplete() {
+		return lessonsComplete;
+	}
+
+	public void setLessonsComplete(List<Lesson> lessonsComplete) {
+		this.lessonsComplete = lessonsComplete;
+	}
+
 	public List<Topic> getTopics() {
 		return topics;
 	}
@@ -131,6 +140,7 @@ public class Study implements Parcelable {
 		dest.writeString(type);
 		dest.writeString(lessonCount);
 		dest.writeList(lessons);
+		dest.writeList(lessonsComplete);
 		dest.writeList(topics);
 	}	
 	
@@ -145,8 +155,10 @@ public class Study implements Parcelable {
 		type = in.readString();
 		lessonCount = in.readString();
 		lessons = new ArrayList<Lesson>();
+		lessonsComplete = new ArrayList<Lesson>();
 		topics = new ArrayList<Topic>();
 		in.readList(lessons, getClass().getClassLoader());
+		in.readList(lessonsComplete, getClass().getClassLoader());
 		in.readList(topics, getClass().getClassLoader());
 	}
 
