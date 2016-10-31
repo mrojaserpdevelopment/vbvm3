@@ -85,5 +85,10 @@ public class FormatDate {
 		}
 	    return dateArray;
 	}
+
+	public static String getDateFormat1(Date date) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
+		return new SimpleDateFormat("dd/MM/yy").format(date);
+	}
 	
 }

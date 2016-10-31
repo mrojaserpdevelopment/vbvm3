@@ -118,6 +118,7 @@ public class LessonsAdapter extends BaseAdapter {
 
 		if (lesson.getAudioSource().equals("")) {
 			viewHolderItem.itemTvIconPlayMini.setVisibility(View.INVISIBLE);
+			viewHolderItem.itemViewDownloadedTranscript.setVisibility(View.INVISIBLE);
 		} else {
 			viewHolderItem.itemTvIconPlayMini.setVisibility(View.VISIBLE);
 			if (lesson.getDownloadStatusAudio() == 1) {
@@ -127,31 +128,33 @@ public class LessonsAdapter extends BaseAdapter {
 			} else if (lesson.getDownloadStatusAudio() == 2) {
 				viewHolderItem.itemTvIconPlayMini.setText(context.getResources().getString(R.string.fa_icon_stop));
 				viewHolderItem.itemTvIconPlayMini.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-				viewHolderItem.itemViewDownloadedAudio.setVisibility(View.GONE);
+				viewHolderItem.itemViewDownloadedAudio.setVisibility(View.INVISIBLE);
 			} else {
 				viewHolderItem.itemTvIconPlayMini.setText(context.getResources().getString(R.string.fa_icon_play_mini));
 				viewHolderItem.itemTvIconPlayMini.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-				viewHolderItem.itemViewDownloadedAudio.setVisibility(View.GONE);
+				viewHolderItem.itemViewDownloadedAudio.setVisibility(View.INVISIBLE);
 			}
 		}
-		if (lesson.getTeacherAid().equals(""))
+		if (lesson.getTeacherAid().equals("")) {
 			viewHolderItem.itemTvIconTeacherAid.setVisibility(View.INVISIBLE);
-		else {
+			viewHolderItem.itemViewDownloadedTranscript.setVisibility(View.INVISIBLE);
+		} else {
 			viewHolderItem.itemTvIconTeacherAid.setVisibility(View.VISIBLE);
 			if (lesson.getDownloadStatusTeacherAid() == 1)
 				viewHolderItem.itemViewDownloadedTeacher.setVisibility(View.VISIBLE);
 			else
-				viewHolderItem.itemViewDownloadedTeacher.setVisibility(View.GONE);
+				viewHolderItem.itemViewDownloadedTeacher.setVisibility(View.INVISIBLE);
 		}
 
-		if (lesson.getTranscript().equals(""))
+		if (lesson.getTranscript().equals("")) {
 			viewHolderItem.itemTvIconTranscript.setVisibility(View.INVISIBLE);
-		else {
+			viewHolderItem.itemViewDownloadedTranscript.setVisibility(View.INVISIBLE);
+		} else {
 			viewHolderItem.itemTvIconTranscript.setVisibility(View.VISIBLE);
 			if (lesson.getDownloadStatusTranscript() == 1)
 				viewHolderItem.itemViewDownloadedTranscript.setVisibility(View.VISIBLE);
 			else
-				viewHolderItem.itemViewDownloadedTranscript.setVisibility(View.GONE);
+				viewHolderItem.itemViewDownloadedTranscript.setVisibility(View.INVISIBLE);
 		}
 
 		viewHolderItem.rlPlayMini.setOnClickListener(view -> onClickItemLessons(view,lesson,position));

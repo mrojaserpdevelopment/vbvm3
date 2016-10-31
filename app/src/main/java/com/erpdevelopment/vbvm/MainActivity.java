@@ -30,7 +30,6 @@ import android.support.annotation.IdRes;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -48,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 	public static String SD_CARD_PATH = Environment.getExternalStorageDirectory().toString();
 	public static final String SETTING_IMAGES_DIRECTORY_NAME = "vbvmi";
 	public static final String SETTING_DATABASE_FILE_PATH = "db-path";
+
+	public static final String LAST_FRAGMENT_STUDIES = "last_fragment_selected";
 
 	public static SQLiteDatabase db;
 	public static Context mainCtx;
@@ -81,6 +82,8 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
 
+	private Study mStudy;
+
 //	private static final int PIXELS_SHADOW_HEIGHT = 0;
 //	private static final int PIXELS_PANEL_HEIGHT = 0;
 
@@ -99,14 +102,14 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		viewMiniPlayer = (RelativeLayout) findViewById(R.id.view_mini_player);
 		slidingLayout = (SlidingUpPanelLayout)findViewById(R.id.sliding_layout);
 
-//		actionBar = getSupportActionBar();
-//		if (actionBar != null) {
-//			actionBar.setHomeButtonEnabled(false); // disable the button
-//			actionBar.setDisplayHomeAsUpEnabled(false); // remove the left caret
-//			actionBar.setDisplayShowHomeEnabled(false); // remove the icon
-//			actionBar.setDisplayShowTitleEnabled(false);
-//			actionBar.show();
-//		}
+		actionBar = getSupportActionBar();
+		if (actionBar != null) {
+			actionBar.setHomeButtonEnabled(false); // disable the button
+			actionBar.setDisplayHomeAsUpEnabled(false); // remove the left caret
+			actionBar.setDisplayShowHomeEnabled(false); // remove the icon
+			actionBar.setDisplayShowTitleEnabled(false);
+			actionBar.show();
+		}
 
 //		viewPagerMain = (ViewPager) findViewById(R.id.viewPagerMain);
 //		mAdapter = new CustomPagerAdapter(getSupportFragmentManager());
@@ -149,7 +152,11 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 			public void onTabSelected(@IdRes int tabId) {
 
 				if (tabId == R.id.tab_studies) {
-					displayFragmentStudies();
+//					String lastFragmentStudies = MainActivity.settings.getString(LAST_FRAGMENT_STUDIES, "");
+//					if (lastFragmentStudies.equals("") || lastFragmentStudies.equals("Studies"))
+						displayFragmentStudies();
+//					else if (lastFragmentStudies.equals("Lessons"))
+//						displayFragmentLessons();
 				}
 				if (tabId == R.id.tab_articles) {
 					displayFragmentArticles();
@@ -172,6 +179,7 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 			ft.show(fragmentStudies);
 		} else { // fragment needs to be added to frame container
 			ft.add(R.id.frame_container, fragmentStudies, "Studies");
+//			ft.addToBackStack(null);
 		}
 		// Hide fragment B
 		if (fragmentArticles.isAdded()) { ft.hide(fragmentArticles); }
@@ -179,6 +187,15 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		if (fragmentAnswers.isAdded()) { ft.hide(fragmentAnswers); }
 		if (fragmentVideos.isAdded()) { ft.hide(fragmentVideos); }
 		if (fragmentLessons.isAdded()) { ft.hide(fragmentLessons); }
+
+		actionBar.setDisplayHomeAsUpEnabled(false);
+		actionBar.setDisplayShowTitleEnabled(false);
+//		actionBar.setTitle(study.getTitle());
+
+//		SharedPreferences.Editor e = MainActivity.settings.edit();
+//		e.putString(LAST_FRAGMENT_STUDIES, "Studies");
+//		e.commit();
+
 		// Commit changes
 		ft.commit();
 	}
@@ -189,12 +206,19 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 			ft.show(fragmentArticles);
 		} else { // fragment needs to be added to frame container
 			ft.add(R.id.frame_container, fragmentArticles, "Articles");
+//			ft.addToBackStack(null);
 		}
 		if (fragmentStudies.isAdded()) { ft.hide(fragmentStudies); }
 		if (fragmentAnswers.isAdded()) { ft.hide(fragmentAnswers); }
 		if (fragmentVideos.isAdded()) { ft.hide(fragmentVideos); }
 		if (fragmentLessons.isAdded()) { ft.hide(fragmentLessons); }
 		ft.commit();
+
+		actionBar.setDisplayHomeAsUpEnabled(false);
+		actionBar.setDisplayShowTitleEnabled(false);
+		actionBar.setLogo(Utilities.getTextViewAsDrawable(this,"Studies"));
+//		actionBar.setTitle(study.getTitle());
+
 	}
 
 	protected void displayFragmentAnswers() {
@@ -208,6 +232,11 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		if (fragmentArticles.isAdded()) { ft.hide(fragmentArticles); }
 		if (fragmentVideos.isAdded()) { ft.hide(fragmentVideos); }
 		if (fragmentLessons.isAdded()) { ft.hide(fragmentLessons); }
+
+		actionBar.setDisplayHomeAsUpEnabled(false);
+		actionBar.setDisplayShowTitleEnabled(false);
+//		actionBar.setTitle(study.getTitle());
+
 		ft.commit();
 	}
 
@@ -222,8 +251,77 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		if (fragmentArticles.isAdded()) { ft.hide(fragmentArticles); }
 		if (fragmentAnswers.isAdded()) { ft.hide(fragmentAnswers); }
 		if (fragmentLessons.isAdded()) { ft.hide(fragmentLessons); }
+
+		actionBar.setDisplayHomeAsUpEnabled(false);
+		actionBar.setDisplayShowTitleEnabled(false);
+//		actionBar.setTitle(study.getTitle());
+
 		ft.commit();
 	}
+
+	protected void displayFragmentLessons() {
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		if (fragmentLessons.isAdded()) { // if the fragment is already in container
+			ft.show(fragmentLessons);
+		} else { // fragment needs to be added to frame container
+			ft.add(R.id.frame_container, fragmentLessons, "Lessons");
+		}
+		if (fragmentStudies.isAdded()) { ft.hide(fragmentStudies); }
+		if (fragmentArticles.isAdded()) { ft.hide(fragmentArticles); }
+		if (fragmentAnswers.isAdded()) { ft.hide(fragmentAnswers); }
+		if (fragmentVideos.isAdded()) { ft.hide(fragmentVideos); }
+
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setDisplayShowTitleEnabled(true);
+		actionBar.setTitle(mStudy.getTitle());
+
+//		SharedPreferences.Editor e = MainActivity.settings.edit();
+//		e.putString(LAST_FRAGMENT_STUDIES, "Lessons");
+//		e.commit();
+
+		Bundle bundle = new Bundle();
+		bundle.putParcelable("study", mStudy);
+		fragmentLessons.getArguments().putAll(bundle);
+
+		ft.detach(fragmentLessons);
+		ft.attach(fragmentLessons);
+
+		ft.commit();
+	}
+
+	@Override
+	public void onStudyItemSelected(Study study) {
+		mStudy = study;
+		displayFragmentLessons();
+//		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//		if (fragmentLessons.isAdded()) { // if the fragment is already in container
+//			ft.show(fragmentLessons);
+//		} else { // fragment needs to be added to frame container
+//			ft.add(R.id.frame_container, fragmentLessons, "Lessons");
+//		}
+//		if (fragmentStudies.isAdded()) { ft.hide(fragmentStudies); }
+//		if (fragmentArticles.isAdded()) { ft.hide(fragmentArticles); }
+//		if (fragmentAnswers.isAdded()) { ft.hide(fragmentAnswers); }
+//		if (fragmentVideos.isAdded()) { ft.hide(fragmentVideos); }
+//
+//		actionBar.setDisplayHomeAsUpEnabled(true);
+//		actionBar.setDisplayShowTitleEnabled(true);
+//		actionBar.setTitle(study.getTitle());
+//
+//		SharedPreferences.Editor e = MainActivity.settings.edit();
+//		e.putString(LAST_FRAGMENT_STUDIES, "Lessons");
+//		e.commit();
+//
+//		Bundle bundle = new Bundle();
+//		bundle.putParcelable("study", study);
+//		fragmentLessons.getArguments().putAll(bundle);
+//
+//		ft.detach(fragmentLessons);
+//		ft.attach(fragmentLessons);
+//
+//		ft.commit();
+	}
+
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -240,45 +338,48 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 			System.out.println("MainActivity.onStart 2");
 //			slidingLayout.setVisibility(View.GONE);
 		}
-        checkUserFirstVisit();
+		checkUserFirstVisit();
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		System.out.println("MainActivity.onDestroy");
 		AudioPlayerHelper helper = new AudioPlayerHelper();
 		helper.unregisterReceiverProgress(this);
 	}
 
-	@Override
-	public void onStudyItemSelected(Study study) {
+	private void backToStudies() {
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		if (fragmentLessons.isAdded()) { // if the fragment is already in container
-			ft.show(fragmentLessons);
+
+		if (fragmentStudies.isAdded()) { // if the fragment is already in container
+			System.out.println("LessonsFragment.backToStudies 1");
+			ft.show(fragmentStudies);
 		} else { // fragment needs to be added to frame container
-			ft.add(R.id.frame_container, fragmentLessons, "Lessons");
+			System.out.println("LessonsFragment.backToStudies 2");
+			ft.add(R.id.frame_container, fragmentStudies, "Studies");
 		}
-		if (fragmentStudies.isAdded()) { ft.hide(fragmentStudies); }
-		if (fragmentArticles.isAdded()) { ft.hide(fragmentArticles); }
-		if (fragmentAnswers.isAdded()) { ft.hide(fragmentAnswers); }
-		if (fragmentVideos.isAdded()) { ft.hide(fragmentVideos); }
-//		Bundle bundle = new Bundle();
-//		bundle.putParcelable("study", study);
-//		fragmentLessons.setArguments(bundle);
+		System.out.println("LessonsFragment.backToStudies 3");
+		if (fragmentStudies.isAdded()) {
+			System.out.println("LessonsFragment.backToStudies 4");
+			ft.show(fragmentStudies);
+			ft.hide(fragmentLessons);
+		}
 
-		Bundle bundle = new Bundle();
-		bundle.putParcelable("study", study);
-		fragmentLessons.getArguments().putAll(bundle);
+//        actionBar.setDisplayHomeAsUpEnabled(true);
+//        actionBar.setDisplayShowTitleEnabled(true);
+//        actionBar.setTitle(study.getTitle());
+//
+//        Bundle bundle = new Bundle();
+//        bundle.putParcelable("study", study);
+//        fragmentLessons.getArguments().putAll(bundle);
 
-		ft.detach(fragmentLessons);
-		ft.attach(fragmentLessons);
+//        ft.detach(fragmentLessons);
+//        ft.attach(fragmentLessons);
 
 		ft.commit();
 	}
 
-
-//    /**
+	//    /**
 //     * CHECK LAST UPDATE TIME
 //     */
     private boolean checkUserFirstVisit(){
@@ -302,11 +403,6 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
         e.commit();
         return false;
     }
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-	}
 
 	//	private void initNavigationDrawer(Bundle savedInstanceState) {
 //		mTitle = mDrawerTitle = getTitle();
@@ -470,6 +566,9 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		switch (item.getItemId()) {
 		case R.id.action_settings:
 			return true;
+		case android.R.id.home:
+			System.out.println("MainActivity.onOptionsItemSelected...");
+			displayFragmentStudies();
 		default:
 			return super.onOptionsItemSelected(item);
 		}

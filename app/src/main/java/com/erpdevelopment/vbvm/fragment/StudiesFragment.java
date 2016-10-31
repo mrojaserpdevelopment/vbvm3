@@ -110,14 +110,14 @@ public class StudiesFragment extends Fragment {
         gvStudiesOld.setFocusable(false);
         gvStudiesSingle.setFocusable(false);
         imageLoader = new ImageLoader(getActivity());
-        actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setHomeButtonEnabled(false); // disable the button
-            actionBar.setDisplayHomeAsUpEnabled(false); // remove the left caret
-            actionBar.setDisplayShowHomeEnabled(false); // remove the icon
-            actionBar.setDisplayShowTitleEnabled(false);
-            actionBar.show();
-        }
+//        actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+//        if (actionBar != null) {
+//            actionBar.setHomeButtonEnabled(false); // disable the button
+//            actionBar.setDisplayHomeAsUpEnabled(false); // remove the left caret
+//            actionBar.setDisplayShowHomeEnabled(false); // remove the icon
+//            actionBar.setDisplayShowTitleEnabled(false);
+//            actionBar.show();
+//        }
         setAdapterStudiesFragment();
     }
 
@@ -153,10 +153,7 @@ public class StudiesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-//        checkUserFirstVisit();
-        System.out.println("StudiesFragment.onResume");
         FilesManager.lastLessonId = MainActivity.settings.getString("currentLessonId", "");
-        System.out.println("FilesManager.listStudiesTypeNew.size(): " + FilesManager.listStudiesTypeNew.size());
         if ( (FilesManager.listStudiesTypeNew == null) || (FilesManager.listStudiesTypeNew.size() == 0) ) {
             DownloadJsonData.getInstance().asyncJsonGetStudies(getActivity(),
                     adapterStudiesNew, adapterStudiesOld, adapterStudiesSingle, rootView, scroll);
@@ -207,7 +204,7 @@ public class StudiesFragment extends Fragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        System.out.println("StudiesFragment.onHiddenChanged: " + hidden);
+//        System.out.println("StudiesFragment.onHiddenChanged: " + hidden);
 //        if (!hidden) {
 ////            AudioPlayerHelper helper = AudioPlayerHelper.getInstance();
 //            AudioPlayerHelper helper = new AudioPlayerHelper();

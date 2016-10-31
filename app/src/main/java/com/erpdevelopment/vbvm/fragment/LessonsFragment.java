@@ -11,6 +11,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -37,6 +42,7 @@ import com.erpdevelopment.vbvm.utils.BitmapManager;
 import com.erpdevelopment.vbvm.utils.CheckConnectivity;
 import com.erpdevelopment.vbvm.utils.imageloading.FileCache;
 import com.erpdevelopment.vbvm.utils.imageloading.ImageLoader;
+import com.ms.square.android.expandabletextview.ExpandableTextView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -48,6 +54,7 @@ public class LessonsFragment extends Fragment {
     private TextView tvLessonCount;
     private TextView tvLessonCountComplete;
     private ImageView imgStudy;
+    private ImageView imgStudyBg;
     private ListView lvLessons;
     private ListView lvLessonsComplete;
     private LessonsAdapter adapterLessons;
@@ -193,6 +200,7 @@ public class LessonsFragment extends Fragment {
         lvLessons = (ListView) rootView.findViewById(R.id.lv_lessons);
         lvLessonsComplete = (ListView) rootView.findViewById(R.id.lv_lessons_complete);
         imgStudy = (ImageView) rootView.findViewById(R.id.img_study);
+        imgStudyBg = (ImageView) rootView.findViewById(R.id.img_study_bg);
         tvLessonCount = (TextView) rootView.findViewById(R.id.tv_lesson_count);
         tvLessonCountComplete = (TextView) rootView.findViewById(R.id.tv_lesson_count_complete);
         listLessons = new ArrayList<>();
@@ -201,8 +209,16 @@ public class LessonsFragment extends Fragment {
         adapterLessonsComplete = new LessonsCompleteAdapter(getActivity(), listLessonsComplete, rootView);
         lvLessons.setAdapter(adapterLessons);
         lvLessonsComplete.setAdapter(adapterLessonsComplete);
-        imageLoader.DisplayImage(mStudy.getThumbnailSource(), imgStudy);
+//        imageLoader.DisplayImage(mStudy.getThumbnailSource(), imgStudy);
+        imageLoader.DisplayImage(mStudy.getThumbnailSource(),imgStudy,200,false);
+        imageLoader.DisplayImage(mStudy.getThumbnailSource(),imgStudyBg,100,false);
         new asyncGetStudyLessons().execute(mStudy);
+
+        // sample code snippet to set the text content on the ExpandableTextView
+        ExpandableTextView expTv1 = (ExpandableTextView) activity.findViewById(R.id.expand_text_view);
+
+        // IMPORTANT - call setText on the ExpandableTextView to set the text content to display
+        expTv1.setText(mStudy.getStudiesDescription());
     }
 
     private class asyncGetStudyLessons extends AsyncTask<Study, String, String > {
@@ -407,6 +423,7 @@ public class LessonsFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
             case R.id.action_mark_all_complete:
                 markAllLessons("complete");
@@ -421,8 +438,85 @@ public class LessonsFragment extends Fragment {
                 deleteAllLessons(mStudy.getLessons());
                 deleteAllLessons(mStudy.getLessonsComplete());
                 return true;
+//            case android.R.id.home:
+//                LessonsFragment fragmentLessons = LessonsFragment.newInstance(0);
+//                StudiesFragment fragmentStudies = StudiesFragment.newInstance(0);
+//
+//                FragmentTransaction ft =((AppCompatActivity) activity).getSupportFragmentManager().beginTransaction();
+//                if (fragmentStudies.isAdded()) { // if the fragment is already in container
+//                    System.out.println("step 1...");
+//                    ft.show(fragmentStudies);
+//                    ft.hide(fragmentLessons);
+//                }
+//        } else { // fragment needs to be added to frame container
+//            ft.add(R.id.frame_container, fragmentStudies, "Studies");
+//        }
+                // Hide fragment B
+//        if (fragmentArticles.isAdded()) { ft.hide(fragmentArticles); }
+//        // Hide fragment C
+//        if (fragmentAnswers.isAdded()) { ft.hide(fragmentAnswers); }
+//        if (fragmentVideos.isAdded()) { ft.hide(fragmentVideos); }
+//        if (fragmentLessons.isAdded()) { ft.hide(fragmentLessons); }
+                // Commit changes
+//                ft.commit();
+//                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void backToStudies() {
+        LessonsFragment fragmentLessons = LessonsFragment.newInstance(0);
+        StudiesFragment fragmentStudies = StudiesFragment.newInstance(0);
+        FragmentTransaction ft = ((AppCompatActivity)activity).getSupportFragmentManager().beginTransaction();
+
+        if (fragmentStudies.isAdded()) { // if the fragment is already in container
+            System.out.println("LessonsFragment.backToStudies 1");
+            ft.show(fragmentStudies);
+        } else { // fragment needs to be added to frame container
+            System.out.println("LessonsFragment.backToStudies 2");
+            ft.add(R.id.frame_container, fragmentStudies, "Studies");
+        }
+        System.out.println("LessonsFragment.backToStudies 3");
+        if (fragmentStudies.isAdded()) {
+            System.out.println("LessonsFragment.backToStudies 4");
+            ft.show(fragmentStudies);
+            ft.hide(fragmentLessons);
+        }
+
+//        actionBar.setDisplayHomeAsUpEnabled(true);
+//        actionBar.setDisplayShowTitleEnabled(true);
+//        actionBar.setTitle(study.getTitle());
+//
+//        Bundle bundle = new Bundle();
+//        bundle.putParcelable("study", study);
+//        fragmentLessons.getArguments().putAll(bundle);
+
+//        ft.detach(fragmentLessons);
+//        ft.attach(fragmentLessons);
+
+        ft.commit();
+    }
+
+    private ActionBar actionBar;
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+//        actionBar = ((AppCompatActivity)activity).getSupportActionBar();
+        System.out.println("LessonsFragment.onHiddenChanged: " + hidden);
+//        if (hidden) {
+//            actionBar.setHomeButtonEnabled(false); // disable the button
+//            actionBar.setDisplayHomeAsUpEnabled(false); // remove the left caret
+//            actionBar.setDisplayShowHomeEnabled(false); // remove the icon
+//            actionBar.setDisplayShowTitleEnabled(false);
+//            actionBar.show();
+//        } else {
+////            actionBar.setHomeButtonEnabled(false); // disable the button
+//            actionBar.setDisplayHomeAsUpEnabled(true); // remove the left caret
+////            actionBar.setDisplayShowHomeEnabled(false); // remove the icon
+////            actionBar.setDisplayShowTitleEnabled(false);
+//            actionBar.setTitle(mStudy.getTitle());
+//            actionBar.show();
+//        }
     }
 }

@@ -13,18 +13,18 @@ public final class R {
 		public static final int circleProgressCompleteStartGradient = 0x7f0c0019;
 		public static final int circleProgressIncompleteEndGradient = 0x7f0c001a;
 		public static final int circleProgressIncompleteStartGradient = 0x7f0c001b;
-		public static final int coral_blue = 0x7f0c0026;
-		public static final int dark_blue = 0x7f0c0029;
-		public static final int light_gray = 0x7f0c0040;
-		public static final int text_gray = 0x7f0c0065;
-		public static final int white = 0x7f0c0066;
+		public static final int coral_blue = 0x7f0c001f;
+		public static final int dark_blue = 0x7f0c0022;
+		public static final int light_gray = 0x7f0c0039;
+		public static final int text_gray = 0x7f0c005e;
+		public static final int white = 0x7f0c005f;
 	}
 	public static final class dimen {
-		public static final int circleProgressRadius = 0x7f070074;
-		public static final int circleProgressThickness = 0x7f070075;
-		public static final int curvedTextPadding = 0x7f070076;
-		public static final int curvedTextRadius = 0x7f070077;
-		public static final int curvedTextViewTextSize = 0x7f070078;
+		public static final int circleProgressRadius = 0x7f070053;
+		public static final int circleProgressThickness = 0x7f070054;
+		public static final int curvedTextPadding = 0x7f070055;
+		public static final int curvedTextRadius = 0x7f070056;
+		public static final int curvedTextViewTextSize = 0x7f070057;
 	}
 	public static final class drawable {
 		public static final int cardinal_bird = 0x7f020068;
@@ -34,7 +34,7 @@ public final class R {
 	public static final class id {
 	}
 	public static final class layout {
-		public static final int activity_main = 0x7f030020;
+		public static final int activity_main = 0x7f030021;
 	}
 	public static final class string {
 		public static final int app_name = 0x7f06002d;
@@ -46,6 +46,6 @@ public final class R {
 		public static final int total_observations = 0x7f060080;
 	}
 	public static final class style {
-		public static final int AppTheme = 0x7f080093;
+		public static final int AppTheme = 0x7f080092;
 	}
 }

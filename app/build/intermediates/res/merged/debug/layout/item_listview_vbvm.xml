@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/item_listview_bible_studies"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
 	android:background="@drawable/list_item_background"
 	android:orientation="vertical"
-	android:layout_width="fill_parent"
 	android:paddingLeft="5dp"
 	android:paddingRight="10dp"
 	android:paddingStart="5dp"
 	android:paddingEnd="10dp" >
 
-	<LinearLayout 
+	<LinearLayout
 	    android:id="@+id/ll_listview_item"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_margin="10dp">
-    
+
         <ImageView
 		    android:id="@+id/img_bible_study"
 		    android:layout_width="60dp"
@@ -25,76 +25,76 @@
 		    android:layout_marginRight="10dp"
 		    android:layout_marginEnd="10dp"
 		    android:visibility="visible" />
-        
+
         <LinearLayout
-            android:id="@+id/ll_article_date" 
+            android:id="@+id/ll_article_date"
 	        android:layout_width="wrap_content"
 	        android:layout_height="50dp"
 	        android:orientation="vertical"
 	        android:gravity="center_vertical|start"
 	        android:layout_marginRight="20dp"
 	        android:visibility="gone" >
-        
+
 			<TextView
 			    android:id="@+id/tv_article_day"
 			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"	    
+			    android:layout_height="wrap_content"
 			    android:textSize="24sp"
 			    android:text=""
 			    android:textColor="#000000"
 			    android:gravity="start"
-			    android:singleLine="true"			    
-			    android:layout_gravity="center_horizontal"/>			
- 
+			    android:singleLine="true"
+			    android:layout_gravity="center_horizontal"/>
+
 			<TextView
 			    android:id="@+id/tv_article_month"
 			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"	    
+			    android:layout_height="wrap_content"
 			    android:textSize="14sp"
 			    android:text=""
 			    android:textColor="#938d8c"
 			    android:gravity="start"
 			    android:singleLine="true"
 			    android:ellipsize="end"/>
-			
-		</LinearLayout>	
-	
-        <LinearLayout 
+
+		</LinearLayout>
+
+        <LinearLayout
 	        android:layout_width="fill_parent"
 	        android:layout_height="50dp"
 	        android:orientation="vertical"
 	        android:gravity="center_vertical|start">
-        
+
 			<TextView
 			    android:id="@+id/tv_title_bible_study"
 			    android:layout_width="fill_parent"
-			    android:layout_height="wrap_content"	    
+			    android:layout_height="wrap_content"
 			    android:textSize="18sp"
 			    android:text="Title"
 			    android:textColor="#000000"
 			    android:gravity="start"
 			    android:singleLine="true"
-			    android:ellipsize="end"/>			
- 
+			    android:ellipsize="end"/>
+
 			<TextView
 			    android:id="@+id/tv_type_bible_study"
 			    android:layout_width="fill_parent"
-			    android:layout_height="wrap_content"	    
+			    android:layout_height="wrap_content"
 			    android:textSize="14sp"
 			    android:text="Subtitle"
 			    android:textColor="#938d8c"
 			    android:gravity="start"
 			    android:singleLine="true"
 			    android:ellipsize="end"/>
-			
-		</LinearLayout>	
-			
+
+		</LinearLayout>
+
     </LinearLayout>
-    
+
 	<TextView
 	    android:id="@+id/tv_item_topic"
 	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"	    
+	    android:layout_height="wrap_content"
 	    android:textSize="18sp"
 	    android:text=""
 	    android:textColor="#000000"
@@ -104,4 +104,6 @@
 	    android:layout_margin="20dp"
 	    android:visibility="gone"/>
 
-</LinearLayout>
+</RelativeLayout>
+
+

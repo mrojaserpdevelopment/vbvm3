@@ -45,11 +45,12 @@ public class DBHandlePosts {
 	        do {
 	        	post = new QandAPost();				
 				post.setIdProperty(c.getString(c.getColumnIndex(COLUMN_ID_POST)));
-				long timeMills = Long.parseLong(c.getString(c.getColumnIndex(COLUMN_POSTED_DATE)));
-				Date d = new Date(timeMills);
-				DateFormat df = DateFormat.getDateInstance();
-				String date = df.format(d);
-				post.setPostedDate(date);
+//				long timeMills = Long.parseLong(c.getString(c.getColumnIndex(COLUMN_POSTED_DATE)));
+//				Date d = new Date(timeMills);
+//				DateFormat df = DateFormat.getDateInstance();
+//				String date = df.format(d);
+//				post.setPostedDate(date);
+				post.setPostedDate(c.getString(c.getColumnIndex(COLUMN_POSTED_DATE)));
 	    		post.setCategory(c.getString((c.getColumnIndex(COLUMN_CATEGORY))));
 	    		post.setAverageRating(c.getString((c.getColumnIndex(COLUMN_AVERAGE_RATING))));
 	    		post.setqAndAPostsDescription(c.getString((c.getColumnIndex(COLUMN_POST_DESCRIPTION))));

@@ -12,6 +12,10 @@
         "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.2.1\\res\\drawable-hdpi-v4\\abc_tab_indicator_mtrl_alpha.9.png"
     },
     {
+        "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_collapse_large_holo_light.png",
+        "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.ms-square\\expandableTextView\\0.1.4\\res\\drawable-hdpi\\ic_collapse_large_holo_light.png"
+    },
+    {
         "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\abc_ic_star_half_black_48dp.png",
         "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.2.1\\res\\drawable-hdpi-v4\\abc_ic_star_half_black_48dp.png"
     },
@@ -46,6 +50,10 @@
     {
         "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\abc_ic_commit_search_api_mtrl_alpha.png",
         "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.2.1\\res\\drawable-hdpi-v4\\abc_ic_commit_search_api_mtrl_alpha.png"
+    },
+    {
+        "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_collapse_small_holo_light.png",
+        "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.ms-square\\expandableTextView\\0.1.4\\res\\drawable-hdpi\\ic_collapse_small_holo_light.png"
     },
     {
         "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\abc_ic_star_black_36dp.png",
@@ -134,6 +142,14 @@
     {
         "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\abc_btn_switch_to_on_mtrl_00001.9.png",
         "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.2.1\\res\\drawable-hdpi-v4\\abc_btn_switch_to_on_mtrl_00001.9.png"
+    },
+    {
+        "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_expand_small_holo_light.png",
+        "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.ms-square\\expandableTextView\\0.1.4\\res\\drawable-hdpi\\ic_expand_small_holo_light.png"
+    },
+    {
+        "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_expand_large_holo_light.png",
+        "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.ms-square\\expandableTextView\\0.1.4\\res\\drawable-hdpi\\ic_expand_large_holo_light.png"
     },
     {
         "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\abc_list_selector_disabled_holo_light.9.png",

@@ -41,7 +41,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -184,15 +186,9 @@ public class DownloadJsonData {
                             FilesManager.listStudiesTypeOld = listStudiesOld;
                             FilesManager.listStudiesTypeSingle = listStudiesSingle;
 
-                            System.out.println("asyncJsonGetStudies updating after WS call...");
                             studiesAdapterNew.setStudyListItems(FilesManager.listStudiesTypeNew);
                             studiesAdapterOld.setStudyListItems(FilesManager.listStudiesTypeOld);
                             studiesAdapterSingle.setStudyListItems(FilesManager.listStudiesTypeSingle);
-
-//                            tvCountStudiesNew.setText(FilesManager.listStudiesTypeNew.size());
-//                            tvCountStudiesNew.setText("Test");
-//                            tvCountStudiesOld.setText(FilesManager.listStudiesTypeOld.size());
-//                            tvCountStudiesSingle.setText(FilesManager.listStudiesTypeSingle.size());
 
                             //Save state flag for sync Webservice/DB
                             SharedPreferences.Editor e = MainActivity.settings.edit();
@@ -226,9 +222,7 @@ public class DownloadJsonData {
                 });
             }
             mScroll.scrollTo(0, 0);
-//            pDialog.dismiss();
         }
-//        mScroll.scrollTo(0, 0);
     }
 
     private class asyncGetAllLessons extends AsyncTask< Study, String, String > {
@@ -318,7 +312,12 @@ public class DownloadJsonData {
                                 for ( int i=0; i < articles.length(); i++ ) {
                                     JSONObject c = articles.getJSONObject(i);
                                     Article article = new Article();
-                                    article.setPostedDate(StringEscapeUtils.unescapeHtml(c.getString("postedDate")+"000"));
+                                    long timeMills = Long.parseLong(c.getString("postedDate")+"000");
+                                    Date d = new Date(timeMills);
+                                    DateFormat df = DateFormat.getDateInstance();
+                                    String date = df.format(d);
+                                    article.setPostedDate(date);
+//                                    article.setPostedDate(StringEscapeUtils.unescapeHtml(c.getString("postedDate")+"000"));
                                     article.setCategory(StringEscapeUtils.unescapeJava(StringEscapeUtils.unescapeHtml(c.getString("category"))));
                                     article.setAverageRating(StringEscapeUtils.unescapeJava(StringEscapeUtils.unescapeHtml(c.getString("averageRating"))));
                                     article.setArticlesDescription(StringEscapeUtils.unescapeJava(StringEscapeUtils.unescapeHtml(c.getString("description"))));
@@ -418,7 +417,12 @@ public class DownloadJsonData {
                                 for ( int i=0; i < qAPosts.length(); i++ ) {
                                     JSONObject c = qAPosts.getJSONObject(i);
                                     QandAPost qAPost = new QandAPost();
+                                    long timeMills = Long.parseLong(c.getString("postedDate")+"000");
+                                    Date d = new Date(timeMills);
+                                    DateFormat df = DateFormat.getDateInstance();
+                                    String date = df.format(d);
                                     qAPost.setPostedDate(StringEscapeUtils.unescapeJava(c.getString("postedDate")+"000"));
+//                                    qAPost.setPostedDate(date);
                                     qAPost.setCategory(StringEscapeUtils.unescapeJava(c.getString("category")));
                                     qAPost.setAverageRating(StringEscapeUtils.unescapeJava(c.getString("averageRating")));
                                     qAPost.setqAndAPostsDescription(StringEscapeUtils.unescapeJava(c.getString("description")));

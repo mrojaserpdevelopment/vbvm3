@@ -59,47 +59,70 @@ public class ArticlesAdapter extends BaseAdapter implements Filterable{
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-        
-		// Get the data item for this position
-	       Article article = (Article) getItem(position);    
-	       // Check if an existing view is being reused, otherwise inflate the view
-	       if (convertView == null) {
-		      LayoutInflater inflater = activity.getLayoutInflater();
-	          convertView = inflater.inflate(R.layout.item_listview_vbvm, null);
-	       }
-	       ImageView img = (ImageView) convertView.findViewById(R.id.img_bible_study);
-	       img.setVisibility(View.GONE);
-	       
-	       LinearLayout llArticleDate = (LinearLayout) convertView.findViewById(R.id.ll_article_date);
-	       llArticleDate.setVisibility(View.VISIBLE);
-	       
-	       TextView tvTitle = (TextView) convertView.findViewById(R.id.tv_title_bible_study);
-	       tvTitle.setText(article.getTitle());
 
-	       TextView tvAuthor = (TextView) convertView.findViewById(R.id.tv_type_bible_study);
-	       tvAuthor.setText(article.getAuthorName());
-	       
-	       Date date = new Date(Long.parseLong(article.getPostedDate()));
-	       String[] dateArray = FormatDate.getDateArray(date);
-	       TextView tvDay = (TextView) convertView.findViewById(R.id.tv_article_day);
-	       tvDay.setText(dateArray[0]);		       
-	       TextView tvMonth = (TextView) convertView.findViewById(R.id.tv_article_month);
-	       tvMonth.setText(dateArray[1]);
+		ViewHolder viewHolder = null;
+		// Get the data item for this position
+		Article article = (Article) getItem(position);
+		// Check if an existing view is being reused, otherwise inflate the view
+		if (convertView == null) {
+			LayoutInflater inflater = activity.getLayoutInflater();
+			convertView = inflater.inflate(R.layout.item_listview_articles, null);
+			viewHolder = new ViewHolder();
+			viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tv_article_title);
+			viewHolder.tvAuthor = (TextView) convertView.findViewById(R.id.tv_article_author);
+			viewHolder.tvDate = (TextView) convertView.findViewById(R.id.tv_article_date);
+			convertView.setTag(viewHolder);
+		} else {
+			viewHolder = (ViewHolder) convertView.getTag();
+		}
+
+		viewHolder.tvTitle.setText(article.getTitle());
+		viewHolder.tvAuthor.setText(article.getAuthorName());
+//		Date date = new Date(Long.parseLong(article.getPostedDate()));
+//		String[] dateArray = FormatDate.getDateArray(new Date(Long.parseLong(article.getPostedDate())));
+		viewHolder.tvDate.setText(article.getPostedDate());
+
+
+
+//		ImageView img = (ImageView) convertView.findViewById(R.id.img_bible_study);
+//		img.setVisibility(View.GONE);
+//
+//		LinearLayout llArticleDate = (LinearLayout) convertView.findViewById(R.id.ll_article_date);
+//		llArticleDate.setVisibility(View.VISIBLE);
+//
+//		   TextView tvTitle = (TextView) convertView.findViewById(R.id.tv_title_bible_study);
+//		   tvTitle.setText(article.getTitle());
+//
+//		   TextView tvAuthor = (TextView) convertView.findViewById(R.id.tv_type_bible_study);
+//		   tvAuthor.setText(article.getAuthorName());
+//
+//		   Date date = new Date(Long.parseLong(article.getPostedDate()));
+//		   String[] dateArray = FormatDate.getDateArray(date);
+//		   TextView tvDay = (TextView) convertView.findViewById(R.id.tv_article_day);
+//		   tvDay.setText(dateArray[0]);
+//		   TextView tvMonth = (TextView) convertView.findViewById(R.id.tv_article_month);
+//		   tvMonth.setText(dateArray[1]);
 
 //	       TextView tvDay = (TextView) convertView.findViewById(R.id.tv_article_day);
 //	       tvDay.setText(article.getPostedDate());
-//	       
+//
 //	       TextView tvMonth = (TextView) convertView.findViewById(R.id.tv_article_month);
 //	       tvMonth.setText(article.getPostedDate().substring(0, 3));
-	       
-	       if(selectedPos == position)
-	    	   convertView.setBackgroundColor(Color.CYAN);
-	       else	    	   
-	    	   convertView.setBackgroundColor(Color.WHITE);	       
-	       
+
+		   if(selectedPos == position)
+			   convertView.setBackgroundColor(Color.CYAN);
+		   else
+			   convertView.setBackgroundColor(Color.WHITE);
+
 		   return convertView;
 	}
-	
+
+	static class ViewHolder {
+		TextView tvTitle;
+		TextView tvAuthor;
+		TextView tvDate;
+	}
+
 	public void setSelectedPosition(int pos){
 		selectedPos = pos;
 		notifyDataSetChanged();
@@ -150,4 +173,5 @@ public class ArticlesAdapter extends BaseAdapter implements Filterable{
 		// TODO Auto-generated method stub
 		return mFilter;
 	}
+
 }

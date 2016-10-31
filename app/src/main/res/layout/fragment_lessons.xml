@@ -1,141 +1,145 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
 
-    <!--<com.sothree.slidinguppanel.SlidingUpPanelLayout-->
-        <!--xmlns:sothree="http://schemas.android.com/apk/res-auto"-->
-        <!--android:id="@+id/sliding_layout"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:gravity="bottom"-->
-        <!--sothree:umanoPanelHeight="45dp"-->
-        <!--sothree:umanoShadowHeight="0dp"-->
-        <!--sothree:umanoOverlay="false"-->
-        <!--android:visibility="visible"-->
-        <!--android:background="#ffffff">-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#ffffff" >
 
-        <!-- Main Content -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.30" >
+
+            <ImageView
+                android:id="@+id/img_study_bg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:src="@drawable/adele"
+                android:scaleType="centerCrop"/>
+
+            <ImageView
+                android:id="@+id/img_study"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@android:color/transparent"
+                android:layout_marginLeft="10dp"/>
+
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="#ffffff" >
+            android:layout_height="0dp"
+            android:layout_weight="0.70"
+            android:orientation="vertical">
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <com.ms.square.android.expandabletextview.ExpandableTextView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/expand_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                expandableTextView:maxCollapsedLines="3"
+                expandableTextView:animDuration="100">
+                <TextView
+                    android:id="@id/expandable_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/black" />
+                <ImageButton
+                    android:id="@id/expand_collapse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:layout_gravity="center"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/arrow_down"/>
+
+            </com.ms.square.android.expandabletextview.ExpandableTextView>
+
+            </ScrollView>
 
             <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.18"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp">
-                <ImageView
-                    android:id="@+id/img_study"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:background="@android:color/transparent" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp">
+                <RelativeLayout
+                    android:id="@+id/rl_title_lv_lessons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_title_listview"
+                    android:padding="10dp">
+                    <TextView
+                        android:id="@+id/tv_title_lessons"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Lessons"
+                        android:textColor="@color/text_gray"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        />
+                    <TextView
+                        android:id="@+id/tv_lesson_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/text_gray"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"/>
+                </RelativeLayout>
+                <ListView
+                    android:id="@+id/lv_lessons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:listSelector="@android:color/transparent"
+                    android:layout_marginBottom="0dp"
+                    android:layout_below="@id/rl_title_lv_lessons"/>
+                <RelativeLayout
+                    android:id="@+id/rl_title_lv_lessons_complete"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/lv_lessons"
+                    android:padding="10dp">
+                    <TextView
+                        android:id="@+id/tv_title_lessons_complete"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Completed lessons"
+                        android:textColor="@color/black"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"/>
+                    <TextView
+                        android:id="@+id/tv_lesson_count_complete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"/>
+                </RelativeLayout>
+                <ListView
+                    android:id="@+id/lv_lessons_complete"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:listSelector="@android:color/transparent"
+                    android:layout_marginBottom="0dp"
+                    android:layout_below="@id/rl_title_lv_lessons_complete"/>
             </RelativeLayout>
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.82"
-                android:orientation="vertical"
-                android:layout_marginLeft="0dp"
-                android:layout_marginRight="0dp"
-                android:layout_marginBottom="0dp" >
-
-                <TextView
-                    android:id="@+id/tv_description"
-                    android:layout_width="fill_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.2"
-                    android:textSize="18sp"
-                    android:text="Description"
-                    android:textColor="#938d8c"
-                    android:gravity="left"
-                    android:scrollbars="vertical"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.8"
-                    android:paddingLeft="0dp"
-                    android:paddingRight="0dp">
-                    <RelativeLayout
-                        android:id="@+id/rl_title_lv_lessons"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_title_listview"
-                        android:padding="10dp">
-                        <TextView
-                            android:id="@+id/tv_title_lessons"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Lessons"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentTop="true"
-                            android:layout_centerVertical="true"
-                            />
-                        <TextView
-                            android:id="@+id/tv_lesson_count"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=""
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"
-                            android:layout_centerVertical="true"/>
-                    </RelativeLayout>
-                    <ListView
-                        android:id="@+id/lv_lessons"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:listSelector="@android:color/transparent"
-                        android:layout_marginBottom="0dp"
-                        android:layout_below="@id/rl_title_lv_lessons"/>
-                    <RelativeLayout
-                        android:id="@+id/rl_title_lv_lessons_complete"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/lv_lessons"
-                        android:padding="10dp">
-                        <TextView
-                            android:id="@+id/tv_title_lessons_complete"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Complete"
-                            android:textColor="@color/black"
-                            android:layout_alignParentLeft="true"
-                            android:layout_centerVertical="true"/>
-                        <TextView
-                            android:id="@+id/tv_lesson_count_complete"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=""
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"/>
-                    </RelativeLayout>
-                    <ListView
-                        android:id="@+id/lv_lessons_complete"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:listSelector="@android:color/transparent"
-                        android:layout_marginBottom="0dp"
-                        android:layout_below="@id/rl_title_lv_lessons_complete"/>
-                </RelativeLayout>
-
-
-            </LinearLayout>
 
         </LinearLayout>
 
-        <!--&lt;!&ndash; Sliding Layout &ndash;&gt;-->
-        <!--<include layout="@layout/audio_player2" android:id="@+id/layout_audio_player"/>-->
-
-    <!--</com.sothree.slidinguppanel.SlidingUpPanelLayout>-->
+    </LinearLayout>
 
 </RelativeLayout>

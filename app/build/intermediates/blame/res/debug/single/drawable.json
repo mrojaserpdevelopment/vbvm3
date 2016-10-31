@@ -44,12 +44,12 @@
         "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\img_btn_play.png"
     },
     {
-        "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\above_shadow.xml",
-        "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.sothree.slidinguppanel\\library\\3.3.1\\res\\drawable\\above_shadow.xml"
-    },
-    {
         "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\photo_brady.png",
         "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\photo_brady.png"
+    },
+    {
+        "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\above_shadow.xml",
+        "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.sothree.slidinguppanel\\library\\3.3.1\\res\\drawable\\above_shadow.xml"
     },
     {
         "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\youtube2.png",
@@ -145,7 +145,7 @@
     },
     {
         "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\design_snackbar_background.xml",
-        "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.android.support\\design\\24.0.0\\res\\drawable\\design_snackbar_background.xml"
+        "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.android.support\\design\\23.3.0\\res\\drawable\\design_snackbar_background.xml"
     },
     {
         "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\adele.jpg",
@@ -177,7 +177,7 @@
     },
     {
         "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\design_fab_background.xml",
-        "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.android.support\\design\\24.0.0\\res\\drawable\\design_fab_background.xml"
+        "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.android.support\\design\\23.3.0\\res\\drawable\\design_fab_background.xml"
     },
     {
         "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\circle_progress_foreground.xml",
@@ -456,12 +456,12 @@
         "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\custom_progressbar.xml"
     },
     {
-        "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\bottom_bar_icon_calendar.png",
-        "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\bottom_bar_icon_calendar.png"
-    },
-    {
         "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_ic_search_api_material.xml",
         "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.2.1\\res\\drawable\\abc_ic_search_api_material.xml"
+    },
+    {
+        "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\bottom_bar_icon_calendar.png",
+        "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\bottom_bar_icon_calendar.png"
     },
     {
         "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_btn_borderless_material.xml",
@@ -584,6 +584,10 @@
         "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\photo_board_anonymous.bmp"
     },
     {
+        "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\ic_expand_holo_light.xml",
+        "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.ms-square\\expandableTextView\\0.1.4\\res\\drawable\\ic_expand_holo_light.xml"
+    },
+    {
         "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_spinner_textfield_background_material.xml",
         "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.2.1\\res\\drawable\\abc_spinner_textfield_background_material.xml"
     },
@@ -612,6 +616,10 @@
         "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\bottom_menu_bar.xml"
     },
     {
+        "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\ic_collapse_holo_light.xml",
+        "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.ms-square\\expandableTextView\\0.1.4\\res\\drawable\\ic_collapse_holo_light.xml"
+    },
+    {
         "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\bottom_bar_icon_library.png",
         "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\bottom_bar_icon_library.png"
     },
@@ -638,10 +646,6 @@
     {
         "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\img_btn_shuffle_pressed.png",
         "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\img_btn_shuffle_pressed.png"
-    },
-    {
-        "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\notification_background.xml",
-        "source": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.aurelhubert\\ahbottomnavigation\\1.3.3\\res\\drawable\\notification_background.xml"
     },
     {
         "merged": "C:\\erpdevelopment\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\icon_articles_32.png",
