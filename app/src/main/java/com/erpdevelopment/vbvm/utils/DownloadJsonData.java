@@ -42,6 +42,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -312,12 +313,14 @@ public class DownloadJsonData {
                                 for ( int i=0; i < articles.length(); i++ ) {
                                     JSONObject c = articles.getJSONObject(i);
                                     Article article = new Article();
-                                    long timeMills = Long.parseLong(c.getString("postedDate")+"000");
-                                    Date d = new Date(timeMills);
-                                    DateFormat df = DateFormat.getDateInstance();
-                                    String date = df.format(d);
-                                    article.setPostedDate(date);
+//                                    long timeMills = Long.parseLong(c.getString("postedDate")+"000");
+//                                    Date d = new Date(timeMills);
+//                                    DateFormat df = DateFormat.getDateInstance();
+//                                    SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy");
+//                                    String date = df.format(d);
+//                                    article.setPostedDate(date);
 //                                    article.setPostedDate(StringEscapeUtils.unescapeHtml(c.getString("postedDate")+"000"));
+                                    article.setPostedDate(c.getString("postedDate")+"000");
                                     article.setCategory(StringEscapeUtils.unescapeJava(StringEscapeUtils.unescapeHtml(c.getString("category"))));
                                     article.setAverageRating(StringEscapeUtils.unescapeJava(StringEscapeUtils.unescapeHtml(c.getString("averageRating"))));
                                     article.setArticlesDescription(StringEscapeUtils.unescapeJava(StringEscapeUtils.unescapeHtml(c.getString("description"))));

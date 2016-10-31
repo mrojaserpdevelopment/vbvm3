@@ -9,7 +9,6 @@ android {
         minSdkVersion 14
         targetSdkVersion 24
         compileOptions {
-            incremental true
             sourceCompatibility JavaVersion.VERSION_1_8
             targetCompatibility JavaVersion.VERSION_1_8
         }

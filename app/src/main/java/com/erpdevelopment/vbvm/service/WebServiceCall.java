@@ -2,6 +2,7 @@ package com.erpdevelopment.vbvm.service;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -345,11 +346,12 @@ public class WebServiceCall {
 			for ( int i=0; i < articles.length(); i++ ) {
 				JSONObject c = articles.getJSONObject(i);
 				if (c.getString("authorName").equals(authorName)){
-					article = new Article();
-					Date d = new Date(c.getLong("postedDate")); 
-					DateFormat df = DateFormat.getDateInstance();
-					String date = df.format(d);	
-					article.setPostedDate(date);
+//					article = new Article();
+//					Date d = new Date(c.getLong("postedDate"));
+//					DateFormat df = DateFormat.getDateInstance();
+//					String date = df.format(d);
+//					article.setPostedDate(date);
+					article.setPostedDate(c.getString("postedDate"));
 					article.setCategory(StringEscapeUtils.unescapeJava(c.getString("category")));
 					article.setAverageRating(StringEscapeUtils.unescapeJava(c.getString("averageRating")));
 					article.setArticlesDescription(StringEscapeUtils.unescapeJava(c.getString("description")));

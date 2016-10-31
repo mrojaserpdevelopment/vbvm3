@@ -1,6 +1,7 @@
 package com.erpdevelopment.vbvm.db;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.database.Cursor;
@@ -111,6 +112,7 @@ public class DBHandleArticles {
 	            articles.add(article);
 	            WebServiceCall.authorNameSet.add(article.getAuthorName());
 	        } while (c.moveToNext());
+			Collections.sort(articles);
 	    }
 	    c.close();
 	    return articles;

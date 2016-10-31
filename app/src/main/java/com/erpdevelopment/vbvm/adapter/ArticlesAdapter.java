@@ -12,10 +12,13 @@ import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.model.Article;
 import com.erpdevelopment.vbvm.model.QandAPost;
 import com.erpdevelopment.vbvm.model.Study;
+import com.erpdevelopment.vbvm.model.Topic;
 import com.erpdevelopment.vbvm.utils.FormatDate;
+import com.erpdevelopment.vbvm.utils.Utilities;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +35,7 @@ public class ArticlesAdapter extends BaseAdapter implements Filterable{
 	private List<Article> filteredListArticles;
 	private List<Article> originalListArticles;
     private ItemFilter mFilter = new ItemFilter();
-	
+	private final LinearLayout.LayoutParams lparams;
 	// used to keep selected position in ListView
 	private int selectedPos = -1;	// init value for not-selected
 
@@ -40,6 +43,9 @@ public class ArticlesAdapter extends BaseAdapter implements Filterable{
 		activity = a;
 		filteredListArticles = articleList;
 		originalListArticles = articleList;
+		lparams = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+		lparams.setMargins(10,0,10,0);
 	}
 	
 	@Override
@@ -63,6 +69,7 @@ public class ArticlesAdapter extends BaseAdapter implements Filterable{
 		ViewHolder viewHolder = null;
 		// Get the data item for this position
 		Article article = (Article) getItem(position);
+//		LinearLayout llTopics = null;
 		// Check if an existing view is being reused, otherwise inflate the view
 		if (convertView == null) {
 			LayoutInflater inflater = activity.getLayoutInflater();
@@ -71,6 +78,18 @@ public class ArticlesAdapter extends BaseAdapter implements Filterable{
 			viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tv_article_title);
 			viewHolder.tvAuthor = (TextView) convertView.findViewById(R.id.tv_article_author);
 			viewHolder.tvDate = (TextView) convertView.findViewById(R.id.tv_article_date);
+			viewHolder.llArticleTopics = (LinearLayout) convertView.findViewById(R.id.ll_articles_topics);
+//			for (String topic : article.getTopics()){
+//				TextView tvTopic = new TextView(activity);
+//				tvTopic.setLayoutParams(lparams);
+//				tvTopic.setBackgroundResource( R.drawable.bg_text_topics);
+//				tvTopic.setPadding(5,5,5,5);
+//				tvTopic.setText(topic);
+////			tvTopic.setTextColor(activity.getResources().getColor(R.color.light_gray));
+//				tvTopic.setTextColor(ContextCompat.getColor(activity, R.color.light_gray));
+//				tvTopic.setTextSize(12);
+//				viewHolder.llArticleTopics.addView(tvTopic);
+//			}
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
@@ -80,7 +99,56 @@ public class ArticlesAdapter extends BaseAdapter implements Filterable{
 		viewHolder.tvAuthor.setText(article.getAuthorName());
 //		Date date = new Date(Long.parseLong(article.getPostedDate()));
 //		String[] dateArray = FormatDate.getDateArray(new Date(Long.parseLong(article.getPostedDate())));
-		viewHolder.tvDate.setText(article.getPostedDate());
+
+//		long timeMills = Long.parseLong(article.getPostedDate());
+//		Date d = new Date(timeMills);
+//		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy");
+//		String date = df.format(d);
+		viewHolder.tvDate.setText(Utilities.getSimpleDateFormat(article.getPostedDate(),"dd/MM/yy"));
+
+		System.out.println("ArticlesAdapter.getView: " + article.getTitle() + " - " + article.getTopics().size());
+
+//		llTopics = (LinearLayout) convertView.findViewById(R.id.ll_articles_topics);
+//		TextView tvTopic = (TextView) (inflater != null ? inflater.inflate(R.layout.tv_topics, null) : null);
+
+		viewHolder.llArticleTopics.removeAllViews();
+		for (String topic : article.getTopics()){
+//			TextView tvTopic = (TextView) (inflater != null ? inflater.inflate(R.layout.tv_topics, null) : null);
+			TextView tvTopic = new TextView(activity);
+			tvTopic.setLayoutParams(lparams);
+			tvTopic.setBackgroundResource( R.drawable.bg_text_topics);
+			tvTopic.setPadding(5,5,5,5);
+			tvTopic.setText(topic);
+//			tvTopic.setTextColor(activity.getResources().getColor(R.color.light_gray));
+			tvTopic.setTextColor(ContextCompat.getColor(activity, R.color.light_gray));
+			tvTopic.setTextSize(12);
+			viewHolder.llArticleTopics.addView(tvTopic);
+		}
+
+//		LinearLayout llTopics = (LinearLayout) convertView.findViewById(R.id.ll_articles_topics);
+//		LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(
+//				LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//		TextView tv=new TextView(activity);
+//		tv.setLayoutParams(lparams);
+//		tv.setText("test1");
+//		llTopics.addView(tv);
+//
+//		tv=new TextView(activity);
+//		tv.setLayoutParams(lparams);
+//		tv.setText("test123333444");
+//		llTopics.addView(tv);
+//
+//		tv=new TextView(activity);
+//		tv.setLayoutParams(lparams);
+//		tv.setText("testing");
+//		llTopics.addView(tv);
+//
+//		tv=new TextView(activity);
+//		tv.setLayoutParams(lparams);
+//		tv.setText("test44444444444");
+//		llTopics.addView(tv);
+
+//		viewHolder.tvDate.setText(article.getPostedDate());
 
 
 
@@ -121,6 +189,7 @@ public class ArticlesAdapter extends BaseAdapter implements Filterable{
 		TextView tvTitle;
 		TextView tvAuthor;
 		TextView tvDate;
+		LinearLayout llArticleTopics;
 	}
 
 	public void setSelectedPosition(int pos){

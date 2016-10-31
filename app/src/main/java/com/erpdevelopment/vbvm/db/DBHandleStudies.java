@@ -1,6 +1,8 @@
 package com.erpdevelopment.vbvm.db;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.erpdevelopment.vbvm.MainActivity;
@@ -120,7 +122,13 @@ public class DBHandleStudies {
 	public static long createArticle(Article article) {
 		ContentValues values = new ContentValues();
 	    values.put("id_article", article.getIdProperty());
+//		long timeMills = Long.parseLong(article.getPostedDate()+"000");
+//		Date d = new Date(timeMills);
+//		DateFormat df = DateFormat.getDateInstance();
+//		String postedDate = df.format(d);
+////		article.setPostedDate(date);
 	    values.put("posted_date", article.getPostedDate());
+//		values.put("posted_date", postedDate);
 	    values.put("category", article.getCategory());
 	    values.put("average_rating", article.getAverageRating());
 	    values.put("article_description", article.getArticlesDescription());

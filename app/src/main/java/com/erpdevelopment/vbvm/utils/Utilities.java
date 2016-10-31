@@ -5,17 +5,17 @@ import com.erpdevelopment.vbvm.R;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class Utilities {
@@ -113,7 +113,7 @@ public class Utilities {
 
 	public static Drawable getTextViewAsDrawable(Activity activity, String text) {
 		TextView upTextView = (TextView) activity.getLayoutInflater().inflate(
-				R.layout.action_home_up_text, null);
+				R.layout.actionbar_home_up_text, null);
 		upTextView.setText(text);
 		upTextView.measure(0, 0);
 		upTextView.layout(0, 0, upTextView.getMeasuredWidth(),
@@ -124,6 +124,13 @@ public class Utilities {
 		upTextView.draw(canvas);
 		BitmapDrawable bitmapDrawable = new BitmapDrawable(activity.getResources(), bitmap);
 		return bitmapDrawable;
+	}
+
+	public static String getSimpleDateFormat(String dateString, String format) {
+		long timeMills = Long.parseLong(dateString);
+		Date d = new Date(timeMills);
+		SimpleDateFormat df = new SimpleDateFormat(format);
+		return df.format(d);
 	}
 
 }

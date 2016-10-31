@@ -37,6 +37,15 @@
         android:layout_centerVertical="true"
         />
 
+    <LinearLayout
+        android:id="@+id/ll_articles_topics"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/tv_article_author">
+
+    </LinearLayout>
+
 </RelativeLayout>
 
 
