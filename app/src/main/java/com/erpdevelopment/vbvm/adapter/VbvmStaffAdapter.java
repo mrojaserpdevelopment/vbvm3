@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.model.Study;
-import com.erpdevelopment.vbvm.utils.BitmapManager;
+import com.erpdevelopment.vbvm.utils.BitmapManager2;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -61,32 +61,32 @@ public class VbvmStaffAdapter extends BaseAdapter {
 	       
 	       if ( cat == 0 ) {
 		       switch (position) {
-		       		case 0: BitmapManager.setImageBitmap(activity, img, R.drawable.photo_bmp_kathryn);
+		       		case 0: BitmapManager2.setImageBitmap(activity, img, R.drawable.photo_bmp_kathryn);
 						break;
-					case 1: BitmapManager.setImageBitmap(activity, img, R.drawable.photo_melissa);
+					case 1: BitmapManager2.setImageBitmap(activity, img, R.drawable.photo_melissa);
 						break;
-					case 2: BitmapManager.setImageBitmap(activity, img, R.drawable.photo_bmp_federico_2);
+					case 2: BitmapManager2.setImageBitmap(activity, img, R.drawable.photo_bmp_federico_2);
 						break;
-					case 3: BitmapManager.setImageBitmap(activity, img, R.drawable.photo_bmp_tonya_2);
+					case 3: BitmapManager2.setImageBitmap(activity, img, R.drawable.photo_bmp_tonya_2);
 						break;
-					case 4: BitmapManager.setImageBitmap(activity, img, R.drawable.photo_bmp_brady_2);
+					case 4: BitmapManager2.setImageBitmap(activity, img, R.drawable.photo_bmp_brady_2);
 						break;				
 					default:
 						break;
 		       }
 	       } else {
 	    	   switch (position) {
-		       		case 0: BitmapManager.setImageBitmap(activity, img, R.drawable.photo_stephen_scaled);
+		       		case 0: BitmapManager2.setImageBitmap(activity, img, R.drawable.photo_stephen_scaled);
 						break;
-					case 1: BitmapManager.setImageBitmap(activity, img, R.drawable.photo_brian_scaled);
+					case 1: BitmapManager2.setImageBitmap(activity, img, R.drawable.photo_brian_scaled);
 						break;
-					case 2: BitmapManager.setImageBitmap(activity, img, R.drawable.photo_board_joe);
+					case 2: BitmapManager2.setImageBitmap(activity, img, R.drawable.photo_board_joe);
 						break;
-					case 3: BitmapManager.setImageBitmap(activity, img, R.drawable.photo_board_ron);
+					case 3: BitmapManager2.setImageBitmap(activity, img, R.drawable.photo_board_ron);
 						break;
-					case 4: BitmapManager.setImageBitmap(activity, img, R.drawable.photo_board_jerry);
+					case 4: BitmapManager2.setImageBitmap(activity, img, R.drawable.photo_board_jerry);
 						break;
-					case 5: BitmapManager.setImageBitmap(activity, img, R.drawable.photo_board_anonymous);
+					case 5: BitmapManager2.setImageBitmap(activity, img, R.drawable.photo_board_anonymous);
 						break;
 					default:
 						break;

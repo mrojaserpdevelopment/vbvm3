@@ -11,7 +11,7 @@ import com.erpdevelopment.vbvm.model.EventVbvm;
 import com.erpdevelopment.vbvm.model.ItemInfo;
 import com.erpdevelopment.vbvm.service.WebServiceCall;
 import com.erpdevelopment.vbvm.utils.CheckConnectivity;
-import com.erpdevelopment.vbvm.utils.ConstantsVbvm;
+import com.erpdevelopment.vbvm.utils.Constants;
 import com.erpdevelopment.vbvm.utils.FavoritesLRU;
 
 import android.os.AsyncTask;
@@ -47,7 +47,7 @@ public class EventsActivity extends Activity {
 		llButtonHome = (LinearLayout) findViewById(R.id.ll_button_calendar);
 		llButtonHome.setBackgroundResource(R.drawable.bottom_menu_bar);
 
-		prefs = getSharedPreferences(ConstantsVbvm.VBVM_PREFS, Context.MODE_PRIVATE);
+		prefs = getSharedPreferences(Constants.VBVM_PREFS, Context.MODE_PRIVATE);
 		
 		tvTile = (TextView) findViewById(R.id.tv_title_top_control_bar);
 		tvTile.setText("Events");
@@ -154,7 +154,7 @@ public class EventsActivity extends Activity {
 	
 	@Override
 	protected void onStart() {
-		prefs = getSharedPreferences(ConstantsVbvm.VBVM_PREFS, Context.MODE_PRIVATE);
+		prefs = getSharedPreferences(Constants.VBVM_PREFS, Context.MODE_PRIVATE);
 		int position = prefs.getInt("posEvent", -1);
 		int index = prefs.getInt("indexEvent", -1);		
 		if ( position != -1 ) {

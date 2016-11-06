@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.erpdevelopment.vbvm.R;
-import com.erpdevelopment.vbvm.utils.ConstantsVbvm;
+import com.erpdevelopment.vbvm.utils.Constants;
 import com.erpdevelopment.vbvm.utils.Utilities;
 
 import android.os.Bundle;
@@ -44,19 +44,19 @@ public class StaffBoardDetailsActivity extends Activity {
 		
 		if ( category.equals("staff") ) {
 			switch (posSelected) {
-				case 0:	fileName = ConstantsVbvm.FILENAME_STAFF_KATHRYN;
+				case 0:	fileName = Constants.FILENAME_STAFF_KATHRYN;
 						imgVbvmDetail.setImageResource(R.drawable.photo_bmp_kathryn);
 					break;
-				case 1:	fileName = ConstantsVbvm.FILENAME_STAFF_MELISSA;
+				case 1:	fileName = Constants.FILENAME_STAFF_MELISSA;
 						imgVbvmDetail.setImageResource(R.drawable.photo_melissa);
 					break;
-				case 2:	fileName = ConstantsVbvm.FILENAME_STAFF_FEDERICO;
+				case 2:	fileName = Constants.FILENAME_STAFF_FEDERICO;
 						imgVbvmDetail.setImageResource(R.drawable.photo_bmp_federico_2);
 					break;
-				case 3:	fileName = ConstantsVbvm.FILENAME_STAFF_TONYA;			
+				case 3:	fileName = Constants.FILENAME_STAFF_TONYA;
 						imgVbvmDetail.setImageResource(R.drawable.photo_bmp_tonya_2);
 					break;
-				case 4:	fileName = ConstantsVbvm.FILENAME_STAFF_BRADY;		
+				case 4:	fileName = Constants.FILENAME_STAFF_BRADY;
 						imgVbvmDetail.setImageResource(R.drawable.photo_bmp_brady_2);
 					break;
 				default:
@@ -67,22 +67,22 @@ public class StaffBoardDetailsActivity extends Activity {
 		if ( category.equals("board") ) {
 			
 			switch (posSelected) {
-				case 0:	fileName = ConstantsVbvm.FILENAME_BOARD_STEPHEN;	
+				case 0:	fileName = Constants.FILENAME_BOARD_STEPHEN;
 						imgVbvmDetail.setImageResource(R.drawable.photo_stephen_scaled);
 					break;
-				case 1:	fileName = ConstantsVbvm.FILENAME_BOARD_BRIAN;				
+				case 1:	fileName = Constants.FILENAME_BOARD_BRIAN;
 						imgVbvmDetail.setImageResource(R.drawable.photo_brian_scaled);
 					break;
-				case 2:	fileName = ConstantsVbvm.FILENAME_BOARD_JOE;				
+				case 2:	fileName = Constants.FILENAME_BOARD_JOE;
 						imgVbvmDetail.setImageResource(R.drawable.photo_board_joe);
 					break;
-				case 3:	fileName = ConstantsVbvm.FILENAME_BOARD_RON;
+				case 3:	fileName = Constants.FILENAME_BOARD_RON;
 						imgVbvmDetail.setImageResource(R.drawable.photo_board_ron);
 					break;
-				case 4:	fileName = ConstantsVbvm.FILENAME_BOARD_JERRY;			
+				case 4:	fileName = Constants.FILENAME_BOARD_JERRY;
 						imgVbvmDetail.setImageResource(R.drawable.photo_board_jerry);
 					break;
-				case 5:	fileName = ConstantsVbvm.FILENAME_BOARD_ANONYMOUS;	
+				case 5:	fileName = Constants.FILENAME_BOARD_ANONYMOUS;
 						imgVbvmDetail.setImageResource(R.drawable.photo_board_anonymous);
 					break;
 				default:

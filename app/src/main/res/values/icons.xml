@@ -3,6 +3,7 @@
     <string name="fa_icon_teacher_aid">&#xf016;</string>
     <string name="fa_icon_transcript">&#xf0f6;</string>
     <string name="fa_icon_play_mini">&#xf04b;</string>
+    <string name="fa_icon_pause">&#xf04c;</string>
     <string name="fa_icon_stop">&#xf04d;</string>
     <string name="fa_icon_arrow_circle_down">&#xf13a;</string>
     <string name="fa_icon_ellipsis_h">&#xf141;</string>

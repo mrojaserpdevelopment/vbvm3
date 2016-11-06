@@ -1,6 +1,7 @@
 package com.erpdevelopment.vbvm.fragment;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,7 +18,6 @@ import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.activity.ArticleDetailsActivity;
 import com.erpdevelopment.vbvm.adapter.ArticlesAdapter;
 import com.erpdevelopment.vbvm.model.Article;
-import com.erpdevelopment.vbvm.service.WebServiceCall;
 import com.erpdevelopment.vbvm.utils.DownloadJsonData;
 import com.erpdevelopment.vbvm.utils.FilesManager;
 
@@ -27,7 +27,9 @@ public class ArticlesFragment extends Fragment implements TextWatcher {
 //    private Resources res;
     private ArticlesAdapter adapterArticles;
     private ListView lvArticles;
-    private EditText etSearchVideos;
+    private EditText etSearchArticles;
+
+    private OnArticleSelectedListener mListener;
 
     public static ArticlesFragment newInstance(int index) {
         ArticlesFragment f = new ArticlesFragment();
@@ -45,7 +47,6 @@ public class ArticlesFragment extends Fragment implements TextWatcher {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_articles, container, false);
     }
 
@@ -62,16 +63,13 @@ public class ArticlesFragment extends Fragment implements TextWatcher {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position,
                                     long id) {
-                adapterArticles.setSelectedPosition(position);
                 Article article = (Article) parent.getItemAtPosition(position);
-                Intent i = new Intent(getActivity(), ArticleDetailsActivity.class);
-                i.putExtra("article", article);
-                startActivity(i);
+                mListener.onArticleSelected(article);
             }
         });
 
-        etSearchVideos = (EditText) rootView.findViewById(R.id.et_search_articles);
-        etSearchVideos.addTextChangedListener(this);
+        etSearchArticles = (EditText) rootView.findViewById(R.id.et_search_articles);
+        etSearchArticles.addTextChangedListener(this);
         if ( (FilesManager.listArticles == null) || (FilesManager.listArticles.size() == 0) )
             DownloadJsonData.getInstance().asyncJsonArticles(adapterArticles);
         else
@@ -90,6 +88,41 @@ public class ArticlesFragment extends Fragment implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
+
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnArticleSelectedListener) {
+            mListener = (OnArticleSelectedListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnAnswerSelectedListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnArticleSelectedListener {
+        void onArticleSelected(Article article);
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            System.out.println("ArticlesFragment.onHiddenChanged");
+            View current = getActivity().getCurrentFocus();
+            if (current != null) {
+                System.out.println("clearing focus...");
+                current.clearFocus();
+            }
+        }
 
     }
 }

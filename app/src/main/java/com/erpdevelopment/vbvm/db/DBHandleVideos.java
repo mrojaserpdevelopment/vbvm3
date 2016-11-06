@@ -7,13 +7,13 @@ import android.database.Cursor;
 import android.util.Log;
 
 import com.erpdevelopment.vbvm.MainActivity;
-import com.erpdevelopment.vbvm.model.ChannelVbvm;
+import com.erpdevelopment.vbvm.model.VideoChannel;
 import com.erpdevelopment.vbvm.model.VideoVbvm;
-import com.erpdevelopment.vbvm.utils.ConstantsVbvm;
+import com.erpdevelopment.vbvm.utils.Constants;
 
 public class DBHandleVideos {
 
-	private static final String LOG = "DatabaseHelper DBHandleVideos";
+	private static final String LOG = "DbHelper DBHandleVideos";
     
 	private static final String COLUMN_ID_CHANNEL = "id_channel";
 	private static final String COLUMN_POSTED_DATE = "posted_date";
@@ -30,22 +30,24 @@ public class DBHandleVideos {
 	private static final String COLUMN_VIDEO_SOURCE = "video_source";
 	private static final String COLUMN_VIDEO_LENGTH = "video_length";
     
-	public static List<ChannelVbvm> getChannels() {
-	    String selectQuery = "SELECT * FROM " + ConstantsVbvm.TABLE_CHANNEL + " ORDER BY " + COLUMN_POSTED_DATE + " DESC";
+	public static List<VideoChannel> getChannels() {
+	    String selectQuery = "SELECT * FROM " + Constants.TABLE_CHANNEL + " ORDER BY " + COLUMN_POSTED_DATE + " DESC";
 	    Log.e(LOG, selectQuery);
 	    Cursor c = MainActivity.db.rawQuery(selectQuery, null);
-    	List<ChannelVbvm> channels = new ArrayList<ChannelVbvm>();
-    	ChannelVbvm channel = null;	    
+    	List<VideoChannel> channels = new ArrayList<VideoChannel>();
+    	VideoChannel channel = null;
 	    if (c.moveToFirst()) {
 	        do {
-	        	channel = new ChannelVbvm();				
+	        	channel = new VideoChannel();
 				channel.setIdProperty(c.getString(c.getColumnIndex(COLUMN_ID_CHANNEL)));
-				channel.setPostedDate(String.valueOf(Long.parseLong(c.getString(c.getColumnIndex(COLUMN_POSTED_DATE))+"000")));
-	    		channel.setAverageRating(c.getString((c.getColumnIndex(COLUMN_AVERAGE_RATING))));
-	    		channel.setDescription(c.getString((c.getColumnIndex(COLUMN_DESCRIPTION))));
-	    		channel.setTitle(c.getString((c.getColumnIndex(COLUMN_TITLE))));
-	    		channel.setThumbnailSource(c.getString((c.getColumnIndex(COLUMN_THUMBNAIL_SOURCE))));
-	    		channel.setThumbnailAltText(c.getString((c.getColumnIndex(COLUMN_THUMBNAIL_ALT_TEXT))));
+				channel.setPostedDate(c.getString(c.getColumnIndex(COLUMN_POSTED_DATE)));
+	    		channel.setAverageRating(c.getString(c.getColumnIndex(COLUMN_AVERAGE_RATING)));
+	    		channel.setDescription(c.getString(c.getColumnIndex(COLUMN_DESCRIPTION)));
+	    		channel.setTitle(c.getString(c.getColumnIndex(COLUMN_TITLE)));
+	    		channel.setThumbnailSource(c.getString(c.getColumnIndex(COLUMN_THUMBNAIL_SOURCE)));
+	    		channel.setThumbnailAltText(c.getString(c.getColumnIndex(COLUMN_THUMBNAIL_ALT_TEXT)));
+				List<VideoVbvm> listVideoVbvm = getVideosByChannel(channel.getIdProperty());
+				channel.setVideos(listVideoVbvm);
 	    		channels.add(channel);
 	        } while (c.moveToNext());
 	    }
@@ -54,7 +56,7 @@ public class DBHandleVideos {
 	}
 	
 	public static List<VideoVbvm> getVideosByChannel(String idChannel) {
-	    String selectQuery = "SELECT * FROM " + ConstantsVbvm.TABLE_VIDEO + " WHERE id_channel = '" + idChannel + "';";	 
+	    String selectQuery = "SELECT * FROM " + Constants.TABLE_VIDEO + " WHERE id_channel = '" + idChannel + "';";
 	    Log.e(LOG, selectQuery);
 	    Cursor c = MainActivity.db.rawQuery(selectQuery, null);
     	List<VideoVbvm> videos = new ArrayList<VideoVbvm>();
@@ -73,7 +75,7 @@ public class DBHandleVideos {
 	    		video.setThumbnailAltText(c.getString(c.getColumnIndex(COLUMN_THUMBNAIL_ALT_TEXT)));
 	    		video.setVideoSource(c.getString(c.getColumnIndex(COLUMN_VIDEO_SOURCE)));
 	    		video.setVideoLength(c.getString(c.getColumnIndex(COLUMN_VIDEO_LENGTH)));
-	    		video.setIdChannel(c.getString(c.getColumnIndex(COLUMN_ID_CHANNEL)));	    		
+	    		video.setIdChannel(c.getString(c.getColumnIndex(COLUMN_ID_CHANNEL)));
 	    		videos.add(video);
 	        } while (c.moveToNext());
 	    }
@@ -82,7 +84,7 @@ public class DBHandleVideos {
 	}
 	
 	public static VideoVbvm getVideoById(String idVideo) {
-	    String selectQuery = "SELECT * FROM " + ConstantsVbvm.TABLE_VIDEO + " WHERE id_video = '" + idVideo + "';";	 
+	    String selectQuery = "SELECT * FROM " + Constants.TABLE_VIDEO + " WHERE id_video = '" + idVideo + "';";
 	    Log.e(LOG, selectQuery);
 	    Cursor c = MainActivity.db.rawQuery(selectQuery, null);
     	VideoVbvm video = null;	    

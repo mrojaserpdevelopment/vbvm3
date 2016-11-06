@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.model.Lesson;
-import com.erpdevelopment.vbvm.utils.imageloading.ImageLoader;
+import com.erpdevelopment.vbvm.utils.imageloading.ImageLoader2;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -18,14 +18,14 @@ public class HorizontalListAdapterNewest extends BaseAdapter {
 
 	private Activity activity;
 	private List<Lesson> lessons;
-    private ImageLoader imageLoader; 
+    private ImageLoader2 imageLoader;
     
     public HorizontalListAdapterNewest(Activity activity, List<Lesson> lessons) {
 		this.activity = activity;
 		this.lessons = lessons;
 		// Create ImageLoader object to download and show image in list
 		// Call ImageLoader constructor to initialize FileCache
-		imageLoader = new ImageLoader(activity);
+		imageLoader = new ImageLoader2(activity);
 	}
 	
 	@Override

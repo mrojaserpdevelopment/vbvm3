@@ -1,16 +1,14 @@
 package com.erpdevelopment.vbvm.db;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.erpdevelopment.vbvm.MainActivity;
 import com.erpdevelopment.vbvm.model.Article;
-import com.erpdevelopment.vbvm.model.ChannelVbvm;
+import com.erpdevelopment.vbvm.model.VideoChannel;
 import com.erpdevelopment.vbvm.model.EventVbvm;
 import com.erpdevelopment.vbvm.model.Lesson;
-import com.erpdevelopment.vbvm.model.QandAPost;
+import com.erpdevelopment.vbvm.model.Answer;
 import com.erpdevelopment.vbvm.model.Study;
 import com.erpdevelopment.vbvm.model.Topic;
 import com.erpdevelopment.vbvm.model.VideoVbvm;
@@ -180,7 +178,7 @@ public class DBHandleStudies {
 	    return row_id;	    
 	}
 	
-	public static long createPost(QandAPost post) {
+	public static long createPost(Answer post) {
 	    ContentValues values = new ContentValues();
 	    values.put("id_post", post.getIdProperty());
 	    values.put("posted_date", post.getPostedDate());
@@ -208,7 +206,7 @@ public class DBHandleStudies {
 	    return row_id;
 	}
 	
-	public static long createChannel(ChannelVbvm channel) {
+	public static long createChannel(VideoChannel channel) {
 	    ContentValues values = new ContentValues();
 	    values.put("id_channel", channel.getIdProperty());
 	    values.put("posted_date", channel.getPostedDate());

@@ -15,9 +15,9 @@ import java.util.List;
 
 import com.erpdevelopment.vbvm.MainActivity;
 import com.erpdevelopment.vbvm.model.Article;
-import com.erpdevelopment.vbvm.model.ChannelVbvm;
+import com.erpdevelopment.vbvm.model.VideoChannel;
 import com.erpdevelopment.vbvm.model.ItemInfo;
-import com.erpdevelopment.vbvm.model.QandAPost;
+import com.erpdevelopment.vbvm.model.Answer;
 import com.erpdevelopment.vbvm.model.Study;
 
 import android.os.Environment;
@@ -31,9 +31,9 @@ public class FilesManager {
 	    public static long totalDuration = 0; 
 	    public static ArrayList<ItemInfo> listRecentItems = new ArrayList<ItemInfo>();
 	    public static List<Study> listStudies = new ArrayList<Study>();
-	    public static List<QandAPost> listQAPosts = new ArrayList<QandAPost>();
+	    public static List<Answer> listAnswers = new ArrayList<Answer>();
 	    public static List<Article> listArticles = new ArrayList<Article>();
-	    public static List<ChannelVbvm> listChannels = new ArrayList<ChannelVbvm>();
+	    public static List<VideoChannel> listVideoChannels = new ArrayList<VideoChannel>();
 		public static List<Study> listStudiesTypeOld = new ArrayList<Study>(); // Old Testament books
 		public static List<Study> listStudiesTypeNew = new ArrayList<Study>(); // New Testament books
 		public static List<Study> listStudiesTypeSingle = new ArrayList<Study>(); // Single Teachings

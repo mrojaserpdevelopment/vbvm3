@@ -5,13 +5,13 @@ import java.util.List;
 
 import com.erpdevelopment.vbvm.MainActivity;
 import com.erpdevelopment.vbvm.R;
-import com.erpdevelopment.vbvm.adapter.QAndAPostsAdapter;
-import com.erpdevelopment.vbvm.db.DBHandlePosts;
+import com.erpdevelopment.vbvm.adapter.AnswersAdapter;
+import com.erpdevelopment.vbvm.db.DBHandleAnswers;
 import com.erpdevelopment.vbvm.model.ItemInfo;
-import com.erpdevelopment.vbvm.model.QandAPost;
+import com.erpdevelopment.vbvm.model.Answer;
 import com.erpdevelopment.vbvm.service.WebServiceCall;
 import com.erpdevelopment.vbvm.utils.CheckConnectivity;
-import com.erpdevelopment.vbvm.utils.ConstantsVbvm;
+import com.erpdevelopment.vbvm.utils.Constants;
 import com.erpdevelopment.vbvm.utils.FavoritesLRU;
 
 import android.os.AsyncTask;
@@ -35,8 +35,8 @@ import android.widget.TextView;
 
 public class QAndAPostsActivity extends Activity {
 
-	private List<QandAPost> postsList = new ArrayList<QandAPost>();
-	private QAndAPostsAdapter postsAdapter;	
+	private List<Answer> postsList = new ArrayList<Answer>();
+	private AnswersAdapter postsAdapter;
 	private ListView lv;
 	private TextView tvTitle;
 	private LinearLayout llButtonHome;
@@ -54,13 +54,13 @@ public class QAndAPostsActivity extends Activity {
 		imgButtonSearch = (ImageView) findViewById(R.id.btn_search);
 		imgButtonSearch.setVisibility(View.VISIBLE);
 		
-		prefs = getSharedPreferences(ConstantsVbvm.VBVM_PREFS, Context.MODE_PRIVATE);
+		prefs = getSharedPreferences(Constants.VBVM_PREFS, Context.MODE_PRIVATE);
 		
 		tvTitle = (TextView) findViewById(R.id.tv_title_top_control_bar);
 		tvTitle.setText("Bible Answers");
 		
-		postsList = new ArrayList<QandAPost>();
-		postsAdapter = new QAndAPostsAdapter(this, postsList);
+		postsList = new ArrayList<Answer>();
+		postsAdapter = new AnswersAdapter(this, postsList);
 		lv = (ListView) findViewById(R.id.lv_bible_studies);
 		lv.setAdapter(postsAdapter);
 		
@@ -83,7 +83,7 @@ public class QAndAPostsActivity extends Activity {
 	            edit.remove("indexPost").commit();
 	            edit.putInt("indexPost", index).commit();
 				
-				QandAPost post = (QandAPost) parent.getItemAtPosition(position);
+				Answer post = (Answer) parent.getItemAtPosition(position);
 				
 				// Add item to Recently Viewed List
 				ItemInfo item = new ItemInfo();
@@ -134,7 +134,7 @@ public class QAndAPostsActivity extends Activity {
 		if ( !CheckConnectivity.isOnline(QAndAPostsActivity.this)) {
 			CheckConnectivity.showMessage(QAndAPostsActivity.this);
 		} else {
-	    	List<QandAPost> tempList = new ArrayList<QandAPost>(); 
+	    	List<Answer> tempList = new ArrayList<Answer>();
 	    	for ( int i=0; i < postsList.size(); i++) {
 	    		if ( postsList != null ) {
 	    			List<String> topics = postsList.get(i).getTopics();
@@ -150,7 +150,7 @@ public class QAndAPostsActivity extends Activity {
 		}
     }
 	
-	private class AsyncGetQAndAPosts extends AsyncTask< String, String, List<QandAPost> > {
+	private class AsyncGetQAndAPosts extends AsyncTask< String, String, List<Answer> > {
 	   	 
     	ProgressDialog pDialog;
     	
@@ -163,12 +163,12 @@ public class QAndAPostsActivity extends Activity {
             pDialog.show();
         }
  
-		protected List<QandAPost> doInBackground(String... params) {		    
+		protected List<Answer> doInBackground(String... params) {
 			Log.d("onPostExecute=", "Cargando lista Posts");
-			List<QandAPost> listPosts = new ArrayList<QandAPost>();
+			List<Answer> listPosts = new ArrayList<Answer>();
 	    	WebServiceCall.postsInDB = MainActivity.settings.getBoolean("postsInDB", false);			
 			if ( WebServiceCall.postsInDB )
-				listPosts = DBHandlePosts.getAllPosts(false);
+				listPosts = DBHandleAnswers.getAllPosts(false);
 			else {
 	    		if ( !CheckConnectivity.isOnline(QAndAPostsActivity.this)) {
 	    			CheckConnectivity.showMessage(QAndAPostsActivity.this);
@@ -184,11 +184,11 @@ public class QAndAPostsActivity extends Activity {
         	return listPosts;
 		}
        
-        protected void onPostExecute(List<QandAPost> result) { 
+        protected void onPostExecute(List<Answer> result) {
         	postsAdapter.setQAndAPostsListItems(result);  
         	postsList = result;
         	//get last selected row
-        	prefs = getSharedPreferences(ConstantsVbvm.VBVM_PREFS, Context.MODE_PRIVATE);
+        	prefs = getSharedPreferences(Constants.VBVM_PREFS, Context.MODE_PRIVATE);
     		int position = prefs.getInt("posPost", -1);
     		int index = prefs.getInt("indexPost", -1);
     		if ( position != -1 ) {

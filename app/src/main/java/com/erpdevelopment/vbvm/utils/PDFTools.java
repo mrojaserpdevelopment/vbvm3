@@ -60,7 +60,7 @@ public class PDFTools {
 			openPDF( context, Uri.fromFile( tempFile ) );
 			return;
 		}
-		// Show progress dialog while downloading
+		// Show progress dialog while IS_SERVICE_RUNNING
 		final ProgressDialog progress = ProgressDialog.show( context, context.getString( R.string.pdf_show_local_progress_title ), context.getString( R.string.pdf_show_local_progress_content ), true );
 		DownloadManager.Request r = new DownloadManager.Request( Uri.parse( pdfUrl ) );
 		r.setDestinationInExternalFilesDir( context, FileCache.cacheDirAudio.getAbsolutePath(), filename );

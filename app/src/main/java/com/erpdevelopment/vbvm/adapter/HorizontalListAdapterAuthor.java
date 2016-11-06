@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.model.Author;
-import com.erpdevelopment.vbvm.utils.BitmapManager;
+import com.erpdevelopment.vbvm.utils.BitmapManager2;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -52,15 +52,15 @@ public class HorizontalListAdapterAuthor extends BaseAdapter {
        // Lookup view for data population
        ImageView img = (ImageView) convertView.findViewById(R.id.img);       
        switch (position) {
-			case 0: BitmapManager.setImageBitmap(activity, img, R.drawable.photo_stephen_scaled);
+			case 0: BitmapManager2.setImageBitmap(activity, img, R.drawable.photo_stephen_scaled);
 				break;
-			case 1: BitmapManager.setImageBitmap(activity, img, R.drawable.photo_melissa);
+			case 1: BitmapManager2.setImageBitmap(activity, img, R.drawable.photo_melissa);
 				break;
-			case 2: BitmapManager.setImageBitmap(activity, img, R.drawable.photo_brian_scaled);
+			case 2: BitmapManager2.setImageBitmap(activity, img, R.drawable.photo_brian_scaled);
 				break;
-			case 3: BitmapManager.setImageBitmap(activity, img, R.drawable.photo_ivette_scaled);
+			case 3: BitmapManager2.setImageBitmap(activity, img, R.drawable.photo_ivette_scaled);
 				break;
-			case 4: BitmapManager.setImageBitmap(activity, img, R.drawable.photo_brady);
+			case 4: BitmapManager2.setImageBitmap(activity, img, R.drawable.photo_brady);
 				break;				
 			default:
 				break;

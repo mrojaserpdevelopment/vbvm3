@@ -5,9 +5,10 @@ import java.util.List;
 import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.adapter.VideoVbvmAdapter;
 import com.erpdevelopment.vbvm.db.DBHandleVideos;
-import com.erpdevelopment.vbvm.model.ChannelVbvm;
+import com.erpdevelopment.vbvm.model.VideoChannel;
 import com.erpdevelopment.vbvm.model.VideoVbvm;
 import com.erpdevelopment.vbvm.utils.Utilities;
+import com.erpdevelopment.vbvm.utils.imageloading.ImageLoader2;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -25,18 +26,18 @@ public class VideosVbvmActivity extends Activity {
 
 	private VideoVbvmAdapter videosAdapter;	
 	private ListView lvVideos;
-	private ChannelVbvm channel;
+	private VideoChannel channel;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_vbvm_listview);
 		
-		channel = (ChannelVbvm) getIntent().getExtras().getParcelable("channel");
+		channel = (VideoChannel) getIntent().getExtras().getParcelable("channel");
 		Utilities.setActionBar(this, channel.getTitle());
 		
 		List<VideoVbvm> videosList = DBHandleVideos.getVideosByChannel(channel.getIdProperty());				
-		videosAdapter = new VideoVbvmAdapter(this, videosList);		
+		videosAdapter = new VideoVbvmAdapter(this, videosList, new ImageLoader2(this));
 		lvVideos = (ListView) findViewById(R.id.lv_bible_studies);
         lvVideos.setAdapter(videosAdapter);
         lvVideos.setOnItemClickListener(new OnItemClickListener() {

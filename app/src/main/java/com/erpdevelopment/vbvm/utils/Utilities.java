@@ -126,6 +126,8 @@ public class Utilities {
 		return bitmapDrawable;
 	}
 
+
+
 	public static String getSimpleDateFormat(String dateString, String format) {
 		long timeMills = Long.parseLong(dateString);
 		Date d = new Date(timeMills);

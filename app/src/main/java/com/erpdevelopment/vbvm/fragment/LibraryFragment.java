@@ -13,13 +13,13 @@ import com.erpdevelopment.vbvm.activity.QAndAPostDetailsActivity;
 import com.erpdevelopment.vbvm.activity.VideosVbvmActivity;
 import com.erpdevelopment.vbvm.adapter.ArticlesAdapter;
 import com.erpdevelopment.vbvm.adapter.BibleStudiesAdapter;
-import com.erpdevelopment.vbvm.adapter.ChannelVbvmAdapter;
-import com.erpdevelopment.vbvm.adapter.QAndAPostsAdapter;
+import com.erpdevelopment.vbvm.adapter.VideoChannelsAdapter;
+import com.erpdevelopment.vbvm.adapter.AnswersAdapter;
 import com.erpdevelopment.vbvm.db.DBHandleLessons;
 import com.erpdevelopment.vbvm.model.Article;
-import com.erpdevelopment.vbvm.model.ChannelVbvm;
+import com.erpdevelopment.vbvm.model.VideoChannel;
 import com.erpdevelopment.vbvm.model.Lesson;
-import com.erpdevelopment.vbvm.model.QandAPost;
+import com.erpdevelopment.vbvm.model.Answer;
 import com.erpdevelopment.vbvm.model.Study;
 import com.erpdevelopment.vbvm.utils.FilesManager;
 import com.erpdevelopment.vbvm.utils.Utilities;
@@ -52,9 +52,9 @@ public class LibraryFragment extends Fragment implements OnTabChangeListener, Te
 	private View rootView;
 	private Resources res;
 	private BibleStudiesAdapter adapterStudies;
-	private QAndAPostsAdapter adapterQAPosts;
+	private AnswersAdapter adapterQAPosts;
 	private ArticlesAdapter adapterArticles;
-	private ChannelVbvmAdapter adapterVideos;
+	private VideoChannelsAdapter adapterVideos;
 	private ListView lvStudies;
 	private ListView lvQAPosts;
 	private ListView lvArticles;
@@ -136,8 +136,8 @@ public class LibraryFragment extends Fragment implements OnTabChangeListener, Te
 			adapterQAPosts.getFilter().filter(s.toString().trim());
 		if (tabs.getCurrentTab() == 2)
 			adapterArticles.getFilter().filter(s.toString().trim());
-		if (tabs.getCurrentTab() == 3)
-			adapterVideos.getFilter().filter(s.toString().trim());
+//		if (tabs.getCurrentTab() == 3)
+//			adapterVideos.getFilter().filter(s.toString().trim());
 	}
 	
 	@Override
@@ -172,7 +172,7 @@ public class LibraryFragment extends Fragment implements OnTabChangeListener, Te
 			}
 		});
         
-        adapterQAPosts = new QAndAPostsAdapter(getActivity(), FilesManager.listQAPosts);	
+        adapterQAPosts = new AnswersAdapter(getActivity(), FilesManager.listAnswers);
 		lvQAPosts = (ListView) rootView.findViewById(R.id.lvQAPosts);
 		lvQAPosts.setAdapter(adapterQAPosts);
 		lvQAPosts.setOnItemClickListener(new OnItemClickListener() {
@@ -181,7 +181,7 @@ public class LibraryFragment extends Fragment implements OnTabChangeListener, Te
 			public void onItemClick(AdapterView<?> parent, View v, int position,
 					long id) {
 				adapterQAPosts.setSelectedPosition(position);
-				QandAPost post = (QandAPost) parent.getItemAtPosition(position);
+				Answer post = (Answer) parent.getItemAtPosition(position);
 				Intent i = new Intent(getActivity(), QAndAPostDetailsActivity.class);
 				i.putExtra("post", post);
 				startActivity(i);
@@ -204,7 +204,7 @@ public class LibraryFragment extends Fragment implements OnTabChangeListener, Te
 			}
 		});
 		
-		adapterVideos = new ChannelVbvmAdapter(getActivity(), FilesManager.listChannels);	
+		adapterVideos = new VideoChannelsAdapter(getActivity(), FilesManager.listVideoChannels);
 		lvVideos = (ListView) rootView.findViewById(R.id.lvVideos);
 		lvVideos.setAdapter(adapterVideos);
 		lvVideos.setOnItemClickListener(new OnItemClickListener() {
@@ -213,7 +213,7 @@ public class LibraryFragment extends Fragment implements OnTabChangeListener, Te
 			public void onItemClick(AdapterView<?> parent, View v, int position,
 					long id) {
 				adapterVideos.setSelectedPosition(position);
-				ChannelVbvm channel = (ChannelVbvm) parent.getItemAtPosition(position);
+				VideoChannel channel = (VideoChannel) parent.getItemAtPosition(position);
 				Intent i = new Intent(getActivity(), VideosVbvmActivity.class);
 				i.putExtra("channel", channel);
 				startActivity(i);
@@ -238,9 +238,10 @@ public class LibraryFragment extends Fragment implements OnTabChangeListener, Te
  
 		protected Lesson doInBackground(Study... params) {
 			study = params[0];
-			AudioPlayerService.listTempLesson2 = (ArrayList<Lesson>) DBHandleLessons.getLessons(study.getIdProperty());
-			Lesson lesson = AudioPlayerService.listTempLesson2.get(0);
-			return lesson;
+////			AudioPlayerService.listTempLesson2 = (ArrayList<Lesson>) DBHandleLessons.getLessons(study.getIdProperty());
+////			Lesson lesson = AudioPlayerService.listTempLesson2.get(0);
+//			return lesson;
+			return null;
         }
        
         protected void onPostExecute(Lesson resultLesson) {        	
@@ -277,7 +278,7 @@ public class LibraryFragment extends Fragment implements OnTabChangeListener, Te
 	}	
 	
 	private void restoreSelectedRow(){
-//		prefs = getSharedPreferences(ConstantsVbvm.VBVM_PREFS, Context.MODE_PRIVATE);
+//		prefs = getSharedPreferences(Constants.VBVM_PREFS, Context.MODE_PRIVATE);
 //		int position = prefs.getInt("posStudy", -1);
 		int position = MainActivity.settings.getInt("posStudy", -1);
 		int index = MainActivity.settings.getInt("indexStudy", -1);		
@@ -401,13 +402,13 @@ public class LibraryFragment extends Fragment implements OnTabChangeListener, Te
 	}
 	
 	private void filterPostsByTopic(String topic){
-    	List<QandAPost> tempList = new ArrayList<QandAPost>(); 
-    	for ( int i=0; i < FilesManager.listQAPosts.size(); i++) {
-			List<String> topics = FilesManager.listQAPosts.get(i).getTopics();
+    	List<Answer> tempList = new ArrayList<Answer>();
+    	for (int i = 0; i < FilesManager.listAnswers.size(); i++) {
+			List<String> topics = FilesManager.listAnswers.get(i).getTopics();
 			if ( topics != null ) {
 	    		for ( int j=0; j < topics.size(); j++) {
 	    			if ( topics.get(j).equals(topic) ) {
-	    				tempList.add(FilesManager.listQAPosts.get(i));
+	    				tempList.add(FilesManager.listAnswers.get(i));
 	    				break;
 	    			}
 	    		}
@@ -437,7 +438,7 @@ public class LibraryFragment extends Fragment implements OnTabChangeListener, Te
          	 String topic = data.getExtras().getString("selectedItem");
          	 if (!topic.equals("cancel")) {
          		 if ( topic.equals("clear"))
-         			adapterQAPosts.setQAndAPostsListItems(FilesManager.listQAPosts);
+         			adapterQAPosts.setQAndAPostsListItems(FilesManager.listAnswers);
          		 else
          			filterPostsByTopic(topic);
          	 }         		 

@@ -27,9 +27,9 @@ public final class R {
 		public static final int curvedTextViewTextSize = 0x7f070057;
 	}
 	public static final class drawable {
-		public static final int cardinal_bird = 0x7f020069;
-		public static final int circle_progress_background = 0x7f02006a;
-		public static final int circle_progress_foreground = 0x7f02006b;
+		public static final int cardinal_bird = 0x7f02006a;
+		public static final int circle_progress_background = 0x7f02006b;
+		public static final int circle_progress_foreground = 0x7f02006c;
 	}
 	public static final class id {
 	}
@@ -40,10 +40,10 @@ public final class R {
 		public static final int app_name = 0x7f06002d;
 		public static final int content_description = 0x7f060035;
 		public static final int curved_text_value = 0x7f060036;
-		public static final int home_screen_observations = 0x7f06004b;
-		public static final int home_screen_observed_compliance = 0x7f06004c;
-		public static final int percent_value = 0x7f060058;
-		public static final int total_observations = 0x7f060080;
+		public static final int home_screen_observations = 0x7f06004c;
+		public static final int home_screen_observed_compliance = 0x7f06004d;
+		public static final int percent_value = 0x7f060059;
+		public static final int total_observations = 0x7f060081;
 	}
 	public static final class style {
 		public static final int AppTheme = 0x7f080092;

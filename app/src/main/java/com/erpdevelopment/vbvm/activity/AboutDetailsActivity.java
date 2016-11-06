@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.erpdevelopment.vbvm.R;
-import com.erpdevelopment.vbvm.utils.ConstantsVbvm;
+import com.erpdevelopment.vbvm.utils.Constants;
 import com.erpdevelopment.vbvm.utils.Utilities;
 
 import android.os.Bundle;
@@ -40,19 +40,19 @@ public class AboutDetailsActivity extends Activity {
 		int posSelected = getIntent().getExtras().getInt("posSelected");
 		
 		switch (posSelected) {
-			case 0:	fileName = ConstantsVbvm.FILENAME_HISTORY;				
+			case 0:	fileName = Constants.FILENAME_HISTORY;
 				break;
-			case 1:	fileName = ConstantsVbvm.FILENAME_BELIEFS;				
+			case 1:	fileName = Constants.FILENAME_BELIEFS;
 				break;
-			case 2:	fileName = ConstantsVbvm.FILENAME_HOW;				
+			case 2:	fileName = Constants.FILENAME_HOW;
 				break;
-			case 3:	fileName = ConstantsVbvm.FILENAME_WHERE;				
+			case 3:	fileName = Constants.FILENAME_WHERE;
 				break;
-			case 4:	fileName = ConstantsVbvm.FILENAME_ABOUT;				
+			case 4:	fileName = Constants.FILENAME_ABOUT;
 				break;
-			case 5:	fileName = ConstantsVbvm.FILENAME_SERVICES;				
+			case 5:	fileName = Constants.FILENAME_SERVICES;
 				break;
-			case 6:	fileName = ConstantsVbvm.FILENAME_MISSION;				
+			case 6:	fileName = Constants.FILENAME_MISSION;
 				break;
 			default:
 				break;

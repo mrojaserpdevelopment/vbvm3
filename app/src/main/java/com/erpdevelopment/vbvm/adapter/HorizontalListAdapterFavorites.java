@@ -7,11 +7,11 @@ import com.erpdevelopment.vbvm.model.Article;
 import com.erpdevelopment.vbvm.model.EventVbvm;
 import com.erpdevelopment.vbvm.model.ItemInfo;
 import com.erpdevelopment.vbvm.model.Lesson;
-import com.erpdevelopment.vbvm.model.QandAPost;
+import com.erpdevelopment.vbvm.model.Answer;
 import com.erpdevelopment.vbvm.model.VideoVbvm;
 import com.erpdevelopment.vbvm.service.WebServiceCall;
-import com.erpdevelopment.vbvm.utils.BitmapManager;
-import com.erpdevelopment.vbvm.utils.imageloading.ImageLoader;
+import com.erpdevelopment.vbvm.utils.BitmapManager2;
+import com.erpdevelopment.vbvm.utils.imageloading.ImageLoader2;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -25,12 +25,12 @@ public class HorizontalListAdapterFavorites extends BaseAdapter {
 
 	private Activity activity;
 	private List<ItemInfo> items;
-    public ImageLoader imageLoader; 
+    public ImageLoader2 imageLoader;
 	
 	public HorizontalListAdapterFavorites(Activity a, List<ItemInfo> item) {
 		activity = a;
 		items = item;
-		imageLoader = new ImageLoader(activity);
+		imageLoader = new ImageLoader2(activity);
 	}
 	
 	@Override
@@ -76,15 +76,15 @@ public class HorizontalListAdapterFavorites extends BaseAdapter {
 	    	   for ( int i=0; i<WebServiceCall.authorNames.length; i++ ) {
 		    	   if ( article.getAuthorName().equals(WebServiceCall.authorNames[i]) ) {
 		    		   switch (i) {
-				   			case 0: BitmapManager.setImageBitmap(activity, imgThumb, R.drawable.photo_stephen_scaled);
+				   			case 0: BitmapManager2.setImageBitmap(activity, imgThumb, R.drawable.photo_stephen_scaled);
 				   				break;
-				   			case 1: BitmapManager.setImageBitmap(activity, imgThumb, R.drawable.photo_melissa);
+				   			case 1: BitmapManager2.setImageBitmap(activity, imgThumb, R.drawable.photo_melissa);
 				   				break;
-				   			case 2: BitmapManager.setImageBitmap(activity, imgThumb, R.drawable.photo_brian_scaled);
+				   			case 2: BitmapManager2.setImageBitmap(activity, imgThumb, R.drawable.photo_brian_scaled);
 				   				break;
-				   			case 3: BitmapManager.setImageBitmap(activity, imgThumb, R.drawable.photo_ivette_scaled);
+				   			case 3: BitmapManager2.setImageBitmap(activity, imgThumb, R.drawable.photo_ivette_scaled);
 				   				break;
-				   			case 4: BitmapManager.setImageBitmap(activity, imgThumb, R.drawable.photo_brady);
+				   			case 4: BitmapManager2.setImageBitmap(activity, imgThumb, R.drawable.photo_brady);
 				   				break;				
 				   			default:
 				   				break;
@@ -97,19 +97,19 @@ public class HorizontalListAdapterFavorites extends BaseAdapter {
 	       if (itemInfo.getType().equals("event")){
 	    	   EventVbvm event = (EventVbvm) itemInfo.getItem();
 	    	   title = event.getTitle();
-	    	   BitmapManager.setImageBitmap(activity, imgThumb, R.drawable.bottom_bar_icon_calendar);
+	    	   BitmapManager2.setImageBitmap(activity, imgThumb, R.drawable.bottom_bar_icon_calendar);
 	       }
 	       
 	       if (itemInfo.getType().equals("post")){
-	    	   QandAPost post = (QandAPost) itemInfo.getItem();
+	    	   Answer post = (Answer) itemInfo.getItem();
 	    	   title = post.getTitle();
-	    	   BitmapManager.setImageBitmap(activity, imgThumb, R.drawable.icon_qa_posts);
+	    	   BitmapManager2.setImageBitmap(activity, imgThumb, R.drawable.icon_qa_posts);
 	       }
 	       
 	       if (itemInfo.getType().equals("video")){
 	    	   VideoVbvm video = (VideoVbvm) itemInfo.getItem();
 	    	   title = video.getTitle();
-	    	   BitmapManager.setImageBitmap(activity, imgThumb, R.drawable.icon_youtube_48);
+	    	   BitmapManager2.setImageBitmap(activity, imgThumb, R.drawable.icon_youtube_48);
 	       }
 	       
 	       tvTitle.setText(title);

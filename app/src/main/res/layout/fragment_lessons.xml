@@ -2,6 +2,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
 
+<!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent" >-->
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,7 +24,8 @@
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:src="@drawable/adele"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                android:alpha="0.75"/>
 
             <ImageView
                 android:id="@+id/img_study"
@@ -80,7 +86,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_title_listview"
-                    android:padding="10dp">
+                    android:padding="10dp"
+                    android:visibility="gone">
                     <TextView
                         android:id="@+id/tv_title_lessons"
                         android:layout_width="match_parent"
@@ -105,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:listSelector="@android:color/transparent"
                     android:layout_marginBottom="0dp"
-                    android:layout_below="@id/rl_title_lv_lessons"/>
+                    />
                 <RelativeLayout
                     android:id="@+id/rl_title_lv_lessons_complete"
                     android:layout_width="match_parent"
@@ -143,3 +150,4 @@
     </LinearLayout>
 
 </RelativeLayout>
+<!--</ScrollView>-->

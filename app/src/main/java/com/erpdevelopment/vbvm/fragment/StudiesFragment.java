@@ -1,15 +1,13 @@
 package com.erpdevelopment.vbvm.fragment;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.os.AsyncTask;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,19 +20,14 @@ import android.widget.TextView;
 
 import com.erpdevelopment.vbvm.MainActivity;
 import com.erpdevelopment.vbvm.R;
-import com.erpdevelopment.vbvm.activity.AudioControllerActivity;
-import com.erpdevelopment.vbvm.activity.AudioPlayerService;
+import com.erpdevelopment.vbvm.activity.SettingsActivity;
 import com.erpdevelopment.vbvm.adapter.StudiesAdapter;
-import com.erpdevelopment.vbvm.db.DBHandleLessons;
-import com.erpdevelopment.vbvm.helper.AudioPlayerHelper;
-import com.erpdevelopment.vbvm.model.Lesson;
 import com.erpdevelopment.vbvm.model.Study;
+import com.erpdevelopment.vbvm.utils.Constants;
 import com.erpdevelopment.vbvm.utils.DownloadJsonData;
 import com.erpdevelopment.vbvm.utils.FilesManager;
-import com.erpdevelopment.vbvm.utils.imageloading.ImageLoader;
+import com.erpdevelopment.vbvm.utils.imageloading.ImageLoader2;
 import com.erpdevelopment.vbvm.view.ExpandableHeightGridview;
-
-import java.util.ArrayList;
 
 public class StudiesFragment extends Fragment {
 
@@ -43,14 +36,15 @@ public class StudiesFragment extends Fragment {
     private ExpandableHeightGridview gvStudiesNew;
     private ExpandableHeightGridview gvStudiesOld;
     private ExpandableHeightGridview gvStudiesSingle;
-    private ImageLoader imageLoader;
+//    private ImageLoader imageLoader;
+    private ImageLoader2 imageLoader2;
     private StudiesAdapter adapterStudiesNew;
     private StudiesAdapter adapterStudiesOld;
     private StudiesAdapter adapterStudiesSingle;
     private ActionBar actionBar;
     // Define the listener of the interface type
     // listener will the activity instance containing fragment
-    private OnItemSelectedListener listener;
+    private OnStudyItemSelectedListener listener;
 
     public StudiesFragment() {
     }
@@ -69,21 +63,26 @@ public class StudiesFragment extends Fragment {
     }
 
     // Define the events that the fragment will use to communicate
-    public interface OnItemSelectedListener {
+    public interface OnStudyItemSelectedListener {
         // This can be any number of events to be sent to the activity
-        public void onStudyItemSelected(Study study);
+        void onStudyItemSelected(Study study);
     }
 
     // Store the listener (activity) that will have events fired once the fragment is attached
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnItemSelectedListener) {
-            listener = (OnItemSelectedListener) context;
+        if (context instanceof OnStudyItemSelectedListener) {
+            listener = (OnStudyItemSelectedListener) context;
         } else {
             throw new ClassCastException(context.toString()
-                    + " must implement StudiesFragment.OnItemSelectedListener");
+                    + " must implement StudiesFragment.OnStudyItemSelectedListener");
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
 
     @Override
@@ -94,7 +93,6 @@ public class StudiesFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        System.out.println("StudiesFragment.onCreateView");
         return inflater.inflate(R.layout.fragment_studies, container, false);
     }
 
@@ -109,20 +107,14 @@ public class StudiesFragment extends Fragment {
         gvStudiesNew.setFocusable(false);
         gvStudiesOld.setFocusable(false);
         gvStudiesSingle.setFocusable(false);
-        imageLoader = new ImageLoader(getActivity());
-//        actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
-//        if (actionBar != null) {
-//            actionBar.setHomeButtonEnabled(false); // disable the button
-//            actionBar.setDisplayHomeAsUpEnabled(false); // remove the left caret
-//            actionBar.setDisplayShowHomeEnabled(false); // remove the icon
-//            actionBar.setDisplayShowTitleEnabled(false);
-//            actionBar.show();
-//        }
+//        imageLoader = new ImageLoader(getActivity());
+        imageLoader2 = new ImageLoader2(getActivity());
         setAdapterStudiesFragment();
     }
 
     private void setAdapterStudiesFragment() {
-        adapterStudiesNew = new StudiesAdapter(getActivity(), FilesManager.listStudiesTypeNew,imageLoader);
+//        adapterStudiesNew = new StudiesAdapter(getActivity(), FilesManager.listStudiesTypeNew,imageLoader);
+        adapterStudiesNew = new StudiesAdapter(getActivity(), FilesManager.listStudiesTypeNew,imageLoader2);
         gvStudiesNew.setAdapter(adapterStudiesNew);
         gvStudiesNew.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -132,20 +124,26 @@ public class StudiesFragment extends Fragment {
                 listener.onStudyItemSelected(study);
             }
         });
-        adapterStudiesOld = new StudiesAdapter(getActivity(), FilesManager.listStudiesTypeOld,imageLoader);
+//        adapterStudiesOld = new StudiesAdapter(getActivity(), FilesManager.listStudiesTypeOld,imageLoader);
+        adapterStudiesOld = new StudiesAdapter(getActivity(), FilesManager.listStudiesTypeOld,imageLoader2);
         gvStudiesOld.setAdapter(adapterStudiesOld);
         gvStudiesOld.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Study study = (Study) parent.getItemAtPosition(position);
+                //fire the event when the user selects a study in the fragment
+                listener.onStudyItemSelected(study);
             }
         });
-        adapterStudiesSingle = new StudiesAdapter(getActivity(), FilesManager.listStudiesTypeSingle,imageLoader);
+//        adapterStudiesSingle = new StudiesAdapter(getActivity(), FilesManager.listStudiesTypeSingle,imageLoader);
+        adapterStudiesSingle = new StudiesAdapter(getActivity(), FilesManager.listStudiesTypeSingle,imageLoader2);
         gvStudiesSingle.setAdapter(adapterStudiesSingle);
         gvStudiesSingle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+            public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
+                Study study = (Study) parent.getItemAtPosition(position);
+                //fire the event when the user selects a study in the fragment
+                listener.onStudyItemSelected(study);
             }
         });
     }
@@ -187,59 +185,30 @@ public class StudiesFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        System.out.println("StudiesFragment.onOptionsItemSelected");
+        String url = "";
         switch (item.getItemId()) {
             case R.id.action_about:
-                return true;
+                url = Constants.URL_VBVMI.ABOUT;
+                break;
             case R.id.action_events:
-                return true;
+                url = Constants.URL_VBVMI.EVENTS;
+                break;
             case R.id.action_contact:
-                return true;
+                url = Constants.URL_VBVMI.CONTACT;
+                break;
             case R.id.action_donate:
+                url = Constants.URL_VBVMI.DONATE;
+                break;
+            case R.id.action_config:
+                Intent i = new Intent(getActivity(), SettingsActivity.class);
+                startActivity(i);
                 return true;
             default:
-                return super.onOptionsItemSelected(item);
         }
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(intent);
+        return true;
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-//        System.out.println("StudiesFragment.onHiddenChanged: " + hidden);
-//        if (!hidden) {
-////            AudioPlayerHelper helper = AudioPlayerHelper.getInstance();
-//            AudioPlayerHelper helper = new AudioPlayerHelper();
-//            AudioPlayerService service = helper.getInstanceAudioPlayerService();
-//            if (service != null) {
-//                System.out.println("not null");
-//            } else {
-//                System.out.println("null");
-//            }
-//        }
-
-    }
-
-    //    /**
-//     * CHECK LAST UPDATE TIME
-//     */
-//    private boolean checkUserFirstVisit(){
-//        long lastUpdateTime = MainActivity.settings.getLong("lastUpdateKey", 0L);
-//        long timeElapsed = System.currentTimeMillis() - lastUpdateTime;
-//        // YOUR UPDATE FREQUENCY HERE
-////			final long UPDATE_FREQ = 1000 * 60 * 60 * 12;
-//        final long UPDATE_FREQ = 1000 * 60 * 60 * 1; //Every 1 hour
-//        SharedPreferences.Editor e = MainActivity.settings.edit();
-//        if (timeElapsed > UPDATE_FREQ) {
-//            e.putBoolean("studiesInDB", false);
-//            e.putBoolean("lessonsInDB", false);
-//            e.putBoolean("articlesInDB", false);
-//            e.putBoolean("postsInDB", false);
-//            e.putBoolean("eventsInDB", false);
-//            e.putBoolean("videosInDB", false);
-//            Log.i("MainActivity info", "Update DB with data from Webservice");
-//        }
-//        // STORE LATEST UPDATE TIME
-//        e.putLong("lastUpdateKey", System.currentTimeMillis());
-//        e.commit();
-//        return false;
-//    }
 }

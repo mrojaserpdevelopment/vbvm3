@@ -13,30 +13,33 @@ import android.widget.TextView;
 
 import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.model.VideoVbvm;
-import com.erpdevelopment.vbvm.utils.imageloading.ImageLoader;
+import com.erpdevelopment.vbvm.utils.BitmapManager2;
+import com.erpdevelopment.vbvm.utils.imageloading.ImageLoader2;
+import com.squareup.picasso.Picasso;
 
 public class VideoVbvmAdapter extends BaseAdapter {
 
 	private Activity activity;
-	private List<VideoVbvm> videos;
+	private List<VideoVbvm> listVideos;
 	// used to keep selected position in ListView
 	private int selectedPos = -1;	// init value for not-selected
-	private ImageLoader imageLoader;
+	private ImageLoader2 imageLoader;
 
-	public VideoVbvmAdapter(Activity a, List<VideoVbvm> listChannels) {
+	public VideoVbvmAdapter(Activity a, List<VideoVbvm> listVideoVbvm, ImageLoader2 imageLoader) {
 		activity = a;
-		videos = listChannels;
-		imageLoader = new ImageLoader(activity);
+		listVideos = listVideoVbvm;
+		this.imageLoader = imageLoader;
 	}
 	
 	@Override
 	public int getCount() {
-		return videos.size();
+
+		return listVideos.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return videos.get(position);
+		return listVideos.get(position);
 	}
 
 	@Override
@@ -46,21 +49,47 @@ public class VideoVbvmAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-        
-	   VideoVbvm video = (VideoVbvm) getItem(position);    
-       if (convertView == null) {
-	      LayoutInflater inflater = activity.getLayoutInflater();
-          convertView = inflater.inflate(R.layout.item_listview_vbvm, null);
-       }
-       ImageView img = (ImageView) convertView.findViewById(R.id.img_bible_study);
-       img.setBackgroundResource(R.drawable.youtube3);
-//       imageLoader.DisplayImage(video.getThumbnailSource(), img);
-       
-       TextView txt = (TextView) convertView.findViewById(R.id.tv_title_bible_study);
-       txt.setText(video.getTitle());
+		ViewHolder viewHolder;
+	    VideoVbvm video = (VideoVbvm) getItem(position);
+       	if (convertView == null) {
+			LayoutInflater inflater = activity.getLayoutInflater();
+          	convertView = inflater.inflate(R.layout.item_listview_video, null);
+			viewHolder = new ViewHolder();
+			viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tv_video_title);
+			viewHolder.tvDescription = (TextView) convertView.findViewById(R.id.tv_video_description);
+			viewHolder.tvLength = (TextView) convertView.findViewById(R.id.tv_video_length);
+			viewHolder.imgVideoThumbnail = (ImageView) convertView.findViewById(R.id.img_video_thumbnail);
+//			imageLoader.DisplayImage(video.getThumbnailSource(),viewHolder.imgVideoThumbnail);
+			convertView.setTag(viewHolder);
+       	} else {
+			viewHolder = (ViewHolder) convertView.getTag();
+		}
 
-       TextView txt2 = (TextView) convertView.findViewById(R.id.tv_type_bible_study);
-       txt2.setVisibility(View.GONE);
+		viewHolder.tvTitle.setText(video.getTitle());
+		viewHolder.tvDescription.setText(video.getDescription());
+		viewHolder.tvLength.setText(video.getVideoLength());
+		System.out.println("VideoVbvmAdapter.getView: " + position);
+//		BitmapManager2.bitmapWidth = 100;
+//		BitmapManager2.bitmapHeight = 60;
+//		ImageLoader2.useCache = false;
+//		imageLoader.DisplayImage("https://i.ytimg.com/vi/YOQocnhCm_A/sddefault.jpg",viewHolder.imgVideoThumbnail);
+//		imageLoader.DisplayImage(video.getThumbnailSource(),viewHolder.imgVideoThumbnail);
+
+		Picasso.with(activity)
+				.load(video.getThumbnailSource())
+				.resize(120,90)
+				.centerCrop()
+				.into(viewHolder.imgVideoThumbnail);
+
+//       ImageView img = (ImageView) convertView.findViewById(R.id.img_bible_study);
+//       img.setBackgroundResource(R.drawable.youtube3);
+////       imageLoader.DisplayImage(video.getThumbnailSource(), img);
+//
+//       TextView txt = (TextView) convertView.findViewById(R.id.tv_title_bible_study);
+//       txt.setText(video.getTitle());
+//
+//       TextView txt2 = (TextView) convertView.findViewById(R.id.tv_type_bible_study);
+//       txt2.setVisibility(View.GONE);
 
        if(selectedPos == position)
     	   convertView.setBackgroundColor(Color.CYAN);
@@ -69,6 +98,13 @@ public class VideoVbvmAdapter extends BaseAdapter {
        
 	   return convertView;
 	}
+
+	static class ViewHolder {
+		TextView tvTitle;
+		TextView tvDescription;
+		TextView tvLength;
+		ImageView imgVideoThumbnail;
+	}
 	
 	public void setSelectedPosition(int pos){
 		selectedPos = pos;
@@ -76,7 +112,8 @@ public class VideoVbvmAdapter extends BaseAdapter {
 	}
 	
 	public void setVideoListItems(List<VideoVbvm> newList) {
-	    videos = newList;
+		System.out.println("VideoVbvmAdapter.setVideoListItems: " + newList.size());
+		listVideos = newList;
 	    notifyDataSetChanged();
 	}
 }

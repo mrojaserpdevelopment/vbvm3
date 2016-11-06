@@ -2,7 +2,6 @@ package com.erpdevelopment.vbvm.service;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -19,10 +18,10 @@ import android.content.SharedPreferences.Editor;
 import com.erpdevelopment.vbvm.MainActivity;
 import com.erpdevelopment.vbvm.db.DBHandleStudies;
 import com.erpdevelopment.vbvm.model.Article;
-import com.erpdevelopment.vbvm.model.ChannelVbvm;
+import com.erpdevelopment.vbvm.model.VideoChannel;
 import com.erpdevelopment.vbvm.model.EventVbvm;
 import com.erpdevelopment.vbvm.model.Lesson;
-import com.erpdevelopment.vbvm.model.QandAPost;
+import com.erpdevelopment.vbvm.model.Answer;
 import com.erpdevelopment.vbvm.model.Study;
 import com.erpdevelopment.vbvm.model.Topic;
 import com.erpdevelopment.vbvm.model.VideoVbvm;
@@ -62,10 +61,10 @@ public class WebServiceCall {
 	List<Lesson> listLessons;
 	List<Topic> listLessonTopics;	
 	List<Article> listArticles;
-	List<QandAPost> listQAPosts;
+	List<Answer> listQAPosts;
 	List<EventVbvm> listEvents;
 	List<String> listQAPostTopics;
-	List<ChannelVbvm> listChannels;
+	List<VideoChannel> listChannels;
 	List<VideoVbvm> listVideos;
 	
 	public static Set<String> topicSet = new HashSet<>();
@@ -75,9 +74,9 @@ public class WebServiceCall {
 	Topic topic;
 	Lesson lesson;
 	Article article;
-	QandAPost qAPost;
+	Answer qAPost;
 	EventVbvm event;
-	ChannelVbvm channel;
+	VideoChannel channel;
 	VideoVbvm video;
 	
 	public static String authorNames[] = {
@@ -196,7 +195,7 @@ public class WebServiceCall {
 		return listLessons;		
 	}
 	
-	public List<QandAPost> getQandAPosts() {		
+	public List<Answer> getQandAPosts() {
 		
 		// Creating new JSON Parser
 		JSONParser jParser = new JSONParser();
@@ -209,12 +208,12 @@ public class WebServiceCall {
 			
 			// Getting JSON Array
 			qAPosts = vbv.getJSONArray(TAG_QANDAPOSTS);
-			listQAPosts = new ArrayList<QandAPost>();
+			listQAPosts = new ArrayList<Answer>();
 			topicSet = new HashSet<String>();
 			List<String> topics;
 			for ( int i=0; i < qAPosts.length(); i++ ) {
 				JSONObject c = qAPosts.getJSONObject(i);
-				qAPost = new QandAPost();
+				qAPost = new Answer();
 				long timeMills = Long.parseLong(c.getString("postedDate")+"000");
 				Date d = new Date(timeMills);
 				DateFormat df = DateFormat.getDateInstance();
@@ -293,16 +292,16 @@ public class WebServiceCall {
 		return listEvents;		
 	}
 	
-	public List<ChannelVbvm> getVideos() {		
+	public List<VideoChannel> getVideos() {
 		JSONParser jParser = new JSONParser();
 		JSONObject json = jParser.getJSONFromUrl(JSON_CHANNELS_URL);		
 		try {
 			vbv = json.getJSONObject(TAG_VERSE_BY_VERSE);			
 			channels = vbv.getJSONArray(TAG_CHANNELS);
-			listChannels = new ArrayList<ChannelVbvm>();
+			listChannels = new ArrayList<VideoChannel>();
 			for ( int i=0; i < channels.length(); i++ ) {
 				JSONObject c = channels.getJSONObject(i);
-				channel = new ChannelVbvm();
+				channel = new VideoChannel();
 				channel.setIdProperty(StringEscapeUtils.unescapeJava(c.getString("ID")));				
 				channel.setPostedDate(String.valueOf(Long.parseLong(c.getString("postedDate")+"000")));
 				channel.setAverageRating(StringEscapeUtils.unescapeJava(c.getString("averageRating")));

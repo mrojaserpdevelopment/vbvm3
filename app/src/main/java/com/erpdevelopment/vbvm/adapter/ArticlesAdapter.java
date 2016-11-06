@@ -1,19 +1,11 @@
 package com.erpdevelopment.vbvm.adapter;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.model.Article;
-import com.erpdevelopment.vbvm.model.QandAPost;
-import com.erpdevelopment.vbvm.model.Study;
-import com.erpdevelopment.vbvm.model.Topic;
-import com.erpdevelopment.vbvm.utils.FormatDate;
 import com.erpdevelopment.vbvm.utils.Utilities;
 
 import android.app.Activity;
@@ -25,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -45,7 +36,7 @@ public class ArticlesAdapter extends BaseAdapter implements Filterable{
 		originalListArticles = articleList;
 		lparams = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-		lparams.setMargins(10,0,10,0);
+		lparams.setMargins(0,0,10,0);
 	}
 	
 	@Override
@@ -67,29 +58,16 @@ public class ArticlesAdapter extends BaseAdapter implements Filterable{
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		ViewHolder viewHolder = null;
-		// Get the data item for this position
 		Article article = (Article) getItem(position);
-//		LinearLayout llTopics = null;
 		// Check if an existing view is being reused, otherwise inflate the view
 		if (convertView == null) {
 			LayoutInflater inflater = activity.getLayoutInflater();
-			convertView = inflater.inflate(R.layout.item_listview_articles, null);
+			convertView = inflater.inflate(R.layout.item_listview_articles_answers, null);
 			viewHolder = new ViewHolder();
 			viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tv_article_title);
 			viewHolder.tvAuthor = (TextView) convertView.findViewById(R.id.tv_article_author);
 			viewHolder.tvDate = (TextView) convertView.findViewById(R.id.tv_article_date);
-			viewHolder.llArticleTopics = (LinearLayout) convertView.findViewById(R.id.ll_articles_topics);
-//			for (String topic : article.getTopics()){
-//				TextView tvTopic = new TextView(activity);
-//				tvTopic.setLayoutParams(lparams);
-//				tvTopic.setBackgroundResource( R.drawable.bg_text_topics);
-//				tvTopic.setPadding(5,5,5,5);
-//				tvTopic.setText(topic);
-////			tvTopic.setTextColor(activity.getResources().getColor(R.color.light_gray));
-//				tvTopic.setTextColor(ContextCompat.getColor(activity, R.color.light_gray));
-//				tvTopic.setTextSize(12);
-//				viewHolder.llArticleTopics.addView(tvTopic);
-//			}
+			viewHolder.llTopics = (LinearLayout) convertView.findViewById(R.id.ll_articles_topics);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
@@ -97,86 +75,23 @@ public class ArticlesAdapter extends BaseAdapter implements Filterable{
 
 		viewHolder.tvTitle.setText(article.getTitle());
 		viewHolder.tvAuthor.setText(article.getAuthorName());
-//		Date date = new Date(Long.parseLong(article.getPostedDate()));
-//		String[] dateArray = FormatDate.getDateArray(new Date(Long.parseLong(article.getPostedDate())));
-
-//		long timeMills = Long.parseLong(article.getPostedDate());
-//		Date d = new Date(timeMills);
-//		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy");
-//		String date = df.format(d);
 		viewHolder.tvDate.setText(Utilities.getSimpleDateFormat(article.getPostedDate(),"dd/MM/yy"));
 
-		System.out.println("ArticlesAdapter.getView: " + article.getTitle() + " - " + article.getTopics().size());
-
-//		llTopics = (LinearLayout) convertView.findViewById(R.id.ll_articles_topics);
-//		TextView tvTopic = (TextView) (inflater != null ? inflater.inflate(R.layout.tv_topics, null) : null);
-
-		viewHolder.llArticleTopics.removeAllViews();
+		viewHolder.llTopics.removeAllViews();
+		int count = 0;
 		for (String topic : article.getTopics()){
-//			TextView tvTopic = (TextView) (inflater != null ? inflater.inflate(R.layout.tv_topics, null) : null);
 			TextView tvTopic = new TextView(activity);
 			tvTopic.setLayoutParams(lparams);
 			tvTopic.setBackgroundResource( R.drawable.bg_text_topics);
-			tvTopic.setPadding(5,5,5,5);
+			tvTopic.setPadding(10,5,10,5);
 			tvTopic.setText(topic);
-//			tvTopic.setTextColor(activity.getResources().getColor(R.color.light_gray));
 			tvTopic.setTextColor(ContextCompat.getColor(activity, R.color.light_gray));
 			tvTopic.setTextSize(12);
-			viewHolder.llArticleTopics.addView(tvTopic);
+			viewHolder.llTopics.addView(tvTopic);
+			count++;
+			if (count==3)
+				break;
 		}
-
-//		LinearLayout llTopics = (LinearLayout) convertView.findViewById(R.id.ll_articles_topics);
-//		LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(
-//				LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//		TextView tv=new TextView(activity);
-//		tv.setLayoutParams(lparams);
-//		tv.setText("test1");
-//		llTopics.addView(tv);
-//
-//		tv=new TextView(activity);
-//		tv.setLayoutParams(lparams);
-//		tv.setText("test123333444");
-//		llTopics.addView(tv);
-//
-//		tv=new TextView(activity);
-//		tv.setLayoutParams(lparams);
-//		tv.setText("testing");
-//		llTopics.addView(tv);
-//
-//		tv=new TextView(activity);
-//		tv.setLayoutParams(lparams);
-//		tv.setText("test44444444444");
-//		llTopics.addView(tv);
-
-//		viewHolder.tvDate.setText(article.getPostedDate());
-
-
-
-//		ImageView img = (ImageView) convertView.findViewById(R.id.img_bible_study);
-//		img.setVisibility(View.GONE);
-//
-//		LinearLayout llArticleDate = (LinearLayout) convertView.findViewById(R.id.ll_article_date);
-//		llArticleDate.setVisibility(View.VISIBLE);
-//
-//		   TextView tvTitle = (TextView) convertView.findViewById(R.id.tv_title_bible_study);
-//		   tvTitle.setText(article.getTitle());
-//
-//		   TextView tvAuthor = (TextView) convertView.findViewById(R.id.tv_type_bible_study);
-//		   tvAuthor.setText(article.getAuthorName());
-//
-//		   Date date = new Date(Long.parseLong(article.getPostedDate()));
-//		   String[] dateArray = FormatDate.getDateArray(date);
-//		   TextView tvDay = (TextView) convertView.findViewById(R.id.tv_article_day);
-//		   tvDay.setText(dateArray[0]);
-//		   TextView tvMonth = (TextView) convertView.findViewById(R.id.tv_article_month);
-//		   tvMonth.setText(dateArray[1]);
-
-//	       TextView tvDay = (TextView) convertView.findViewById(R.id.tv_article_day);
-//	       tvDay.setText(article.getPostedDate());
-//
-//	       TextView tvMonth = (TextView) convertView.findViewById(R.id.tv_article_month);
-//	       tvMonth.setText(article.getPostedDate().substring(0, 3));
-
 		   if(selectedPos == position)
 			   convertView.setBackgroundColor(Color.CYAN);
 		   else
@@ -189,7 +104,7 @@ public class ArticlesAdapter extends BaseAdapter implements Filterable{
 		TextView tvTitle;
 		TextView tvAuthor;
 		TextView tvDate;
-		LinearLayout llArticleTopics;
+		LinearLayout llTopics;
 	}
 
 	public void setSelectedPosition(int pos){

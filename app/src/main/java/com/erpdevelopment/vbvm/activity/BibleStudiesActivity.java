@@ -7,7 +7,7 @@ import com.erpdevelopment.vbvm.MainActivity;
 import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.adapter.BibleStudiesAdapter;
 import com.erpdevelopment.vbvm.model.Study;
-import com.erpdevelopment.vbvm.utils.ConstantsVbvm;
+import com.erpdevelopment.vbvm.utils.Constants;
 import com.erpdevelopment.vbvm.utils.FilesManager;
 
 import android.os.Bundle;
@@ -46,7 +46,7 @@ public class BibleStudiesActivity extends Activity {
 		imgSearchButton = (ImageView) findViewById(R.id.btn_search);
 		imgSearchButton.setVisibility(View.VISIBLE);
 		
-		prefs = getSharedPreferences(ConstantsVbvm.VBVM_PREFS, Context.MODE_PRIVATE);        	 
+		prefs = getSharedPreferences(Constants.VBVM_PREFS, Context.MODE_PRIVATE);
 		
 		tv = (TextView) findViewById(R.id.tv_title_top_control_bar);
 		tv.setText("Bible Studies");
@@ -110,7 +110,7 @@ public class BibleStudiesActivity extends Activity {
 	}
 	
 	private void restoreSelectedRow(){
-		prefs = getSharedPreferences(ConstantsVbvm.VBVM_PREFS, Context.MODE_PRIVATE);
+		prefs = getSharedPreferences(Constants.VBVM_PREFS, Context.MODE_PRIVATE);
 		int position = prefs.getInt("posStudy", -1);
 		int index = prefs.getInt("indexStudy", -1);		
 		if ( position != -1 ) {

@@ -78,7 +78,7 @@ public class DBHandleLessons {
 				lesson.setDownloadStatusAudio(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_AUDIO))));
 				lesson.setDownloadStatusTeacherAid(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_TEACHER))));
 				lesson.setDownloadStatusTranscript(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_TRANSCRIPT))));
-				Study study = DBHandleStudies.getStudyById(id_study);
+//				Study study = DBHandleStudies.getStudyById(id_study);
 //				lesson.setStudy(study);
 	        	lessons.add(lesson);
 	        } while (c.moveToNext());
@@ -123,6 +123,52 @@ public class DBHandleLessons {
 	    }
 	    c.close();
 	    return lesson;
+	}
+
+	public static List<Lesson> getLessonsByState(String state) {
+		List<Lesson> lessons = new ArrayList<Lesson>();
+		String selectQuery = "";
+		if ( state == null )
+			selectQuery = "SELECT * FROM lesson ORDER BY " + COLUMN_POSTED_DATE + " DESC LIMIT 8"; //Query for Newest list
+		else
+			selectQuery = "SELECT * FROM lesson WHERE state = '" + state + "'";
+		Log.e(LOG, selectQuery);
+		Cursor c = MainActivity.db.rawQuery(selectQuery, null);
+		if (c.moveToFirst()) {
+			do {
+				Lesson lesson = new Lesson();
+				lesson.setIdProperty(c.getString((c.getColumnIndex(COLUMN_ID_LESSON))));
+				lesson.setLessonsDescription(c.getString((c.getColumnIndex(COLUMN_DESCRIPTION_LESSON))));
+				lesson.setPostedDate(c.getString((c.getColumnIndex(COLUMN_POSTED_DATE))));
+				lesson.setTranscript(c.getString((c.getColumnIndex(COLUMN_TRANSCRIPT))));
+				lesson.setDateStudyGiven(c.getString((c.getColumnIndex(COLUMN_DATE_STUDY_GIVEN))));
+				lesson.setTeacherAid(c.getString((c.getColumnIndex(COLUMN_TEACHER_AID))));
+				lesson.setAverageRating(c.getString((c.getColumnIndex(COLUMN_AVERAGE_RATING_LESSON))));
+				lesson.setVideoSource(c.getString((c.getColumnIndex(COLUMN_VIDEO_SOURCE))));
+				lesson.setVideoLength(c.getString((c.getColumnIndex(COLUMN_VIDEO_LENGTH))));
+				lesson.setTitle(c.getString((c.getColumnIndex(COLUMN_TITLE_LESSON))));
+				lesson.setLocation(c.getString((c.getColumnIndex(COLUMN_LOCATION))));
+				lesson.setAudioSource(c.getString((c.getColumnIndex(COLUMN_AUDIO_SOURCE))));
+				lesson.setAudioLength(c.getString((c.getColumnIndex(COLUMN_AUDIO_LENGTH))));
+				lesson.setStudentAid(c.getString((c.getColumnIndex(COLUMN_STUDENT_AID))));
+				lesson.setIdStudy(c.getString((c.getColumnIndex(COLUMN_ID_STUDY_FK))));
+				lesson.setProgressPercentage(c.getInt((c.getColumnIndex(COLUMN_PROGRESS_PERCENTAGE))));
+				lesson.setCurrentPosition(c.getLong((c.getColumnIndex(COLUMN_CURRENT_POSITION))));
+				lesson.setStudyLessonsSize(c.getInt((c.getColumnIndex(COLUMN_STUDY_LESSONS_SIZE))));
+				lesson.setStudyThumbnailSource(c.getString((c.getColumnIndex(COLUMN_STUDY_THUMBNAIL_SOURCE))));
+				lesson.setState(c.getString((c.getColumnIndex(COLUMN_STATE_LESSON))));
+				lesson.setPositionInList(c.getInt((c.getColumnIndex(COLUMN_POSITION_IN_LIST))));
+//	        	lesson.setDownloadStatus(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS))));
+				lesson.setDownloadStatusAudio(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_AUDIO))));
+				lesson.setDownloadStatusTeacherAid(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_TEACHER))));
+				lesson.setDownloadStatusTranscript(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_TRANSCRIPT))));
+//				Study study = DBHandleStudies.getStudyById(id_study);
+//				lesson.setStudy(study);
+				lessons.add(lesson);
+			} while (c.moveToNext());
+		}
+		c.close();
+		return lessons;
 	}
 
 	public static int saveCurrentPositionInTrack(String idLesson, long currentPositon){

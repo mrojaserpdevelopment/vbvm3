@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:gravity="bottom"
         sothree:umanoPanelHeight="0dp"
-        sothree:umanoShadowHeight="0dp"
+        sothree:umanoShadowHeight="2dp"
         sothree:umanoOverlay="false"
         android:visibility="visible"
         android:layout_above="@+id/bottomBar"

@@ -17,7 +17,6 @@ import com.erpdevelopment.vbvm.model.Favorite;
 import com.erpdevelopment.vbvm.model.ItemInfo;
 import com.erpdevelopment.vbvm.model.Lesson;
 import com.erpdevelopment.vbvm.model.Study;
-import com.erpdevelopment.vbvm.service.DownloadServiceTest;
 import com.erpdevelopment.vbvm.utils.CheckConnectivity;
 import com.erpdevelopment.vbvm.utils.FavoritesLRU;
 import com.erpdevelopment.vbvm.utils.FilesManager;
@@ -25,7 +24,7 @@ import com.erpdevelopment.vbvm.utils.IMediaPlayerServiceClient;
 import com.erpdevelopment.vbvm.utils.PDFTools;
 import com.erpdevelopment.vbvm.utils.Utilities;
 import com.erpdevelopment.vbvm.utils.imageloading.FileCache;
-import com.erpdevelopment.vbvm.utils.imageloading.ImageLoader;
+import com.erpdevelopment.vbvm.utils.imageloading.ImageLoader2;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -47,7 +46,6 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -85,7 +83,7 @@ public class AudioControllerActivity extends Activity implements OnSeekBarChange
 //	private int seekBackwardTime = 60000; // 1 minute
 	private int seekForwardTime = 15000; // 15 sec
 	private int seekBackwardTime = 15000; // 15 sec	
-	private ImageLoader imageLoader;
+	private ImageLoader2 imageLoader;
 	private LinearLayout llImageRead;	
 	private LinearLayout llImagePresent;
 	private LinearLayout llImageHandout;
@@ -137,7 +135,7 @@ public class AudioControllerActivity extends Activity implements OnSeekBarChange
             
             //send this instance to the service, so it can make callbacks on this instance as a client
             mService.setClient(AudioControllerActivity.this);
-            mService.playAudio(currentSongIndex);
+//            mService.playAudio(currentSongIndex);
         } 
         @Override
         public void onServiceDisconnected(ComponentName arg0) {
@@ -167,7 +165,7 @@ public class AudioControllerActivity extends Activity implements OnSeekBarChange
         llImagePresent = (LinearLayout) findViewById(R.id.ll_image_present);
         llImageHandout = (LinearLayout) findViewById(R.id.ll_image_handout);
         mProgressDialog = new ProgressDialog(this);
-        imageLoader = new ImageLoader(this);
+        imageLoader = new ImageLoader2(this);
         imgDownload = (ImageView) findViewById(R.id.img_download);
         imgShare = (ImageView) findViewById(R.id.img_share);
 //        tvDownloadInProgress = (TextView) findViewById(R.id.download_in_progress);
@@ -203,19 +201,19 @@ public class AudioControllerActivity extends Activity implements OnSeekBarChange
 		
         bindToService();
         
-        if ( AudioPlayerService.listTempLesson2.get(currentSongIndex).getAudioSource().equals("") ) {
-        	btnPlay.setEnabled(false);
-        	btnStop.setEnabled(false);
-        	btnBackward.setEnabled(false);
-        	btnForward.setEnabled(false);
-        	imgDownload.setVisibility(View.GONE);
-        } else {
-        	btnPlay.setEnabled(true);
-        	btnStop.setEnabled(true);
-        	btnBackward.setEnabled(true);
-        	btnForward.setEnabled(true);
-        	imgDownload.setVisibility(View.VISIBLE);
-        }
+//        if ( AudioPlayerService.listTempLesson2.get(currentSongIndex).getAudioSource().equals("") ) {
+//        	btnPlay.setEnabled(false);
+//        	btnStop.setEnabled(false);
+//        	btnBackward.setEnabled(false);
+//        	btnForward.setEnabled(false);
+//        	imgDownload.setVisibility(View.GONE);
+//        } else {
+//        	btnPlay.setEnabled(true);
+//        	btnStop.setEnabled(true);
+//        	btnBackward.setEnabled(true);
+//        	btnForward.setEnabled(true);
+//        	imgDownload.setVisibility(View.VISIBLE);
+//        }
         
         /**
 		 * Play button click event
@@ -241,11 +239,11 @@ public class AudioControllerActivity extends Activity implements OnSeekBarChange
 					}else{
 						if (mService.isStopped())
 							AudioPlayerService.playAfterStop = true;
-						mService.playAudio(currentSongIndex);
+//						mService.playAudio(currentSongIndex);
 						AudioPlayerService.currentPositionInTrack = 0;
 					}
 					DBHandleLessons.updateLessonState(FilesManager.lastLessonId, 0, "partial");
-					FilesManager.lastLessonId = AudioPlayerService.listTempLesson2.get(currentSongIndex).getIdProperty();
+//					FilesManager.lastLessonId = AudioPlayerService.listTempLesson2.get(currentSongIndex).getIdProperty();
 //					long newCurrentPosInTrack = AudioPlayerService.listTempLesson2.get(currentSongIndex).getCurrentPosition();
 					DBHandleLessons.updateLessonState(FilesManager.lastLessonId, 0, "playing");
 
@@ -290,7 +288,8 @@ public class AudioControllerActivity extends Activity implements OnSeekBarChange
 				}else{
 					tempCurrentSOngIndex = 0;
 				}
-				Lesson nextLessonDB = DBHandleLessons.getLessonById(AudioPlayerService.listTempLesson2.get(tempCurrentSOngIndex).getIdProperty());
+//				Lesson nextLessonDB = DBHandleLessons.getLessonById(AudioPlayerService.listTempLesson2.get(tempCurrentSOngIndex).getIdProperty());
+				Lesson nextLessonDB = null;
 //				int nextLessonDownloadStatus = nextLessonDB.getDownloadStatus();
 				int nextLessonDownloadStatus = nextLessonDB.getDownloadStatusAudio();
 				if ( !CheckConnectivity.isOnline(AudioControllerActivity.this) && (nextLessonDownloadStatus != 1) ) {
@@ -309,30 +308,30 @@ public class AudioControllerActivity extends Activity implements OnSeekBarChange
 					btnPlay.setImageResource(R.drawable.media_play);
 					//Update current position in track
 					DBHandleLessons.saveCurrentPositionInTrack(FilesManager.lastLessonId, AudioPlayerService.currentPositionInTrack);
-					Lesson nextLesson = DBHandleLessons.getLessonById(AudioPlayerService.listTempLesson2.get(currentSongIndex).getIdProperty());
-					AudioPlayerService.currentPositionInTrack = nextLesson.getCurrentPosition();
-					AudioPlayerService.savedOldPositionInTrack = nextLesson.getCurrentPosition();
+//					Lesson nextLesson = DBHandleLessons.getLessonById(AudioPlayerService.listTempLesson2.get(currentSongIndex).getIdProperty());
+//					AudioPlayerService.currentPositionInTrack = nextLesson.getCurrentPosition();
+//					AudioPlayerService.savedOldPositionInTrack = nextLesson.getCurrentPosition();
 					//Update to current lesson pdf files
-					readSource = AudioPlayerService.listTempLesson2.get(currentSongIndex).getTranscript();
-					presentSource = AudioPlayerService.listTempLesson2.get(currentSongIndex).getStudentAid();
-					handoutSource = AudioPlayerService.listTempLesson2.get(currentSongIndex).getTeacherAid();
-					FilesManager.lastLessonId = nextLesson.getIdProperty();
+//					readSource = AudioPlayerService.listTempLesson2.get(currentSongIndex).getTranscript();
+//					presentSource = AudioPlayerService.listTempLesson2.get(currentSongIndex).getStudentAid();
+//					handoutSource = AudioPlayerService.listTempLesson2.get(currentSongIndex).getTeacherAid();
+//					FilesManager.lastLessonId = nextLesson.getIdProperty();
 					updateDownloadImage();
 					updateFavorites(menuActionbar);
-					mService.playAudio(currentSongIndex);
-					if ( AudioPlayerService.listTempLesson2.get(currentSongIndex).getAudioSource().equals("") ) {
-			        	btnPlay.setEnabled(false);
-			        	btnStop.setEnabled(false);
-			        	btnBackward.setEnabled(false);
-			        	btnForward.setEnabled(false);
-			        	imgDownload.setVisibility(View.GONE);
-			        } else {
-			        	btnPlay.setEnabled(true);
-			        	btnStop.setEnabled(true);
-			        	btnBackward.setEnabled(true);
-			        	btnForward.setEnabled(true);
-			        	imgDownload.setVisibility(View.VISIBLE);
-			        }
+//					mService.playAudio(currentSongIndex);
+//					if ( AudioPlayerService.listTempLesson2.get(currentSongIndex).getAudioSource().equals("") ) {
+//			        	btnPlay.setEnabled(false);
+//			        	btnStop.setEnabled(false);
+//			        	btnBackward.setEnabled(false);
+//			        	btnForward.setEnabled(false);
+//			        	imgDownload.setVisibility(View.GONE);
+//			        } else {
+//			        	btnPlay.setEnabled(true);
+//			        	btnStop.setEnabled(true);
+//			        	btnBackward.setEnabled(true);
+//			        	btnForward.setEnabled(true);
+//			        	imgDownload.setVisibility(View.VISIBLE);
+//			        }
 				}
 			}
 		});
@@ -355,49 +354,49 @@ public class AudioControllerActivity extends Activity implements OnSeekBarChange
 				}else{	
 					tempCurrentSOngIndex = size - 1;
 				}
-				Lesson nextLessonDB = DBHandleLessons.getLessonById(AudioPlayerService.listTempLesson2.get(tempCurrentSOngIndex).getIdProperty());
+//				Lesson nextLessonDB = DBHandleLessons.getLessonById(AudioPlayerService.listTempLesson2.get(tempCurrentSOngIndex).getIdProperty());
 //				int nextLessonDownloadStatus = nextLessonDB.getDownloadStatus();
-				int nextLessonDownloadStatus = nextLessonDB.getDownloadStatusAudio();
-				if ( !CheckConnectivity.isOnline(AudioControllerActivity.this) && (nextLessonDownloadStatus != 1) ) {
-					CheckConnectivity.showMessage(AudioControllerActivity.this);
-				} else {
-					songProgressBar.setEnabled(true);
-					mService.setCreated(false);
-					if(currentSongIndex > 0){
-						currentSongIndex = currentSongIndex - 1;
-					}else{
-						// play last lesson
-						currentSongIndex = size - 1;
-					}
-//					btnPlay.setImageResource(R.drawable.media_pause);					
-					btnPlay.setImageResource(R.drawable.media_play);
-					//Update current position in track
-					DBHandleLessons.saveCurrentPositionInTrack(FilesManager.lastLessonId, AudioPlayerService.currentPositionInTrack);
-					Lesson nextLesson = DBHandleLessons.getLessonById(AudioPlayerService.listTempLesson2.get(currentSongIndex).getIdProperty());
-					AudioPlayerService.currentPositionInTrack = nextLesson.getCurrentPosition();
-					AudioPlayerService.savedOldPositionInTrack = nextLesson.getCurrentPosition();
-					//Update to current lesson pdf files
-					readSource = AudioPlayerService.listTempLesson2.get(currentSongIndex).getTranscript();
-					presentSource = AudioPlayerService.listTempLesson2.get(currentSongIndex).getStudentAid();
-					handoutSource = AudioPlayerService.listTempLesson2.get(currentSongIndex).getTeacherAid();
-					FilesManager.lastLessonId = nextLesson.getIdProperty();
-					updateDownloadImage();
-					updateFavorites(menuActionbar);
-					mService.playAudio(currentSongIndex);
-					if ( AudioPlayerService.listTempLesson2.get(currentSongIndex).getAudioSource().equals("") ) {
-			        	btnPlay.setEnabled(false);
-			        	btnStop.setEnabled(false);
-			        	btnBackward.setEnabled(false);
-			        	btnForward.setEnabled(false);
-			        	imgDownload.setVisibility(View.GONE);
-			        } else {
-			        	btnPlay.setEnabled(true);
-			        	btnStop.setEnabled(true);
-			        	btnBackward.setEnabled(true);
-			        	btnForward.setEnabled(true);
-			        	imgDownload.setVisibility(View.VISIBLE);
-			        }
-				}
+//				int nextLessonDownloadStatus = nextLessonDB.getDownloadStatusAudio();
+//				if ( !CheckConnectivity.isOnline(AudioControllerActivity.this) && (nextLessonDownloadStatus != 1) ) {
+//					CheckConnectivity.showMessage(AudioControllerActivity.this);
+//				} else {
+//					songProgressBar.setEnabled(true);
+//					mService.setCreated(false);
+//					if(currentSongIndex > 0){
+//						currentSongIndex = currentSongIndex - 1;
+//					}else{
+//						// play last lesson
+//						currentSongIndex = size - 1;
+//					}
+////					btnPlay.setImageResource(R.drawable.media_pause);
+//					btnPlay.setImageResource(R.drawable.media_play);
+//					//Update current position in track
+//					DBHandleLessons.saveCurrentPositionInTrack(FilesManager.lastLessonId, AudioPlayerService.currentPositionInTrack);
+//					Lesson nextLesson = DBHandleLessons.getLessonById(AudioPlayerService.listTempLesson2.get(currentSongIndex).getIdProperty());
+//					AudioPlayerService.currentPositionInTrack = nextLesson.getCurrentPosition();
+//					AudioPlayerService.savedOldPositionInTrack = nextLesson.getCurrentPosition();
+//					//Update to current lesson pdf files
+//					readSource = AudioPlayerService.listTempLesson2.get(currentSongIndex).getTranscript();
+//					presentSource = AudioPlayerService.listTempLesson2.get(currentSongIndex).getStudentAid();
+//					handoutSource = AudioPlayerService.listTempLesson2.get(currentSongIndex).getTeacherAid();
+//					FilesManager.lastLessonId = nextLesson.getIdProperty();
+//					updateDownloadImage();
+//					updateFavorites(menuActionbar);
+//					mService.playAudio(currentSongIndex);
+//					if ( AudioPlayerService.listTempLesson2.get(currentSongIndex).getAudioSource().equals("") ) {
+//			        	btnPlay.setEnabled(false);
+//			        	btnStop.setEnabled(false);
+//			        	btnBackward.setEnabled(false);
+//			        	btnForward.setEnabled(false);
+//			        	imgDownload.setVisibility(View.GONE);
+//			        } else {
+//			        	btnPlay.setEnabled(true);
+//			        	btnStop.setEnabled(true);
+//			        	btnBackward.setEnabled(true);
+//			        	btnForward.setEnabled(true);
+//			        	imgDownload.setVisibility(View.VISIBLE);
+//			        }
+//				}
 			}
 		});
 		
@@ -454,7 +453,7 @@ public class AudioControllerActivity extends Activity implements OnSeekBarChange
             new IntentFilter("UpdateProgress"));
         
         /*****************************************************************/
-        /****************** Audio downloading ****************************/
+        /****************** Audio IS_SERVICE_RUNNING ****************************/
         /*****************************************************************/
         
         updateDownloadImage(); //Show download status
@@ -467,25 +466,25 @@ public class AudioControllerActivity extends Activity implements OnSeekBarChange
 		    	if ( !CheckConnectivity.isOnline(AudioControllerActivity.this)) {
 					CheckConnectivity.showMessage(AudioControllerActivity.this);
 				} else {
-			    	if ( !DownloadServiceTest.downloading ) {
-//			    		int downloadStatus = AudioPlayerService.listTempLesson2.get(currentSongIndex).getDownloadStatus();
-						int downloadStatus = AudioPlayerService.listTempLesson2.get(currentSongIndex).getDownloadStatusAudio();
-			    		if ( downloadStatus == 0 ){
-							String audioUrl = AudioPlayerService.listTempLesson2.get(currentSongIndex).getAudioSource();
-							String pdfUrl1 = AudioPlayerService.listTempLesson2.get(currentSongIndex).getTranscript();
-							String pdfUrl2 = AudioPlayerService.listTempLesson2.get(currentSongIndex).getStudentAid();
-							String pdfUrl3 = AudioPlayerService.listTempLesson2.get(currentSongIndex).getTeacherAid();
-							downloadTask = new DownloadFileAsync();
-							downloadTask.execute( audioUrl, pdfUrl1, pdfUrl2, pdfUrl3 );	
-							DBHandleLessons.updateLessonDownloadStatus(AudioPlayerService.listTempLesson2.get(currentSongIndex).getIdProperty(), 2);
-//					    	tvDownloadInProgress.setVisibility(View.VISIBLE);
-					    	imgDownload.setVisibility(View.GONE);
-			    		}
-			    	} else {
-			    		Toast.makeText(AudioControllerActivity.this,
-			    	              "Please wait. Another download in progress...",
-			    	              Toast.LENGTH_LONG).show();
-			    	}
+//			    	if ( !DownloadAllService.IS_SERVICE_RUNNING ) {
+////			    		int downloadStatus = AudioPlayerService.listTempLesson2.get(currentSongIndex).getDownloadStatus();
+//						int downloadStatus = AudioPlayerService.listTempLesson2.get(currentSongIndex).getDownloadStatusAudio();
+//			    		if ( downloadStatus == 0 ){
+//							String audioUrl = AudioPlayerService.listTempLesson2.get(currentSongIndex).getAudioSource();
+//							String pdfUrl1 = AudioPlayerService.listTempLesson2.get(currentSongIndex).getTranscript();
+//							String pdfUrl2 = AudioPlayerService.listTempLesson2.get(currentSongIndex).getStudentAid();
+//							String pdfUrl3 = AudioPlayerService.listTempLesson2.get(currentSongIndex).getTeacherAid();
+//							downloadTask = new DownloadFileAsync();
+//							downloadTask.execute( audioUrl, pdfUrl1, pdfUrl2, pdfUrl3 );
+//							DBHandleLessons.updateLessonDownloadStatus(AudioPlayerService.listTempLesson2.get(currentSongIndex).getIdProperty(), 2);
+////					    	tvDownloadInProgress.setVisibility(View.VISIBLE);
+//					    	imgDownload.setVisibility(View.GONE);
+//			    		}
+//			    	} else {
+//			    		Toast.makeText(AudioControllerActivity.this,
+//			    	              "Please wait. Another download in progress...",
+//			    	              Toast.LENGTH_LONG).show();
+//			    	}
 				}
 	    }});
         
@@ -519,26 +518,26 @@ public class AudioControllerActivity extends Activity implements OnSeekBarChange
     }    
     
     private void updateDownloadImage() {
-    	Lesson lesson = DBHandleLessons.getLessonById(AudioPlayerService.listTempLesson2.get(currentSongIndex).getIdProperty());
+//    	Lesson lesson = DBHandleLessons.getLessonById(AudioPlayerService.listTempLesson2.get(currentSongIndex).getIdProperty());
 //    	int downloadStatus = lesson.getDownloadStatus();
-		int downloadStatus = lesson.getDownloadStatusAudio();
-    	String audioSource = lesson.getIdProperty();
+//		int downloadStatus = lesson.getDownloadStatusAudio();
+//    	String audioSource = lesson.getIdProperty();
         // Check if already downloaded, not downloaded or in progress
-        if ( downloadStatus == 0 && !audioSource.equals(""))
-        {
-        	imgDownload.setVisibility(View.VISIBLE);
-//        	tvDownloadInProgress.setVisibility(View.GONE);
-        } else {
-        	if (downloadStatus == 1) {
-        		imgDownload.setVisibility(View.GONE);
-//            	tvDownloadInProgress.setVisibility(View.VISIBLE);
-//            	tvDownloadInProgress.setText("Downloaded");
-        	} else {
-        		imgDownload.setVisibility(View.GONE);
-//            	tvDownloadInProgress.setVisibility(View.VISIBLE);
-//            	tvDownloadInProgress.setText("Downloading...");
-        	}
-        }        	
+//        if ( downloadStatus == 0 && !audioSource.equals(""))
+//        {
+//        	imgDownload.setVisibility(View.VISIBLE);
+////        	tvDownloadInProgress.setVisibility(View.GONE);
+//        } else {
+//        	if (downloadStatus == 1) {
+//        		imgDownload.setVisibility(View.GONE);
+////            	tvDownloadInProgress.setVisibility(View.VISIBLE);
+////            	tvDownloadInProgress.setText("Downloaded");
+//        	} else {
+//        		imgDownload.setVisibility(View.GONE);
+////            	tvDownloadInProgress.setVisibility(View.VISIBLE);
+////            	tvDownloadInProgress.setText("Downloading...");
+//        	}
+//        }
     }
     
     /**************************************************/
@@ -618,10 +617,10 @@ public class AudioControllerActivity extends Activity implements OnSeekBarChange
 
             } catch (InterruptedIOException ie) {
                 Log.d(LOG_TAG, ie.getMessage());
-                DBHandleLessons.updateLessonDownloadStatus(AudioPlayerService.listTempLesson2.get(currentSongIndex).getIdProperty(), 0);
+//                DBHandleLessons.updateLessonDownloadStatus(AudioPlayerService.listTempLesson2.get(currentSongIndex).getIdProperty(), 0);
                 outFile.delete();
             } catch (Exception e) {
-            	DBHandleLessons.updateLessonDownloadStatus(AudioPlayerService.listTempLesson2.get(currentSongIndex).getIdProperty(), 0);
+//            	DBHandleLessons.updateLessonDownloadStatus(AudioPlayerService.listTempLesson2.get(currentSongIndex).getIdProperty(), 0);
                 outFile.delete();
             }
         }
@@ -638,7 +637,7 @@ public class AudioControllerActivity extends Activity implements OnSeekBarChange
             imgDownload.setVisibility(View.GONE);
 //            tvDownloadInProgress.setVisibility(View.GONE);
             Toast.makeText(AudioControllerActivity.this, "Lesson Downloaded!", Toast.LENGTH_LONG).show();
-		  	DBHandleLessons.updateLessonDownloadStatus(AudioPlayerService.listTempLesson2.get(currentSongIndex).getIdProperty(), 1);
+//		  	DBHandleLessons.updateLessonDownloadStatus(AudioPlayerService.listTempLesson2.get(currentSongIndex).getIdProperty(), 1);
         }
         
         @Override
@@ -774,15 +773,15 @@ public class AudioControllerActivity extends Activity implements OnSeekBarChange
     }
 	@Override
 	public void onInitializePlayerStart(String message) {
-		if ( !AudioPlayerService.listTempLesson2.get(currentSongIndex).getAudioSource().trim().equals("") ) {
-			mProgressDialog = ProgressDialog.show(this, "", message, true);
-	        mProgressDialog.getWindow().setGravity(Gravity.CENTER);        
-	        mProgressDialog.setCancelable(false);
-		}
+//		if ( !AudioPlayerService.listTempLesson2.get(currentSongIndex).getAudioSource().trim().equals("") ) {
+//			mProgressDialog = ProgressDialog.show(this, "", message, true);
+//	        mProgressDialog.getWindow().setGravity(Gravity.CENTER);
+//	        mProgressDialog.setCancelable(false);
+//		}
 	}
 	@Override
 	public void onInitializePlayerSuccess() {
-		if ( !AudioPlayerService.listTempLesson2.get(currentSongIndex).getAudioSource().trim().equals("") )
+//		if ( !AudioPlayerService.listTempLesson2.get(currentSongIndex).getAudioSource().trim().equals("") )
 			mProgressDialog.dismiss();
 	}
 	@Override

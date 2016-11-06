@@ -8,28 +8,28 @@ import android.os.Parcelable;
 
 public class Lesson implements Parcelable {
 	
-	private String transcript;
-	private String postedDate;
-	private String averageRating;
-	private String dateStudyGiven;
-	private String teacherAid;
-	private String lessonsDescription;
-	private String idProperty;
-	private String videoLength;
-	private String videoSource;
-	private String title;
-	private String location;
-	private List<Topic> topicList;
-	private String audioLength;
-	private String audioSource;
-	private String studentAid;
+	private String transcript = "";
+	private String postedDate = "";
+	private String averageRating = "";
+	private String dateStudyGiven = "";
+	private String teacherAid = "";
+	private String lessonsDescription = "";
+	private String idProperty = "";
+	private String videoLength = "";
+	private String videoSource = "";
+	private String title = "";
+	private String location = "";
+	private List<Topic> topicList = new ArrayList<>();
+	private String audioLength = "";
+	private String audioSource = "";
+	private String studentAid = "";
 	private boolean playing;
 	private int progressPercentage;
 	private long currentPosition;
-	private String idStudy;
-	private String studyThumbnailSource;
+	private String idStudy = "";
+	private String studyThumbnailSource = "";
 	private int studyLessonsSize;
-	private String state;
+	private String state = "";
 	private int positionInList;
 //	private int downloadStatus;
 	private int downloadStatusAudio;
@@ -39,6 +39,24 @@ public class Lesson implements Parcelable {
 	private int downloadProgressAudio;
 	private int downloadProgressTeacher;
 	private int downloadProgressTranscript;
+	private boolean section;
+	private boolean sectionCompleted;
+
+	public boolean isSection() {
+		return section;
+	}
+
+	public void setSection(boolean section) {
+		this.section = section;
+	}
+
+	public boolean isSectionCompleted() {
+		return sectionCompleted;
+	}
+
+	public void setSectionCompleted(boolean sectionCompleted) {
+		this.sectionCompleted = sectionCompleted;
+	}
 
 	public Lesson() {
 		super();
@@ -332,6 +350,7 @@ public class Lesson implements Parcelable {
 		dest.writeInt(downloadProgressAudio);
 		dest.writeInt(downloadProgressTeacher);
 		dest.writeInt(downloadProgressTranscript);
+		dest.writeByte((byte) (section ? 1 : 0));
 	}	
 	
 	private void readFromParcel(Parcel in) {
@@ -366,6 +385,7 @@ public class Lesson implements Parcelable {
 		downloadProgressAudio = in.readInt();
 		downloadProgressTeacher = in.readInt();
 		downloadProgressTranscript = in.readInt();
+		section = (in.readByte() != 0);
 	}
 	
 	/**
@@ -390,5 +410,6 @@ public class Lesson implements Parcelable {
 		                return new Lesson[size];
 		            }
 		        };
-	
+
+
 }

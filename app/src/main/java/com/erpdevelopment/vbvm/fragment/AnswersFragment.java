@@ -1,7 +1,7 @@
 package com.erpdevelopment.vbvm.fragment;
 
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -14,25 +14,22 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.erpdevelopment.vbvm.R;
-import com.erpdevelopment.vbvm.activity.QAndAPostDetailsActivity;
-import com.erpdevelopment.vbvm.adapter.QAndAPostsAdapter;
-import com.erpdevelopment.vbvm.model.QandAPost;
-import com.erpdevelopment.vbvm.service.WebServiceCall;
+import com.erpdevelopment.vbvm.adapter.AnswersAdapter;
+import com.erpdevelopment.vbvm.model.Answer;
+import com.erpdevelopment.vbvm.model.Article;
 import com.erpdevelopment.vbvm.utils.DownloadJsonData;
 import com.erpdevelopment.vbvm.utils.FilesManager;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class AnswersFragment extends Fragment implements TextWatcher {
 
     private View rootView;
-    private QAndAPostsAdapter adapterQAPosts;
-    private ListView lvQAPosts;
+    private AnswersAdapter adapterAnswers;
+    private ListView lvAnswers;
     private EditText etSearchAnswers;
 
+    private OnAnswerSelectedListener mListener;
+
     public AnswersFragment() {
-        // Required empty public constructor
     }
 
     public static AnswersFragment newInstance(int index) {
@@ -46,7 +43,6 @@ public class AnswersFragment extends Fragment implements TextWatcher {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_answers, container, false);
     }
 
@@ -55,28 +51,32 @@ public class AnswersFragment extends Fragment implements TextWatcher {
         super.onActivityCreated(savedInstanceState);
 
         rootView = getView();
-        adapterQAPosts = new QAndAPostsAdapter(getActivity(), FilesManager.listQAPosts);
-        lvQAPosts = (ListView) rootView.findViewById(R.id.lvAnswers);
-        lvQAPosts.setAdapter(adapterQAPosts);
-        lvQAPosts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        adapterAnswers = new AnswersAdapter(getActivity(), FilesManager.listAnswers);
+        lvAnswers = (ListView) rootView.findViewById(R.id.lvAnswers);
+        lvAnswers.setAdapter(adapterAnswers);
+        lvAnswers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position,
                                     long id) {
-                adapterQAPosts.setSelectedPosition(position);
-                QandAPost post = (QandAPost) parent.getItemAtPosition(position);
-                Intent i = new Intent(getActivity(), QAndAPostDetailsActivity.class);
-                i.putExtra("article", post);
-                startActivity(i);
+//                adapterAnswers.setSelectedPosition(position);
+                Answer answer = (Answer) parent.getItemAtPosition(position);
+//                Intent i = new Intent(getActivity(), QAndAPostDetailsActivity.class);
+//                i.putExtra("article", post);
+//                startActivity(i);
+                mListener.onAnswerSelected(answer);
             }
         });
 
         etSearchAnswers = (EditText) rootView.findViewById(R.id.et_search_answers);
         etSearchAnswers.addTextChangedListener(this);
-        if ( (FilesManager.listQAPosts == null) || (FilesManager.listQAPosts.size() == 0) )
-            DownloadJsonData.getInstance().asyncJsonQAndAPosts(adapterQAPosts);
-        else
-            adapterQAPosts.setQAndAPostsListItems(FilesManager.listQAPosts);
+        if ( (FilesManager.listAnswers == null) || (FilesManager.listAnswers.size() == 0) ) {
+            DownloadJsonData.getInstance().asyncJsonAnswers(adapterAnswers);
+            System.out.println("FilesManager.listAnswers is null");
+        } else {
+            adapterAnswers.setQAndAPostsListItems(FilesManager.listAnswers);
+            System.out.println("FilesManager.listAnswers not null");
+        }
     }
 
     @Override
@@ -86,11 +86,48 @@ public class AnswersFragment extends Fragment implements TextWatcher {
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        adapterQAPosts.getFilter().filter(s.toString().trim());
+        adapterAnswers.getFilter().filter(s.toString().trim());
     }
 
     @Override
     public void afterTextChanged(Editable s) {
 
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnAnswerSelectedListener) {
+            mListener = (OnAnswerSelectedListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnAnswerSelectedListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnAnswerSelectedListener {
+        void onAnswerSelected(Answer answer);
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            System.out.println("AnswersFragment.onHiddenChanged");
+            View current = getActivity().getCurrentFocus();
+            if (current != null) {
+                System.out.println("clearing focus...");
+                current.clearFocus();
+            }
+        }
+
+    }
+
+
 }

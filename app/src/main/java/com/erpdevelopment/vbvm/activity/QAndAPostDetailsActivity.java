@@ -6,7 +6,7 @@ import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.db.DBHandleFavorites;
 import com.erpdevelopment.vbvm.model.Favorite;
 import com.erpdevelopment.vbvm.model.ItemInfo;
-import com.erpdevelopment.vbvm.model.QandAPost;
+import com.erpdevelopment.vbvm.model.Answer;
 import com.erpdevelopment.vbvm.utils.FavoritesLRU;
 import com.erpdevelopment.vbvm.utils.Utilities;
 
@@ -23,7 +23,7 @@ import android.widget.TextView;
 
 public class QAndAPostDetailsActivity extends Activity {
 
-	private QandAPost post;
+	private Answer post;
 	private TextView tvPostAuthor;
 	private TextView tvPostDate;
 	private TextView tvPostTopics;
@@ -45,7 +45,7 @@ public class QAndAPostDetailsActivity extends Activity {
 		
 		Bundle b = getIntent().getExtras();
 		Parcelable p = b.getParcelable("post");
-		post = (QandAPost) p;
+		post = (Answer) p;
 		
 		Utilities.setActionBar(this, post.getTitle());
 		

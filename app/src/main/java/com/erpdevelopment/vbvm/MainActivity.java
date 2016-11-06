@@ -6,19 +6,27 @@ import com.erpdevelopment.vbvm.activity.AudioPlayerService;
 import com.erpdevelopment.vbvm.adapter.NavDrawerListAdapter;
 import com.erpdevelopment.vbvm.db.DatabaseManager;
 import com.erpdevelopment.vbvm.db.VbvmDatabaseOpenHelper;
+import com.erpdevelopment.vbvm.fragment.AnswerDetailsFragment;
 import com.erpdevelopment.vbvm.fragment.AnswersFragment;
+import com.erpdevelopment.vbvm.fragment.ArticleDetailsFragment;
 import com.erpdevelopment.vbvm.fragment.ArticlesFragment;
 import com.erpdevelopment.vbvm.fragment.LessonsFragment;
 import com.erpdevelopment.vbvm.fragment.StudiesFragment;
+import com.erpdevelopment.vbvm.fragment.VideoChannelsFragment;
 import com.erpdevelopment.vbvm.fragment.VideosFragment;
 import com.erpdevelopment.vbvm.helper.AudioPlayerHelper;
+import com.erpdevelopment.vbvm.model.Article;
+import com.erpdevelopment.vbvm.model.VideoChannel;
 import com.erpdevelopment.vbvm.model.NavDrawerItem;
+import com.erpdevelopment.vbvm.model.Answer;
 import com.erpdevelopment.vbvm.model.Study;
+import com.erpdevelopment.vbvm.model.VideoVbvm;
 import com.erpdevelopment.vbvm.utils.Utilities;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.app.Activity;
@@ -40,8 +48,12 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements StudiesFragment.OnItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements StudiesFragment.OnStudyItemSelectedListener,
+		ArticlesFragment.OnArticleSelectedListener,
+		AnswersFragment.OnAnswerSelectedListener,
+		VideoChannelsFragment.OnVideoChannelSelectedListener {
 
 	public static final String DIRECTORY_IMAGES = "vbvm";
 	public static String SD_CARD_PATH = Environment.getExternalStorageDirectory().toString();
@@ -65,9 +77,15 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 	private AnswersFragment fragmentAnswers;
 	private VideosFragment fragmentVideos;
 	private LessonsFragment fragmentLessons;
+	private ArticleDetailsFragment fragmentArticleDetails;
+	private AnswerDetailsFragment fragmentAnswerDetails;
+	private VideoChannelsFragment fragmentVideoChannels;
 
 	private RelativeLayout viewMiniPlayer;
 	private SlidingUpPanelLayout slidingLayout;
+
+	private TextView tvPlayerLessonTitleMini;
+	private TextView tvPlayerLessonDescriptionMini;
 
     // nav drawer title
     private CharSequence mDrawerTitle;
@@ -83,8 +101,14 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
     private NavDrawerListAdapter adapter;
 
 	private Study mStudy;
+	private Article mArticle;
+	private Answer mAnswer;
+	private VideoChannel mVideoChannel;
+	private VideoVbvm mVideo;
 
-//	private static final int PIXELS_SHADOW_HEIGHT = 0;
+	public static String lastFragmentSelected = "Studies";
+	public static String lastFragInStudies = "";
+
 //	private static final int PIXELS_PANEL_HEIGHT = 0;
 
 	@Override
@@ -101,6 +125,8 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 
 		viewMiniPlayer = (RelativeLayout) findViewById(R.id.view_mini_player);
 		slidingLayout = (SlidingUpPanelLayout)findViewById(R.id.sliding_layout);
+		tvPlayerLessonTitleMini = (TextView) viewMiniPlayer.findViewById(R.id.tv_player_lesson_title_mini);
+		tvPlayerLessonDescriptionMini = (TextView) viewMiniPlayer.findViewById(R.id.tv_player_lesson_description_mini);
 
 		actionBar = getSupportActionBar();
 		if (actionBar != null) {
@@ -111,61 +137,43 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 			actionBar.show();
 		}
 
-//		viewPagerMain = (ViewPager) findViewById(R.id.viewPagerMain);
-//		mAdapter = new CustomPagerAdapter(getSupportFragmentManager());
-//		viewPagerMain.setAdapter(mAdapter);
-
-//		initNavigationDrawer(savedInstanceState);
-		//initUI();
-//		FragmentManager fragmentManager = getSupportFragmentManager();
-//		FragmentTransaction ft = fragmentManager.beginTransaction();
-//		ArticlesFragment fArticles = new ArticlesFragment();
-//		AnswersFragment fAnswers = new AnswersFragment();
-//		VideosFragment fVideos = new VideosFragment();
-//		StudiesFragment fStudies = new StudiesFragment();
-
-//		ft.add(R.id.frame_container, fArticles);
-//		ft.hide(fArticles);
-//		ft.add(R.id.frame_container, fAnswers);
-//		ft.hide(fAnswers);
-//		ft.add(R.id.frame_container, fVideos);
-//		ft.hide(fVideos);
-//		ft.add(R.id.frame_container, fStudies);
-//		ft.show(fStudies);
-//		ft.commit();
-
-		//currentFragment = firstTabFragment;
-
-//		ft = getSupportFragmentManager().beginTransaction();
-
-//		if (savedInstanceState == null) {
 		fragmentStudies = StudiesFragment.newInstance(0);
 		fragmentArticles = ArticlesFragment.newInstance(0);
 		fragmentAnswers = AnswersFragment.newInstance(0);
-		fragmentVideos = VideosFragment.newInstance(0);
 		fragmentLessons = LessonsFragment.newInstance(0);
+		fragmentArticleDetails = ArticleDetailsFragment.newInstance();
+		fragmentAnswerDetails = AnswerDetailsFragment.newInstance();
+		fragmentVideoChannels = VideoChannelsFragment.newInstance(0);
+		fragmentVideos = VideosFragment.newInstance(0);
 
 		BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
 		bottomBar.setActiveTabColor(ContextCompat.getColor(this, R.color.blue));
 		bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
 			@Override
 			public void onTabSelected(@IdRes int tabId) {
-
 				if (tabId == R.id.tab_studies) {
-//					String lastFragmentStudies = MainActivity.settings.getString(LAST_FRAGMENT_STUDIES, "");
-//					if (lastFragmentStudies.equals("") || lastFragmentStudies.equals("Studies"))
+					if (lastFragmentSelected.equals("Studies"))
 						displayFragmentStudies();
-//					else if (lastFragmentStudies.equals("Lessons"))
-//						displayFragmentLessons();
+					else
+						displayFragmentLessons();
 				}
 				if (tabId == R.id.tab_articles) {
-					displayFragmentArticles();
+					if (lastFragmentSelected.equals("Articles"))
+						displayFragmentArticles();
+					else
+						displayFragmentArticleDetails();
 				}
 				if (tabId == R.id.tab_answers) {
-					displayFragmentAnswers();
+					if (lastFragmentSelected.equals("Answers"))
+						displayFragmentAnswers();
+					else
+						displayFragmentAnswerDetails();
 				}
 				if (tabId == R.id.tab_videos) {
-					displayFragmentVideos();
+					if (lastFragmentSelected.equals("VideoChannels"))
+						displayFragmentVideoChannels();
+					else
+						displayFragmentVideos();
 				}
 			}
 		});
@@ -174,23 +182,24 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 
 	// Replace the switch method
 	protected void displayFragmentStudies() {
+		lastFragmentSelected = "Studies";
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (fragmentStudies.isAdded()) { // if the fragment is already in container
 			ft.show(fragmentStudies);
 		} else { // fragment needs to be added to frame container
 			ft.add(R.id.frame_container, fragmentStudies, "Studies");
-//			ft.addToBackStack(null);
 		}
-		// Hide fragment B
 		if (fragmentArticles.isAdded()) { ft.hide(fragmentArticles); }
-		// Hide fragment C
 		if (fragmentAnswers.isAdded()) { ft.hide(fragmentAnswers); }
 		if (fragmentVideos.isAdded()) { ft.hide(fragmentVideos); }
 		if (fragmentLessons.isAdded()) { ft.hide(fragmentLessons); }
+		if (fragmentArticleDetails.isAdded()) { ft.hide(fragmentArticleDetails); }
+		if (fragmentAnswerDetails.isAdded()) { ft.hide(fragmentAnswerDetails); }
+		if (fragmentVideoChannels.isAdded()) { ft.hide(fragmentVideoChannels); }
 
 		actionBar.setDisplayHomeAsUpEnabled(false);
-		actionBar.setDisplayShowTitleEnabled(false);
-//		actionBar.setTitle(study.getTitle());
+		actionBar.setDisplayShowTitleEnabled(true);
+		actionBar.setTitle("Studies");
 
 //		SharedPreferences.Editor e = MainActivity.settings.edit();
 //		e.putString(LAST_FRAGMENT_STUDIES, "Studies");
@@ -201,6 +210,7 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 	}
 
 	protected void displayFragmentArticles() {
+		lastFragmentSelected = "Articles";
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (fragmentArticles.isAdded()) { // if the fragment is already in container
 			ft.show(fragmentArticles);
@@ -212,16 +222,20 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		if (fragmentAnswers.isAdded()) { ft.hide(fragmentAnswers); }
 		if (fragmentVideos.isAdded()) { ft.hide(fragmentVideos); }
 		if (fragmentLessons.isAdded()) { ft.hide(fragmentLessons); }
-		ft.commit();
+		if (fragmentArticleDetails.isAdded()) { ft.hide(fragmentArticleDetails); }
+		if (fragmentAnswerDetails.isAdded()) { ft.hide(fragmentAnswerDetails); }
+		if (fragmentVideoChannels.isAdded()) { ft.hide(fragmentVideoChannels); }
 
 		actionBar.setDisplayHomeAsUpEnabled(false);
-		actionBar.setDisplayShowTitleEnabled(false);
-		actionBar.setLogo(Utilities.getTextViewAsDrawable(this,"Studies"));
-//		actionBar.setTitle(study.getTitle());
+		actionBar.setDisplayShowTitleEnabled(true);
+		actionBar.setLogo(Utilities.getTextViewAsDrawable(this,"Articles"));
+		actionBar.setTitle("Articles");
 
+		ft.commit();
 	}
 
 	protected void displayFragmentAnswers() {
+		lastFragmentSelected = "Answers";
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (fragmentAnswers.isAdded()) { // if the fragment is already in container
 			ft.show(fragmentAnswers);
@@ -232,34 +246,42 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		if (fragmentArticles.isAdded()) { ft.hide(fragmentArticles); }
 		if (fragmentVideos.isAdded()) { ft.hide(fragmentVideos); }
 		if (fragmentLessons.isAdded()) { ft.hide(fragmentLessons); }
+		if (fragmentArticleDetails.isAdded()) { ft.hide(fragmentArticleDetails); }
+		if (fragmentAnswerDetails.isAdded()) { ft.hide(fragmentAnswerDetails); }
+		if (fragmentVideoChannels.isAdded()) { ft.hide(fragmentVideoChannels); }
 
 		actionBar.setDisplayHomeAsUpEnabled(false);
-		actionBar.setDisplayShowTitleEnabled(false);
-//		actionBar.setTitle(study.getTitle());
+		actionBar.setDisplayShowTitleEnabled(true);
+		actionBar.setTitle("Answers");
 
 		ft.commit();
 	}
 
-	protected void displayFragmentVideos() {
+	protected void displayFragmentVideoChannels() {
+		lastFragmentSelected = "VideoChannels";
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		if (fragmentVideos.isAdded()) { // if the fragment is already in container
-			ft.show(fragmentVideos);
+		if (fragmentVideoChannels.isAdded()) { // if the fragment is already in container
+			ft.show(fragmentVideoChannels);
 		} else { // fragment needs to be added to frame container
-			ft.add(R.id.frame_container, fragmentVideos, "Videos");
+			ft.add(R.id.frame_container, fragmentVideoChannels, "Videos");
 		}
 		if (fragmentStudies.isAdded()) { ft.hide(fragmentStudies); }
 		if (fragmentArticles.isAdded()) { ft.hide(fragmentArticles); }
 		if (fragmentAnswers.isAdded()) { ft.hide(fragmentAnswers); }
 		if (fragmentLessons.isAdded()) { ft.hide(fragmentLessons); }
+		if (fragmentArticleDetails.isAdded()) { ft.hide(fragmentArticleDetails); }
+		if (fragmentAnswerDetails.isAdded()) { ft.hide(fragmentAnswerDetails); }
+		if (fragmentVideos.isAdded()) { ft.hide(fragmentVideos); }
 
 		actionBar.setDisplayHomeAsUpEnabled(false);
-		actionBar.setDisplayShowTitleEnabled(false);
-//		actionBar.setTitle(study.getTitle());
+		actionBar.setDisplayShowTitleEnabled(true);
+		actionBar.setTitle("Videos");
 
 		ft.commit();
 	}
 
 	protected void displayFragmentLessons() {
+		lastFragmentSelected = "Lessons";
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (fragmentLessons.isAdded()) { // if the fragment is already in container
 			ft.show(fragmentLessons);
@@ -270,10 +292,15 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		if (fragmentArticles.isAdded()) { ft.hide(fragmentArticles); }
 		if (fragmentAnswers.isAdded()) { ft.hide(fragmentAnswers); }
 		if (fragmentVideos.isAdded()) { ft.hide(fragmentVideos); }
+		if (fragmentArticleDetails.isAdded()) { ft.hide(fragmentArticleDetails); }
+		if (fragmentAnswerDetails.isAdded()) { ft.hide(fragmentAnswerDetails); }
+		if (fragmentVideoChannels.isAdded()) { ft.hide(fragmentVideoChannels); }
 
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setDisplayShowTitleEnabled(true);
 		actionBar.setTitle(mStudy.getTitle());
+		Drawable textHomeUp = Utilities.getTextViewAsDrawable(this, "Studies");
+		actionBar.setLogo(textHomeUp);
 
 //		SharedPreferences.Editor e = MainActivity.settings.edit();
 //		e.putString(LAST_FRAGMENT_STUDIES, "Lessons");
@@ -289,37 +316,126 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		ft.commit();
 	}
 
+	protected void displayFragmentArticleDetails() {
+		lastFragmentSelected = "ArticleDetails";
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		if (fragmentArticleDetails.isAdded()) { // if the fragment is already in container
+			ft.show(fragmentArticleDetails);
+		} else { // fragment needs to be added to frame container
+			ft.add(R.id.frame_container, fragmentArticleDetails, "ArticleDetails");
+		}
+		if (fragmentStudies.isAdded()) { ft.hide(fragmentStudies); }
+		if (fragmentArticles.isAdded()) { ft.hide(fragmentArticles); }
+		if (fragmentAnswers.isAdded()) { ft.hide(fragmentAnswers); }
+		if (fragmentVideos.isAdded()) { ft.hide(fragmentVideos); }
+		if (fragmentLessons.isAdded()) { ft.hide(fragmentLessons); }
+		if (fragmentAnswerDetails.isAdded()) { ft.hide(fragmentAnswerDetails); }
+		if (fragmentVideoChannels.isAdded()) { ft.hide(fragmentVideoChannels); }
+		if (fragmentVideos.isAdded()) { ft.hide(fragmentVideos); }
+
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setDisplayShowTitleEnabled(true);
+		actionBar.setTitle(mArticle.getTitle());
+		Drawable textHomeUp = Utilities.getTextViewAsDrawable(this, "Articles");
+		actionBar.setLogo(textHomeUp);
+
+		Bundle bundle = new Bundle();
+		bundle.putParcelable("article", mArticle);
+		fragmentArticleDetails.getArguments().putAll(bundle);
+
+		ft.detach(fragmentArticleDetails);
+		ft.attach(fragmentArticleDetails);
+
+		ft.commit();
+	}
+
+	protected void displayFragmentAnswerDetails() {
+		lastFragmentSelected = "AnswerDetails";
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		if (fragmentAnswerDetails.isAdded()) { // if the fragment is already in container
+			ft.show(fragmentAnswerDetails);
+		} else { // fragment needs to be added to frame container
+			ft.add(R.id.frame_container, fragmentAnswerDetails, "AnswerDetails");
+		}
+		if (fragmentStudies.isAdded()) { ft.hide(fragmentStudies); }
+		if (fragmentArticles.isAdded()) { ft.hide(fragmentArticles); }
+		if (fragmentAnswers.isAdded()) { ft.hide(fragmentAnswers); }
+		if (fragmentVideos.isAdded()) { ft.hide(fragmentVideos); }
+		if (fragmentLessons.isAdded()) { ft.hide(fragmentLessons); }
+		if (fragmentArticleDetails.isAdded()) { ft.hide(fragmentArticleDetails); }
+		if (fragmentVideoChannels.isAdded()) { ft.hide(fragmentVideoChannels); }
+		if (fragmentVideos.isAdded()) { ft.hide(fragmentVideos); }
+
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setDisplayShowTitleEnabled(true);
+		actionBar.setTitle(mAnswer.getTitle());
+		Drawable textHomeUp = Utilities.getTextViewAsDrawable(this, "Answers");
+		actionBar.setLogo(textHomeUp);
+
+		Bundle bundle = new Bundle();
+		bundle.putParcelable("answer", mAnswer);
+		fragmentAnswerDetails.getArguments().putAll(bundle);
+
+		ft.detach(fragmentAnswerDetails);
+		ft.attach(fragmentAnswerDetails);
+
+		ft.commit();
+	}
+
+	protected void displayFragmentVideos() {
+		lastFragmentSelected = "Videos";
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		if (fragmentVideos.isAdded()) { // if the fragment is already in container
+			ft.show(fragmentVideos);
+		} else { // fragment needs to be added to frame container
+			ft.add(R.id.frame_container, fragmentVideos, "Videos");
+		}
+		if (fragmentStudies.isAdded()) { ft.hide(fragmentStudies); }
+		if (fragmentArticles.isAdded()) { ft.hide(fragmentArticles); }
+		if (fragmentAnswers.isAdded()) { ft.hide(fragmentAnswers); }
+		if (fragmentLessons.isAdded()) { ft.hide(fragmentLessons); }
+		if (fragmentVideoChannels.isAdded()) { ft.hide(fragmentVideoChannels); }
+		if (fragmentArticleDetails.isAdded()) { ft.hide(fragmentArticleDetails); }
+		if (fragmentAnswerDetails.isAdded()) { ft.hide(fragmentAnswerDetails); }
+
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setDisplayShowTitleEnabled(true);
+		actionBar.setTitle(mVideoChannel.getTitle());
+		Drawable textHomeUp = Utilities.getTextViewAsDrawable(this, "Videos");
+		actionBar.setLogo(textHomeUp);
+
+		Bundle bundle = new Bundle();
+		bundle.putParcelable("videoChannel", mVideoChannel);
+		fragmentVideos.getArguments().putAll(bundle);
+
+		ft.detach(fragmentVideos);
+		ft.attach(fragmentVideos);
+
+		ft.commit();
+	}
+
 	@Override
 	public void onStudyItemSelected(Study study) {
 		mStudy = study;
 		displayFragmentLessons();
-//		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//		if (fragmentLessons.isAdded()) { // if the fragment is already in container
-//			ft.show(fragmentLessons);
-//		} else { // fragment needs to be added to frame container
-//			ft.add(R.id.frame_container, fragmentLessons, "Lessons");
-//		}
-//		if (fragmentStudies.isAdded()) { ft.hide(fragmentStudies); }
-//		if (fragmentArticles.isAdded()) { ft.hide(fragmentArticles); }
-//		if (fragmentAnswers.isAdded()) { ft.hide(fragmentAnswers); }
-//		if (fragmentVideos.isAdded()) { ft.hide(fragmentVideos); }
-//
-//		actionBar.setDisplayHomeAsUpEnabled(true);
-//		actionBar.setDisplayShowTitleEnabled(true);
-//		actionBar.setTitle(study.getTitle());
-//
-//		SharedPreferences.Editor e = MainActivity.settings.edit();
-//		e.putString(LAST_FRAGMENT_STUDIES, "Lessons");
-//		e.commit();
-//
-//		Bundle bundle = new Bundle();
-//		bundle.putParcelable("study", study);
-//		fragmentLessons.getArguments().putAll(bundle);
-//
-//		ft.detach(fragmentLessons);
-//		ft.attach(fragmentLessons);
-//
-//		ft.commit();
+	}
+
+	@Override
+	public void onArticleSelected(Article article) {
+		mArticle = article;
+		displayFragmentArticleDetails();
+	}
+
+	@Override
+	public void onAnswerSelected(Answer answer) {
+		mAnswer = answer;
+		displayFragmentAnswerDetails();
+	}
+
+	@Override
+	public void onVideoChannelSelected(VideoChannel videoChannel) {
+		mVideoChannel = videoChannel;
+		displayFragmentVideos();
 	}
 
 	@Override
@@ -327,16 +443,16 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		super.onStart();
 		if (AudioPlayerService.created) {
 			viewMiniPlayer.setVisibility(View.VISIBLE);
-			slidingLayout.setShadowHeight(getResources().getDimensionPixelSize(R.dimen.sliding_panel_shadow_height));
+			slidingLayout.setShadowHeight(4);
 			slidingLayout.setPanelHeight(getResources().getDimensionPixelSize(R.dimen.sliding_panel_height));
+			tvPlayerLessonTitleMini.setText(settings.getString("lessonTitle",""));
+			tvPlayerLessonDescriptionMini.setText(settings.getString("lessonDescription",""));
 			System.out.println("MainActivity.onStart 1");
-//			slidingLayout.setVisibility(View.VISIBLE);
 		} else {
 			viewMiniPlayer.setVisibility(View.GONE);
 			slidingLayout.setShadowHeight(0);
 			slidingLayout.setPanelHeight(0);
 			System.out.println("MainActivity.onStart 2");
-//			slidingLayout.setVisibility(View.GONE);
 		}
 		checkUserFirstVisit();
 	}
@@ -346,37 +462,6 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		super.onDestroy();
 		AudioPlayerHelper helper = new AudioPlayerHelper();
 		helper.unregisterReceiverProgress(this);
-	}
-
-	private void backToStudies() {
-		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-
-		if (fragmentStudies.isAdded()) { // if the fragment is already in container
-			System.out.println("LessonsFragment.backToStudies 1");
-			ft.show(fragmentStudies);
-		} else { // fragment needs to be added to frame container
-			System.out.println("LessonsFragment.backToStudies 2");
-			ft.add(R.id.frame_container, fragmentStudies, "Studies");
-		}
-		System.out.println("LessonsFragment.backToStudies 3");
-		if (fragmentStudies.isAdded()) {
-			System.out.println("LessonsFragment.backToStudies 4");
-			ft.show(fragmentStudies);
-			ft.hide(fragmentLessons);
-		}
-
-//        actionBar.setDisplayHomeAsUpEnabled(true);
-//        actionBar.setDisplayShowTitleEnabled(true);
-//        actionBar.setTitle(study.getTitle());
-//
-//        Bundle bundle = new Bundle();
-//        bundle.putParcelable("study", study);
-//        fragmentLessons.getArguments().putAll(bundle);
-
-//        ft.detach(fragmentLessons);
-//        ft.attach(fragmentLessons);
-
-		ft.commit();
 	}
 
 	//    /**
@@ -404,285 +489,34 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
         return false;
     }
 
-	//	private void initNavigationDrawer(Bundle savedInstanceState) {
-//		mTitle = mDrawerTitle = getTitle();
-//
-//        // load slide menu items
-//        navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
-//
-//        // nav drawer icons from resources
-//        navMenuIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
-//
-//        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
-//
-//        navDrawerItems = new ArrayList<NavDrawerItem>();
-//
-//        // adding nav drawer items to array
-//        // Home
-////        navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
-////        // Find People
-////        navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
-////        // Photos
-////        navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
-////        // Communities, Will add a counter here
-////        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, "22"));
-////        // Pages
-////        navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
-////        // What's hot, We  will add a counter here
-////        navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1), true, "50+"));
-//
-//     // adding nav drawer items to array
-////        // My Home
-////        navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
-////        // Browse Library
-////        navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(, -1)));
-////        // Events
-////        navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
-////        // Donate, Will add a counter here
-////        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
-////        // Connect
-////        navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
-////        // About, We  will add a counter here
-////        navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
-//
-//     // Recycle the typed array
-//        navMenuIcons.recycle();
-//
-////        mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
-//        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-//
-//        // setting the nav drawer list adapter
-//        adapter = new NavDrawerListAdapter(getApplicationContext(), navDrawerItems);
-//        mDrawerList.setAdapter(adapter);
-//
-//        final ActionBar actionBar = getActionBar();
-//
-//        // enabling action bar app icon and behaving it as toggle button
-//        actionBar.setDisplayHomeAsUpEnabled(true);
-//        actionBar.setHomeButtonEnabled(true);
-//        actionBar.setDisplayShowTitleEnabled(false);
-//
-////        getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
-////        actionBar.setBackgroundDrawable();
-////        actionBar.setStackedBackgroundDrawable(new ColorDrawable(Color.parseColor("#550000ff")));
-//
-//        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-//				R.drawable.ic_drawer, //nav menu toggle icon
-//				R.string.app_name, // nav drawer open - description for accessibility
-//				R.string.app_name // nav drawer close - description for accessibility
-//		) {
-//			public void onDrawerClosed(View view) {
-//				getActionBar().setTitle(mTitle);
-//				// calling onPrepareOptionsMenu() to show action bar icons
-//				invalidateOptionsMenu();
-////				setImageAppCenter();
-//			}
-//
-//			public void onDrawerOpened(View drawerView) {
-//				getActionBar().setTitle(mDrawerTitle);
-//				// calling onPrepareOptionsMenu() to hide action bar icons
-//				invalidateOptionsMenu();
-//			}
-//		};
-////        mDrawerToggle = new ActionBarDrawerToggle(activity, drawerLayout, openDrawerContentDescRes, closeDrawerContentDescRes)
-////        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-////				R.string.app_name, // nav drawer open - description for accessibility
-////				R.string.app_name // nav drawer close - description for accessibility
-////		) {
-////			public void onDrawerClosed(View view) {
-////				getActionBar().setTitle(mTitle);
-////				// calling onPrepareOptionsMenu() to show action bar icons
-////				invalidateOptionsMenu();
-//////				setImageAppCenter();
-////			}
-////
-////			public void onDrawerOpened(View drawerView) {
-////				getActionBar().setTitle(mDrawerTitle);
-////				// calling onPrepareOptionsMenu() to hide action bar icons
-////				invalidateOptionsMenu();
-////			}
-////		};
-//
-//
-//		mDrawerLayout.setDrawerListener(mDrawerToggle);
-//
-//		if (savedInstanceState == null) {
-//			// on first time display view for first nav item
-//			displayView(0);
-//		}
-//
-//	}
-
-
-	/**
-	 * Slide menu item click listener
-	 * */
-//	private class SlideMenuClickListener implements
-//			ListView.OnItemClickListener {
-//		@Override
-//		public void onItemClick(AdapterView<?> parent, View view, int position,
-//				long id) {
-//			// display view for selected nav drawer item
-//			displayView(position);
-//		}
-//	}
-
-//	private class DrawerItemClickListener implements OnItemClickListener {
-//	    @Override
-//	    public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-////	        drawerLayout.closeDrawer(drawerList);
-//	    	// update selected item and title, then close the drawer
-//			mDrawerList.setItemChecked(position, true);
-//			mDrawerList.setSelection(position);
-//			setTitle(navMenuTitles[position]);
-////			mDrawerLayout.closeDrawer(mDrawerList);
-//			displayView(position);
-//	        new Handler().postDelayed(new Runnable() {
-//	            @Override
-//	            public void run() {
-////	                switchFragments(position); // your fragment transactions go here
-////	                displayView(position);
-//	            	mDrawerLayout.closeDrawer(mDrawerList);
-//	            }
-//	        }, 300);
-//	    }
-//	}
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		System.out.println("creating menu...");
 //		getMenuInflater().inflate(R.menu.menu_fragment_studies, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// toggle nav drawer on selecting action bar app icon/title
-//		if (mDrawerToggle.onOptionsItemSelected(item)) {
-//			return true;
-//		}
-		// Handle action bar actions click
 		switch (item.getItemId()) {
-		case R.id.action_settings:
-			return true;
-		case android.R.id.home:
-			System.out.println("MainActivity.onOptionsItemSelected...");
-			displayFragmentStudies();
-		default:
-			return super.onOptionsItemSelected(item);
+			case R.id.action_settings:
+				return true;
+			case android.R.id.home:
+				System.out.println("MainActivity.onOptionsItemSelected...");
+				switch (lastFragmentSelected) {
+					case "Lessons": displayFragmentStudies();
+						break;
+					case "ArticleDetails": displayFragmentArticles();
+						break;
+					case "AnswerDetails": displayFragmentArticles();
+						break;
+					case "Videos": displayFragmentVideoChannels();
+						break;
+					default:
+						break;
+				}
+			default:
+				return super.onOptionsItemSelected(item);
 		}
 	}
-
-
-	/* *
-	 * Called when invalidateOptionsMenu() is triggered
-	 */
-//	@Override
-//	public boolean onPrepareOptionsMenu(Menu menu) {
-//		// if nav drawer is opened, hide the action items
-//		//boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-//		//menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
-//		return super.onPrepareOptionsMenu(menu);
-//	}
-//
-//	/**
-//	 * Diplaying fragment view for selected nav drawer list item
-//	 * */
-//	private void displayView(int position) {
-//		// update the menu_fragment_studies content by replacing fragments
-//		Fragment fragment = null;
-//		switch (position) {
-//		case 0:
-//			//fragment = new HomeFragment();
-//			break;
-//		case 1:
-//			fragment = new LibraryFragment();
-//			break;
-//		case 2:
-//			fragment = new EventsFragment();
-//			break;
-//		case 3:
-////			fragment = new DonateFragment();
-//			startActivity(new Intent(this, DonateActivity.class));
-//			break;
-//		case 4:
-//			fragment = new ContactFragment();
-//			break;
-//		case 5:
-//			fragment = new AboutFragment();
-////			startActivity(new Intent(this, AboutActivity.class));
-//			break;
-//
-//		default:
-//			break;
-//		}
-//
-//		if (fragment != null) {
-//			FragmentManager fragmentManager = getFragmentManager();
-//			fragmentManager.beginTransaction().replace(R.id.frame_container, fragment).commit();
-//
-////			// update selected item and title, then close the drawer
-////			mDrawerList.setItemChecked(position, true);
-////			mDrawerList.setSelection(position);
-////			setTitle(navMenuTitles[position]);
-////			mDrawerLayout.closeDrawer(mDrawerList);
-//		} else {
-//			// error in creating fragment
-//			Log.e("MainActivity", "Error in creating fragment");
-//		}
-//	}
-//
-//	@Override
-//	public void setTitle(CharSequence title) {
-//		mTitle = title;
-//		getActionBar().setTitle(mTitle);
-//	}
-//
-//	/**
-//	 * When using the ActionBarDrawerToggle, you must call it during
-//	 * onPostCreate() and onConfigurationChanged()...
-//	 */
-//
-//	@Override
-//	protected void onPostCreate(Bundle savedInstanceState) {
-//		super.onPostCreate(savedInstanceState);
-//		// Sync the toggle state after onRestoreInstanceState has occurred.
-//		//mDrawerToggle.syncState();
-//	}
-//
-//	@Override
-//	public void onConfigurationChanged(Configuration newConfig) {
-//		super.onConfigurationChanged(newConfig);
-//		// Pass any configuration change to the drawer toggls
-//		mDrawerToggle.onConfigurationChanged(newConfig);
-//	}
-
-//	@Override
-//	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//		super.onActivityResult(requestCode, resultCode, data);
-//	}
-//
-//	private void setImageAppCenter() {
-//		Dialog overlayInfo = new Dialog(MainActivity.this);
-//        // Making sure there's no title.
-//        overlayInfo.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        // Making dialog content transparent.
-//        overlayInfo.getWindow().setBackgroundDrawable(
-//                new ColorDrawable(Color.TRANSPARENT));
-//        // Removing window dim normally visible when dialog are shown.
-//        overlayInfo.getWindow().clearFlags(
-//                WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-//        // Setting position of content, relative to window.
-//        WindowManager.LayoutParams params = overlayInfo.getWindow().getAttributes();
-//        params.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
-////        params.x = 100;
-//        params.y = 30;
-//        // If user taps anywhere on the screen, dialog will be cancelled.
-//        overlayInfo.setCancelable(false);
-//        // Setting the content using prepared XML layout file.
-//        overlayInfo.setContentView(R.layout.main_overlay_image);
-//        overlayInfo.show();
-//	}
 
 }

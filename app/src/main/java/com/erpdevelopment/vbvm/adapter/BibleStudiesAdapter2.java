@@ -9,9 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.erpdevelopment.vbvm.R;
-import com.erpdevelopment.vbvm.model.Lesson;
 import com.erpdevelopment.vbvm.model.Study;
-import com.erpdevelopment.vbvm.utils.imageloading.ImageLoader;
+import com.erpdevelopment.vbvm.utils.imageloading.ImageLoader2;
 
 import java.util.List;
 
@@ -19,12 +18,13 @@ public class BibleStudiesAdapter2 extends BaseAdapter {
 
     private Context context;
     private List<Study> listStudies;
-    private ImageLoader imageLoader;
+//    private ImageLoader imageLoader;
+    private ImageLoader2 imageLoader2;
 
-    public BibleStudiesAdapter2(Context context, List<Study> listStudies, ImageLoader imageLoader) {
+    public BibleStudiesAdapter2(Context context, List<Study> listStudies, ImageLoader2 imageLoader) {
         this.context = context;
         this.listStudies = listStudies;
-        this.imageLoader = imageLoader;
+        this.imageLoader2 = imageLoader;
     }
 
     @Override
@@ -58,7 +58,8 @@ public class BibleStudiesAdapter2 extends BaseAdapter {
         Study study = (Study) getItem(position);
         if (study != null) {
             viewHolder.textViewItem.setText(study.getTitle());
-            imageLoader.DisplayImage(study.getThumbnailSource(), viewHolder.imageViewItem);
+//            imageLoader.DisplayImage(study.getThumbnailSource(), viewHolder.imageViewItem);
+            imageLoader2.DisplayImage(study.getThumbnailSource(), viewHolder.imageViewItem);
         }
         return convertView;
     }

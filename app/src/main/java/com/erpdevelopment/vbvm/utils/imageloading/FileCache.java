@@ -6,11 +6,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import com.erpdevelopment.vbvm.utils.BitmapManager;
-
 import android.content.Context;
 import android.os.Environment;
- 
+
+import com.erpdevelopment.vbvm.utils.BitmapManager2;
+
 public class FileCache {
      
     private static File cacheDir;
@@ -63,19 +63,19 @@ public class FileCache {
     public File getFile(String url){
         //Identify images by directory or encode by URLEncoder.encode.
 //        String filename = String.valueOf(url.hashCode());
-    	String filename = BitmapManager.getFileNameFromUrl(url);
+    	String filename = BitmapManager2.getFileNameFromUrl(url);
         File f = new File(cacheDir, filename);
         return f;         
     }
     
     public File getFileAudioFolder(String url){
-    	String filename = BitmapManager.getFileNameFromUrl(url);
+    	String filename = BitmapManager2.getFileNameFromUrl(url);
         File f = new File(cacheDirAudio, filename);
         return f;         
     }
      
     public File getFileTempFolder(String url){
-    	String filename = BitmapManager.getFileNameFromUrl(url);
+    	String filename = BitmapManager2.getFileNameFromUrl(url);
         File f = new File(cacheDirTemp, filename);
         return f;         
     }

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.erpdevelopment.vbvm.R;
-import com.erpdevelopment.vbvm.utils.ConstantsVbvm;
+import com.erpdevelopment.vbvm.utils.Constants;
 import com.erpdevelopment.vbvm.utils.Utilities;
 
 import android.app.Fragment;
@@ -53,7 +53,7 @@ public class ContactFragment extends Fragment {
 		llVbvmDetail.setVisibility(View.GONE);
 		
 		try {
-			InputStream is = getActivity().getAssets().open(ConstantsVbvm.FILENAME_CONTACT);
+			InputStream is = getActivity().getAssets().open(Constants.FILENAME_CONTACT);
             
             // We guarantee that the available method returns the total
             // size of the asset...  of course, this does mean that a single

@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.model.Lesson;
-import com.erpdevelopment.vbvm.utils.imageloading.ImageLoader;
+import com.erpdevelopment.vbvm.utils.imageloading.ImageLoader2;
 
 import java.util.List;
 
@@ -21,9 +21,9 @@ public class HomeGridviewAdapter extends BaseAdapter {
 
     private Activity activity;
     private List<Lesson> lessons;
-    private ImageLoader imageLoader;
+    private ImageLoader2 imageLoader;
 
-    public HomeGridviewAdapter(Activity activity, List<Lesson> lessons, ImageLoader imageLoader) {
+    public HomeGridviewAdapter(Activity activity, List<Lesson> lessons, ImageLoader2 imageLoader) {
         this.activity = activity;
         this.lessons = lessons;
         this.imageLoader = imageLoader;

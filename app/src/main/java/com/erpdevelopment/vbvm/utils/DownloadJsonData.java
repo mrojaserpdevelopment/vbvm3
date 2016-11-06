@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.AsyncTask;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ScrollView;
@@ -17,19 +18,18 @@ import com.androidquery.callback.AjaxStatus;
 import com.erpdevelopment.vbvm.MainActivity;
 import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.adapter.ArticlesAdapter;
-import com.erpdevelopment.vbvm.adapter.ChannelVbvmAdapter;
-import com.erpdevelopment.vbvm.adapter.QAndAPostsAdapter;
+import com.erpdevelopment.vbvm.adapter.VideoChannelsAdapter;
+import com.erpdevelopment.vbvm.adapter.AnswersAdapter;
 import com.erpdevelopment.vbvm.adapter.StudiesAdapter;
-import com.erpdevelopment.vbvm.adapter.VideoVbvmAdapter;
 import com.erpdevelopment.vbvm.db.DBHandleArticles;
 import com.erpdevelopment.vbvm.db.DBHandleLessons;
-import com.erpdevelopment.vbvm.db.DBHandlePosts;
+import com.erpdevelopment.vbvm.db.DBHandleAnswers;
 import com.erpdevelopment.vbvm.db.DBHandleStudies;
 import com.erpdevelopment.vbvm.db.DBHandleVideos;
 import com.erpdevelopment.vbvm.model.Article;
-import com.erpdevelopment.vbvm.model.ChannelVbvm;
+import com.erpdevelopment.vbvm.model.VideoChannel;
 import com.erpdevelopment.vbvm.model.Lesson;
-import com.erpdevelopment.vbvm.model.QandAPost;
+import com.erpdevelopment.vbvm.model.Answer;
 import com.erpdevelopment.vbvm.model.Study;
 import com.erpdevelopment.vbvm.model.Topic;
 import com.erpdevelopment.vbvm.model.VideoVbvm;
@@ -40,11 +40,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -128,7 +125,7 @@ public class DownloadJsonData {
 
 //            new asyncGetAllLessons().execute();
 //            asyncJsonArticles();
-//            asyncJsonQAndAPosts();
+//            asyncJsonAnswers();
 //            asyncJsonVideos();
             mScroll.scrollTo(0, 0);
             pDialog.dismiss();
@@ -156,7 +153,7 @@ public class DownloadJsonData {
                                 JSONObject vbv = jsonResponse.getJSONObject(WebServiceCall.TAG_VERSE_BY_VERSE);
                                 // Getting JSON Array
                                 final JSONArray studies = vbv.getJSONArray(WebServiceCall.TAG_STUDIES);
-                                System.out.println("downloading studies...");
+                                System.out.println("IS_SERVICE_RUNNING studies...");
                                 for ( int i=0; i < studies.length(); i++ ) {
                                     final Study study = new Study();
                                     study.setThumbnailSource(StringEscapeUtils.unescapeJava(studies.getJSONObject(i).getString("thumbnailSource")));
@@ -217,7 +214,7 @@ public class DownloadJsonData {
 
 //                        new asyncGetAllLessons().execute();
 //                        asyncJsonArticles();
-//                        asyncJsonQAndAPosts();
+//                        asyncJsonAnswers();
 //                        asyncJsonVideos();
                     }
                 });
@@ -255,12 +252,12 @@ public class DownloadJsonData {
         }
 
         protected void onPostExecute(String result) {
-            System.out.println("finished downloading lessons...");
+            System.out.println("finished IS_SERVICE_RUNNING lessons...");
             //Get all the lessons in DB
             List<Lesson> dbListLessons = DBHandleLessons.getLessons(null);
 //            newestAdapter.setLessonListItems(dbListLessons);
 //            asyncJsonArticles();
-//            asyncJsonQAndAPosts();
+//            asyncJsonAnswers();
 //            asyncJsonVideos();
             pDialog.dismiss();
             if ( countThreads.incrementAndGet() == COUNT_PARALLEL_DOWNLOADS ) {
@@ -278,20 +275,14 @@ public class DownloadJsonData {
         pDialog.setMessage(mActivity.getResources().getString(R.string.msg_progress_dialog_loading));
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(false);
-        pDialog.show();
+//        pDialog.show();
 
         WebServiceCall.articlesInDB = MainActivity.settings.getBoolean("articlesInDB", false);
         if ( WebServiceCall.articlesInDB ){
             Log.d("Database", "Articles - working offline on DB...");
             FilesManager.listArticles = DBHandleArticles.getAllArticles(false);
-//            if ( countThreads.incrementAndGet() == COUNT_PARALLEL_DOWNLOADS ) {
-//                pDialog.dismiss();
-//                countThreads.set(0);
-//                System.out.println("asyncJsonArticles: pDialog.dismiss()...");
-//            }
             adapter.setArticleListItems(FilesManager.listArticles);
             pDialog.dismiss();
-            System.out.println("countThreads asyncJsonArticles: " + countThreads.get());
         } else {
             if ( !CheckConnectivity.isOnline(mActivity)) {
                 CheckConnectivity.showMessage(mActivity);
@@ -308,18 +299,10 @@ public class DownloadJsonData {
                             List<Article> listArticles = null;
                             try {
                                 JSONObject vbv = json.getJSONObject(WebServiceCall.TAG_VERSE_BY_VERSE);
-                                // Getting JSON Array
                                 JSONArray articles = vbv.getJSONArray(WebServiceCall.TAG_ARTICLES);
                                 for ( int i=0; i < articles.length(); i++ ) {
                                     JSONObject c = articles.getJSONObject(i);
                                     Article article = new Article();
-//                                    long timeMills = Long.parseLong(c.getString("postedDate")+"000");
-//                                    Date d = new Date(timeMills);
-//                                    DateFormat df = DateFormat.getDateInstance();
-//                                    SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy");
-//                                    String date = df.format(d);
-//                                    article.setPostedDate(date);
-//                                    article.setPostedDate(StringEscapeUtils.unescapeHtml(c.getString("postedDate")+"000"));
                                     article.setPostedDate(c.getString("postedDate")+"000");
                                     article.setCategory(StringEscapeUtils.unescapeJava(StringEscapeUtils.unescapeHtml(c.getString("category"))));
                                     article.setAverageRating(StringEscapeUtils.unescapeJava(StringEscapeUtils.unescapeHtml(c.getString("averageRating"))));
@@ -352,7 +335,6 @@ public class DownloadJsonData {
                                 e.putBoolean("articlesInDB", true);
                                 e.commit();
                                 Log.i("ArticlesActivity info", "Update DB with data from Webservice");
-
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -360,42 +342,30 @@ public class DownloadJsonData {
                             adapter.setArticleListItems(listArticles);
                         } else
                             Toast.makeText(mAQuery.getContext(), "Error:" + status.getCode(), Toast.LENGTH_LONG).show();
-//                        if ( countThreads.incrementAndGet() == COUNT_PARALLEL_DOWNLOADS ) {
-//                            pDialog.dismiss();
-//                            countThreads.set(0);
-//                            System.out.println("asyncJsonArticles: pDialog.dismiss()...");
-//                        }
-                        pDialog.dismiss();
+//                        pDialog.dismiss();
                     }
                 });
             }
             mScroll.scrollTo(0, 0);
-//            pDialog.dismiss();
         }
     }
 
-    public void asyncJsonQAndAPosts(QAndAPostsAdapter adapter){
+    public void asyncJsonAnswers(AnswersAdapter adapter){
 
         pDialog = new ProgressDialog(mActivity);
         pDialog.setMessage(mActivity.getResources().getString(R.string.msg_progress_dialog_loading));
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(false);
-        pDialog.show();
+//        pDialog.show();
 
 
         Log.d("onPostExecute=", "Cargando lista Posts");
         WebServiceCall.postsInDB = MainActivity.settings.getBoolean("postsInDB", false);
         if ( WebServiceCall.postsInDB ) {
             Log.d("Database", "QA Posts - working offline on DB...");
-            FilesManager.listQAPosts = DBHandlePosts.getAllPosts(false);
-//            if ( countThreads.incrementAndGet() == COUNT_PARALLEL_DOWNLOADS ) {
-//                pDialog.dismiss();
-//                countThreads.set(0);
-//                System.out.println("asyncJsonQAndAPosts: pDialog.dismiss()...");
-//            }
-            adapter.setQAndAPostsListItems(FilesManager.listQAPosts);
+            FilesManager.listAnswers = DBHandleAnswers.getAllPosts(false);
+            adapter.setQAndAPostsListItems(FilesManager.listAnswers);
             pDialog.dismiss();
-            System.out.println("countThreads asyncJsonQAndAPosts: " + countThreads.get());
         } else {
             if ( !CheckConnectivity.isOnline(mActivity) ) {
                 CheckConnectivity.showMessage(mActivity);
@@ -409,32 +379,24 @@ public class DownloadJsonData {
                     public void callback(String url, JSONObject json, AjaxStatus status) {
 
                         if(json != null) {
-                            //String responseString = StringEscapeUtils.unescapeHtml(json.toString());
-                            List<QandAPost> listQAPosts = null;
+                            List<Answer> listAnswers = null;
                             try {
-                                //JSONObject jsonResponse = new JSONObject(responseString);
-//                                JSONObject vbv = jsonResponse.getJSONObject(WebServiceCall.TAG_VERSE_BY_VERSE);
                                 JSONObject vbv = json.getJSONObject(WebServiceCall.TAG_VERSE_BY_VERSE);
                                 JSONArray qAPosts = vbv.getJSONArray(WebServiceCall.TAG_QANDAPOSTS);
                                 List<String> topics;
                                 for ( int i=0; i < qAPosts.length(); i++ ) {
                                     JSONObject c = qAPosts.getJSONObject(i);
-                                    QandAPost qAPost = new QandAPost();
-                                    long timeMills = Long.parseLong(c.getString("postedDate")+"000");
-                                    Date d = new Date(timeMills);
-                                    DateFormat df = DateFormat.getDateInstance();
-                                    String date = df.format(d);
+                                    Answer qAPost = new Answer();
                                     qAPost.setPostedDate(StringEscapeUtils.unescapeJava(c.getString("postedDate")+"000"));
-//                                    qAPost.setPostedDate(date);
                                     qAPost.setCategory(StringEscapeUtils.unescapeJava(c.getString("category")));
                                     qAPost.setAverageRating(StringEscapeUtils.unescapeJava(c.getString("averageRating")));
                                     qAPost.setqAndAPostsDescription(StringEscapeUtils.unescapeJava(c.getString("description")));
-                                    qAPost.setBody(StringEscapeUtils.unescapeJava(c.getString("body")));
+                                    qAPost.setBody(StringEscapeUtils.unescapeJava(StringEscapeUtils.unescapeHtml(c.getString("body"))).toString());
                                     qAPost.setIdProperty(StringEscapeUtils.unescapeJava(c.getString("ID")));
                                     qAPost.setAuthorName(StringEscapeUtils.unescapeJava(c.getString("authorName")));
                                     qAPost.setqAndAThumbnailSource(StringEscapeUtils.unescapeJava(c.getString("qAndAThumbnailSource")));
                                     qAPost.setAuthorThumbnailSource(StringEscapeUtils.unescapeJava(c.getString("authorThumbnailSource")));
-                                    qAPost.setTitle(StringEscapeUtils.unescapeJava(c.getString("title")));
+                                    qAPost.setTitle(StringEscapeUtils.unescapeJava(StringEscapeUtils.unescapeHtml(c.getString("title"))));
                                     qAPost.setqAndAThumbnailAltText(StringEscapeUtils.unescapeJava(c.getString("qAndAThumbnailAltText")));
                                     qAPost.setAuthorThumbnailAltText(StringEscapeUtils.unescapeJava(c.getString("authorThumbnailAltText")));
                                     topics = new ArrayList<String>();
@@ -452,54 +414,41 @@ public class DownloadJsonData {
                                     qAPost.setTopics(topics);
                                     DBHandleStudies.createPost(qAPost);
                                 }
-                                listQAPosts = DBHandlePosts.getAllPosts(false);
+                                listAnswers = DBHandleAnswers.getAllPosts(false);
                                 //Save state flag for sync Webservice/DB
                                 SharedPreferences.Editor e = MainActivity.settings.edit();
                                 e.putBoolean("postsInDB", true);
                                 e.commit();
                                 Log.i("PostsActivity info", "Updated DB / QA post with data from Webservice");
-
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            FilesManager.listQAPosts = listQAPosts;
-                            adapter.setQAndAPostsListItems(listQAPosts);
+                            FilesManager.listAnswers = listAnswers;
+                            adapter.setQAndAPostsListItems(listAnswers);
                         } else
                             Toast.makeText(mAQuery.getContext(), "Error:" + status.getCode(), Toast.LENGTH_LONG).show();
-//                        if ( countThreads.incrementAndGet() == COUNT_PARALLEL_DOWNLOADS ) {
-//                            pDialog.dismiss();
-//                            countThreads.set(0);
-//                            System.out.println("asyncJsonQAndAPosts: pDialog.dismiss()...");
-//                        }
-                        pDialog.dismiss();
+//                        pDialog.dismiss();
                     }
                 });
             }
             mScroll.scrollTo(0, 0);
-//            pDialog.dismiss();
         }
     }
 
-    public void asyncJsonVideos(ChannelVbvmAdapter adapter){
+    public void asyncJsonVideos(VideoChannelsAdapter adapter){
 
         pDialog = new ProgressDialog(mActivity);
         pDialog.setMessage(mActivity.getResources().getString(R.string.msg_progress_dialog_loading));
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(false);
-        pDialog.show();
+//        pDialog.show();
 
         WebServiceCall.videosInDB = MainActivity.settings.getBoolean("videosInDB", false);
         if ( WebServiceCall.videosInDB ) {
             Log.d("Database", "Videos - working offline on DB...");
-            FilesManager.listChannels = DBHandleVideos.getChannels();
-//            if ( countThreads.incrementAndGet() == COUNT_PARALLEL_DOWNLOADS ) {
-//                pDialog.dismiss();
-//                countThreads.set(0);
-//            }
-            adapter.setVideoListItems(FilesManager.listChannels);
-            pDialog.dismiss();
-            System.out.println("countThreads asyncJsonVideos: " + countThreads.get());
-            mScroll.scrollTo(0, 0);
+            FilesManager.listVideoChannels = DBHandleVideos.getChannels();
+            adapter.setVideoListItems(FilesManager.listVideoChannels);
+//            pDialog.dismiss();
         } else {
             if ( !CheckConnectivity.isOnline(mActivity)) {
                 CheckConnectivity.showMessage(mActivity);
@@ -514,14 +463,14 @@ public class DownloadJsonData {
 
                         if(json != null) {
                             String responseString = StringEscapeUtils.unescapeHtml(json.toString());
-                            List<ChannelVbvm> listChannels = new ArrayList<ChannelVbvm>();
+                            List<VideoChannel> listVideoChannels = new ArrayList<VideoChannel>();
                             try {
                                 JSONObject jsonResponse = new JSONObject(responseString);
                                 JSONObject vbv = jsonResponse.getJSONObject(WebServiceCall.TAG_VERSE_BY_VERSE);
                                 JSONArray channels = vbv.getJSONArray(WebServiceCall.TAG_CHANNELS);
                                 for ( int i=0; i < channels.length(); i++ ) {
                                     JSONObject c = channels.getJSONObject(i);
-                                    ChannelVbvm channel = new ChannelVbvm();
+                                    VideoChannel channel = new VideoChannel();
                                     channel.setIdProperty(StringEscapeUtils.unescapeJava(c.getString("ID")));
                                     channel.setPostedDate(c.getString("postedDate")+"000");
                                     channel.setAverageRating(StringEscapeUtils.unescapeJava(c.getString("averageRating")));
@@ -546,9 +495,11 @@ public class DownloadJsonData {
                                         DBHandleStudies.createVideo(video);
                                     }
                                     channel.setVideos(listVideos);
-                                    listChannels.add(channel);
+                                    listVideoChannels.add(channel);
                                     DBHandleStudies.createChannel(channel);
                                 }
+                                listVideoChannels = DBHandleVideos.getChannels();
+                                Collections.sort(listVideoChannels);
                                 //Save state flag for sync Webservice/DB
                                 SharedPreferences.Editor e = MainActivity.settings.edit();
                                 e.putBoolean("videosInDB", true);
@@ -557,20 +508,15 @@ public class DownloadJsonData {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            FilesManager.listChannels = listChannels;
-                            adapter.setVideoListItems(listChannels);
+                            FilesManager.listVideoChannels = listVideoChannels;
+                            adapter.setVideoListItems(listVideoChannels);
                         } else
                             Toast.makeText(mAQuery.getContext(), "Error:" + status.getCode(), Toast.LENGTH_LONG).show();
-//                        if ( countThreads.incrementAndGet() == COUNT_PARALLEL_DOWNLOADS ) {
-//                            pDialog.dismiss();
-//                            countThreads.set(0);
-//                        }
-                        pDialog.dismiss();
+//                        pDialog.dismiss();
                     }
                 });
             }
             mScroll.scrollTo(0, 0);
-//            pDialog.dismiss();
         }
     }
 }

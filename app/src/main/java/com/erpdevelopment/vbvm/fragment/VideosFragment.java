@@ -1,36 +1,38 @@
 package com.erpdevelopment.vbvm.fragment;
 
 
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
 
 import com.erpdevelopment.vbvm.R;
-import com.erpdevelopment.vbvm.activity.VideosVbvmActivity;
-import com.erpdevelopment.vbvm.adapter.ChannelVbvmAdapter;
-import com.erpdevelopment.vbvm.model.ChannelVbvm;
-import com.erpdevelopment.vbvm.service.WebServiceCall;
-import com.erpdevelopment.vbvm.utils.DownloadJsonData;
-import com.erpdevelopment.vbvm.utils.FilesManager;
+import com.erpdevelopment.vbvm.adapter.VideoVbvmAdapter;
+import com.erpdevelopment.vbvm.db.DBHandleVideos;
+import com.erpdevelopment.vbvm.model.VideoChannel;
+import com.erpdevelopment.vbvm.model.VideoVbvm;
+import com.erpdevelopment.vbvm.utils.imageloading.ImageLoader2;
 
-import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
-public class VideosFragment extends Fragment implements TextWatcher {
+public class VideosFragment extends Fragment {
 
     private View rootView;
-    private ChannelVbvmAdapter adapterVideos;
-    private ListView lvVideos;
+    private VideoVbvmAdapter adapterVideoVbvm;
+    private ListView lvVideoVbvm;
+    private Activity activity;
+    private VideoChannel mVideoChannel;
+    private ImageLoader2 imageLoader2;
+    List<VideoVbvm> listVideos;
 
     public VideosFragment() {
-        // Required empty public constructor
     }
 
     public static VideosFragment newInstance(int index) {
@@ -42,49 +44,47 @@ public class VideosFragment extends Fragment implements TextWatcher {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activity = getActivity();
+        imageLoader2 = new ImageLoader2(activity);
+        listVideos = new ArrayList<>();
+        adapterVideoVbvm = new VideoVbvmAdapter(activity, listVideos, imageLoader2);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {// Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_videos, container, false);
+        if (getArguments() != null)
+            mVideoChannel = getArguments().getParcelable("videoChannel");
+        return inflater.inflate(R.layout.fragment_video_channels, container, false);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         rootView = getView();
-        adapterVideos = new ChannelVbvmAdapter(getActivity(), FilesManager.listChannels);
-        lvVideos = (ListView) rootView.findViewById(R.id.lvVideos);
-        lvVideos.setAdapter(adapterVideos);
-        lvVideos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
+        listVideos = DBHandleVideos.getVideosByChannel(mVideoChannel.getIdProperty());
+        lvVideoVbvm = (ListView) rootView.findViewById(R.id.lvVideoChannels);
+        lvVideoVbvm.setAdapter(adapterVideoVbvm);
+        lvVideoVbvm.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View v, int position,
-                                    long id) {
-                adapterVideos.setSelectedPosition(position);
-                ChannelVbvm channel = (ChannelVbvm) parent.getItemAtPosition(position);
-                Intent i = new Intent(getActivity(), VideosVbvmActivity.class);
-                i.putExtra("channel", channel);
-                startActivity(i);
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                adapterVideoVbvm.setSelectedPosition(position);
+                VideoVbvm videoVbvm = (VideoVbvm) parent.getItemAtPosition(position);
+//                Intent i = new Intent(getActivity(), VideosVbvmActivity.class);
+//                i.putExtra("channel", channel);
+//                startActivity(i);
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(videoVbvm.getVideoSource()));
+                startActivity(intent);
             }
         });
-        if ( (FilesManager.listChannels == null) || (FilesManager.listChannels.size() == 0) )
-            DownloadJsonData.getInstance().asyncJsonVideos(adapterVideos);
-        else
-            adapterVideos.setVideoListItems(FilesManager.listChannels);
+        adapterVideoVbvm.setVideoListItems(listVideos);
+//        if ( (FilesManager.listVideoChannels == null) || (FilesManager.listVideoChannels.size() == 0) )
+//            DownloadJsonData.getInstance().asyncJsonVideos(adapterVideos);
+//        else
+//            adapterVideos.setVideoListItems(FilesManager.listVideoChannels);
     }
 
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-        adapterVideos.getFilter().filter(s.toString().trim());
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-
-    }
 }

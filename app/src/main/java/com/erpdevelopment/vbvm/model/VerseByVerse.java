@@ -4,7 +4,7 @@ import java.util.List;
 
 public class VerseByVerse {
 	
-	private List<QandAPost> qAndAPosts;
+	private List<Answer> qAndAPosts;
 	private List<Study> studies;
 	private List<Article> articles;
 	private List<EventVbvm> events;
@@ -14,11 +14,11 @@ public class VerseByVerse {
 		// TODO Auto-generated constructor stub
 	}
 
-	public List<QandAPost> getqAndAPosts() {
+	public List<Answer> getqAndAPosts() {
 		return qAndAPosts;
 	}
 
-	public void setqAndAPosts(List<QandAPost> qAndAPosts) {
+	public void setqAndAPosts(List<Answer> qAndAPosts) {
 		this.qAndAPosts = qAndAPosts;
 	}
 

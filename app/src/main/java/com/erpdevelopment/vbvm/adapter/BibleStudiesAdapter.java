@@ -6,10 +6,9 @@ import java.util.Locale;
 
 import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.model.Study;
-import com.erpdevelopment.vbvm.utils.imageloading.ImageLoader;
+import com.erpdevelopment.vbvm.utils.imageloading.ImageLoader2;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +25,8 @@ public class BibleStudiesAdapter extends BaseAdapter implements Filterable {
 	private List<Study> filteredListStudies;
     private ItemFilter mFilter = new ItemFilter();
 	
-    public ImageLoader imageLoader; 
+//    public ImageLoader imageLoader;
+	public ImageLoader2 imageLoader2;
 	// used to keep selected position in ListView
 	private int selectedPos = -1;	// init value for not-selected
 
@@ -34,7 +34,8 @@ public class BibleStudiesAdapter extends BaseAdapter implements Filterable {
 		activity = a;
 		originalListStudies = studies;
 		filteredListStudies = studies;
-		imageLoader = new ImageLoader(activity);
+//		imageLoader = new ImageLoader(activity);
+		imageLoader2 = new ImageLoader2(activity);
 	}
 	
 	@Override
@@ -64,7 +65,7 @@ public class BibleStudiesAdapter extends BaseAdapter implements Filterable {
 	       }
 	       // Lookup view for data population
 	       ImageView img = (ImageView) convertView.findViewById(R.id.img_bible_study);
-	       imageLoader.DisplayImage(study.getThumbnailSource(), img);
+	       imageLoader2.DisplayImage(study.getThumbnailSource(), img);
 		   
 		   TextView txt = (TextView) convertView.findViewById(R.id.tv_type_bible_study);
 	       txt.setText(study.getType());

@@ -134,7 +134,7 @@
 
         <service android:name=".activity.AudioPlayerService">
         </service>
-        <service android:name=".service.DownloadServiceTest">
+        <service android:name=".service.DownloadAllService">
         </service>
 
         <!-- <receiver android:name=".ShutdownReceiver"> -->
@@ -153,6 +153,9 @@
             android:enabled="true"
             android:exported="true">
         </service>
+
+        <activity android:name=".activity.SettingsActivity">
+        </activity>
     </application>
 
 </manifest>

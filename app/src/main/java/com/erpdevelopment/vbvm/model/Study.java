@@ -16,11 +16,9 @@ public class Study implements Parcelable {
 	private String thumbnailAltText;
 	private String studiesDescription;
 	private String type;
-	private String lessonCount;
 	private List<Topic> topics;
 	private List<Lesson> lessons;
-	private List<Lesson> lessonsComplete;
-	
+
 	public Study() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -90,28 +88,12 @@ public class Study implements Parcelable {
 		this.type = type;
 	}
 
-	public String getLessonCount() {
-		return lessonCount;
-	}
-
-	public void setLessonCount(String lessonCount) {
-		this.lessonCount = lessonCount;
-	}
-
 	public List<Lesson> getLessons() {
 		return lessons;
 	}
 
 	public void setLessons(List<Lesson> lessons) {
 		this.lessons = lessons;
-	}
-
-	public List<Lesson> getLessonsComplete() {
-		return lessonsComplete;
-	}
-
-	public void setLessonsComplete(List<Lesson> lessonsComplete) {
-		this.lessonsComplete = lessonsComplete;
 	}
 
 	public List<Topic> getTopics() {
@@ -138,9 +120,7 @@ public class Study implements Parcelable {
 		dest.writeString(averageRating);
 		dest.writeString(studiesDescription);
 		dest.writeString(type);
-		dest.writeString(lessonCount);
 		dest.writeList(lessons);
-		dest.writeList(lessonsComplete);
 		dest.writeList(topics);
 	}	
 	
@@ -153,12 +133,9 @@ public class Study implements Parcelable {
 		thumbnailAltText = in.readString();
 		studiesDescription = in.readString();
 		type = in.readString();
-		lessonCount = in.readString();
 		lessons = new ArrayList<Lesson>();
-		lessonsComplete = new ArrayList<Lesson>();
 		topics = new ArrayList<Topic>();
 		in.readList(lessons, getClass().getClassLoader());
-		in.readList(lessonsComplete, getClass().getClassLoader());
 		in.readList(topics, getClass().getClassLoader());
 	}
 
