@@ -142,7 +142,7 @@ public class LessonsFragment extends Fragment {
     private class asyncGetStudyLessons extends AsyncTask<Study, String, String > {
 
 //        private ProgressDialog pDialog;
-        private List<Lesson> list = new ArrayList<Lesson>();
+//        private List<Lesson> list = new ArrayList<Lesson>();
 
         private List<Lesson> listIncomplete = new ArrayList<Lesson>();
         private List<Lesson> listComplete = new ArrayList<Lesson>();
@@ -157,46 +157,46 @@ public class LessonsFragment extends Fragment {
 
         protected String doInBackground(Study... params) {
             WebServiceCall.lessonsInDB = MainActivity.settings.getBoolean("lessonsInDB", false);
-            list = DBHandleLessons.getLessons(params[0].getIdProperty());
-            if ( (list.size() == 0) || ( !WebServiceCall.lessonsInDB ) ) {
+            listLessons = DBHandleLessons.getLessons(params[0].getIdProperty());
+            if ( (listLessons.size() == 0) || ( !WebServiceCall.lessonsInDB ) ) {
                 if ( !CheckConnectivity.isOnline(getActivity())) {
                     CheckConnectivity.showMessage(getActivity());
                 } else {
-                    list = new WebServiceCall().getStudyLessons(params[0]); //get and save lessons to DB
+                    listLessons = new WebServiceCall().getStudyLessons(params[0]); //get and save lessons to DB
                     Log.i("LessonsFragment", "Update DB with data from Webservice");
                 }
             }
-            resetDownloadingState(list);
+            resetDownloadingState(listLessons);
             return null;
         }
 
         protected void onPostExecute(String result) {
 //           pDialog.dismiss();
 
-            for (Lesson lesson : list) {
+            for (Lesson lesson : listLessons) {
                 if ( lesson.getState().equals("complete") )
                     listComplete.add(lesson);
                 else
                     listIncomplete.add(lesson);
             }
-            list.clear();
+            listLessons.clear();
             if (listIncomplete.size()>0) {
                 System.out.println("Incomplete > 0");
                 Lesson lSectionIncomplete = new Lesson();
                 lSectionIncomplete.setSection(true);
                 lSectionIncomplete.setSectionCompleted(false);
-                list.add(lSectionIncomplete);
-                list.addAll(listIncomplete);
+                listLessons.add(lSectionIncomplete);
+                listLessons.addAll(listIncomplete);
             }
             if (listComplete.size()>0) {
                 System.out.println("complete > 0");
                 Lesson lSectionComplete = new Lesson();
                 lSectionComplete.setSection(true);
                 lSectionComplete.setSectionCompleted(true);
-                list.add(lSectionComplete);
-                list.addAll(listComplete);
+                listLessons.add(lSectionComplete);
+                listLessons.addAll(listComplete);
             }
-            mStudy.setLessons(list);
+            mStudy.setLessons(listLessons);
             adapterLessons.setSizeListComplete(listComplete.size());
             adapterLessons.setSizeListIncomplete(listIncomplete.size());
             adapterLessons.setLessonListItems(mStudy.getLessons());
@@ -346,8 +346,22 @@ public class LessonsFragment extends Fragment {
     private BroadcastReceiver receiverDownloadProgress = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            List<Lesson> listLesson = intent.getParcelableArrayListExtra("listLessons");
-            adapterLessons.setLessonListItems(listLesson);
+            int downloadStatus = intent.getIntExtra("downloadStatus", 0);
+            if (downloadStatus > 0) {
+                Lesson lesson = intent.getParcelableExtra("lesson");
+                System.out.println("status - progress: " + lesson.getDownloadStatusAudio() + " - " + lesson.getDownloadProgressAudio());
+                for (int i=0; i<listLessons.size(); i++) {
+                    if (lesson.getIdProperty().equals(listLessons.get(i).getIdProperty())) {
+                        System.out.println("lesson: " + lesson.getIdProperty());
+//                        List<Lesson> listLesson = intent.getParcelableArrayListExtra("listLessons");
+////                        adapterLessons.setLessonListItems(listLesson);
+                        listLessons.set(i,lesson);
+//                        adapterLessons.setLessonListItems(listLesson);
+                        adapterLessons.notifyDataSetChanged();
+                        break;
+                    }
+                }
+            }
 //            if ( DownloadService.IS_SERVICE_RUNNING && DownloadService.countDownloads==0 ){
 //                System.out.println("Stopping download service...");
 //                Intent service = new Intent(context, DownloadService.class);

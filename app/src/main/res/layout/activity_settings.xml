@@ -20,7 +20,7 @@
         android:paddingRight="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp">
-        <android.support.v7.widget.SwitchCompat
+        <Switch
             android:id="@+id/switch_auto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

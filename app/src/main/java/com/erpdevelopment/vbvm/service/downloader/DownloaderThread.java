@@ -32,6 +32,7 @@ public class DownloaderThread extends Thread {
     private FileCache fileCache;
     public int downloadProgress = 0;
     private static final int DOWNLOAD_BUFFER_SIZE = 16*1024;
+    private boolean stopDownload = false;
 
     private Lesson mLesson;
     private String mUrl;
@@ -83,7 +84,8 @@ public class DownloaderThread extends Thread {
             int bytesRead = 0;
 
             handler.postDelayed(runnable, 100);
-            while(!isInterrupted() && (bytesRead = inStream.read(data, 0, data.length)) >= 0)
+//            while(!isInterrupted() && (bytesRead = inStream.read(data, 0, data.length)) >= 0)
+            while(!stopDownload && (bytesRead = inStream.read(data, 0, data.length)) >= 0)
             {
                 outStream.write(data, 0, bytesRead);
                 totalRead += bytesRead;
@@ -95,7 +97,7 @@ public class DownloaderThread extends Thread {
             fileStream.close();
             inStream.close();
 
-            if(isInterrupted())
+            if(stopDownload)
             {
                 outputTemp.delete();
                 downloadStatus = 0;
@@ -164,11 +166,16 @@ public class DownloaderThread extends Thread {
                         break;
                 }
                 Intent intent = new Intent(DownloadService.NOTIFICATION_DOWNLOAD_PROGRESS);
-                intent.putParcelableArrayListExtra("listLessons", (ArrayList)mListLessons);
-//                intent.putExtra("downloadStatus", downloadStatus);
+//                intent.putParcelableArrayListExtra("listLessons", (ArrayList)mListLessons);
+                intent.putExtra("lesson",mLesson);
+                intent.putExtra("downloadStatus", downloadStatus);
                 LocalBroadcastManager.getInstance(mActivity).sendBroadcast(intent);
             }
         });
+    }
+
+    public void stopDownload() {
+        stopDownload = true;
     }
 
 }

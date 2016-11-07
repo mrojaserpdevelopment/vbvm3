@@ -31,7 +31,7 @@ public class DownloadService extends Service {
     public static final String NOTIFICATION_DOWNLOAD_COMPLETE = "notification_download_complete";
     private static final String LOG_TAG = "DownloadService";
 
-    public static Map<String,Thread> threadMap = new HashMap<>();
+    public static Map<String,DownloaderThread> threadMap = new HashMap<>();
 
     public static synchronized void incrementCount() {
         countDownloads++;
@@ -71,11 +71,11 @@ public class DownloadService extends Service {
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            System.out.println("checking download service count... " + countDownloads);
+//            System.out.println("checking download service count... " + countDownloads);
             if (countDownloads==0) {
                 Log.i(LOG_TAG, "Received Stop Foreground Intent");
                 stopForeground(true);
-                stopSelf();
+//                stopSelf();
                 return;
             }
             handler.postDelayed(this, 1000);
@@ -113,6 +113,7 @@ public class DownloadService extends Service {
         super.onDestroy();
         System.out.println("DownloadService.onDestroy");
         handler.removeCallbacks(runnable);
+//        stopSelf();
     }
 
     private void showNotification() {
