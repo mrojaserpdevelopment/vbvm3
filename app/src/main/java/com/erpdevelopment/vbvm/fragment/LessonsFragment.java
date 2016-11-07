@@ -351,7 +351,8 @@ public class LessonsFragment extends Fragment {
                 Lesson lesson = intent.getParcelableExtra("lesson");
                 System.out.println("status - progress: " + lesson.getDownloadStatusAudio() + " - " + lesson.getDownloadProgressAudio());
                 for (int i=0; i<listLessons.size(); i++) {
-                    if (lesson.getIdProperty().equals(listLessons.get(i).getIdProperty())) {
+//                    if (lesson.getIdProperty().equals(listLessons.get(i).getIdProperty())) {
+                    if ( lesson.getIdProperty().equals(LessonsAdapter.mCurrentLesson) ) {
                         System.out.println("lesson: " + lesson.getIdProperty());
 //                        List<Lesson> listLesson = intent.getParcelableArrayListExtra("listLessons");
 ////                        adapterLessons.setLessonListItems(listLesson);

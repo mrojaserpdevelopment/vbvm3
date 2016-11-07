@@ -40,6 +40,7 @@ public class LessonsAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	private View rootView;
 	private Intent intentDownloadAll;
+	public static Lesson mCurrentLesson;
 
 	// Used to communicate state changes in the DownloaderThreadTest
 	public static final int MESSAGE_DOWNLOAD_STARTED = 1000;
@@ -218,6 +219,7 @@ public class LessonsAdapter extends BaseAdapter {
 		int status = 0;
 		String downloadUrl = "";
 		String downloadType = "";
+		mCurrentLesson = lesson;
 		switch (view.getId()) {
 			case R.id.rl_play_mini:
 				status = lesson.getDownloadStatusAudio();
@@ -357,35 +359,5 @@ public class LessonsAdapter extends BaseAdapter {
 			}
 		}
 	};
-
-	private BroadcastReceiver receiverDownloadProgress = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			int downloadStatus = intent.getIntExtra("downloadStatus", 0);
-			if (downloadStatus > 0) {
-				Lesson lesson = intent.getParcelableExtra("lesson");
-//                System.out.println("status - progress: " + lesson.getDownloadStatusAudio() + " - " + lesson.getDownloadProgressAudio());
-				for (int i=0; i<lessons.size(); i++) {
-					if (lesson.getIdProperty().equals(lessons.get(i).getIdProperty())) {
-						System.out.println("lesson: " + lesson.getIdProperty());
-						List<Lesson> listLesson = intent.getParcelableArrayListExtra("listLessons");
-////                        adapterLessons.setLessonListItems(listLesson);
-//                        listLessons.set(i,lesson);
-						setLessonListItems(listLesson);
-						break;
-					}
-				}
-			}
-//            if ( DownloadService.IS_SERVICE_RUNNING && DownloadService.countDownloads==0 ){
-//                System.out.println("Stopping download service...");
-//                Intent service = new Intent(context, DownloadService.class);
-//                service.setAction(Constants.ACTION.STOPFOREGROUND_ACTION);
-//                DownloadService.IS_SERVICE_RUNNING = false;
-//                context.startService(service);
-//            }
-		}
-	};
-
-
 
 }
