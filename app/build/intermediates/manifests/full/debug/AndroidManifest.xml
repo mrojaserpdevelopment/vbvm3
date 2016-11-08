@@ -152,7 +152,10 @@
             android:exported="true" >
         </service>
 
-        <activity android:name="com.erpdevelopment.vbvm.activity.SettingsActivity" >
+        <activity
+            android:name="com.erpdevelopment.vbvm.activity.SettingsActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 

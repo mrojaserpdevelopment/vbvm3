@@ -23,7 +23,7 @@ public class Lesson implements Parcelable {
 	private String audioLength = "";
 	private String audioSource = "";
 	private String studentAid = "";
-	private boolean playing;
+	private boolean playing = true;
 	private int progressPercentage;
 	private long currentPosition;
 	private String idStudy = "";

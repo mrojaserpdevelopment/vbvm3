@@ -107,7 +107,10 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 	private VideoVbvm mVideo;
 
 	public static String lastFragmentSelected = "Studies";
-	public static String lastFragInStudies = "";
+	public static String lastFragInStudies = "Studies";
+	public static String lastFragInArticles = "Articles";
+	public static String lastFragInAnswers = "Answers";
+	public static String lastFragInVideoChannels = "VideoChannels";
 
 //	private static final int PIXELS_PANEL_HEIGHT = 0;
 
@@ -152,25 +155,25 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 			@Override
 			public void onTabSelected(@IdRes int tabId) {
 				if (tabId == R.id.tab_studies) {
-					if (lastFragmentSelected.equals("Studies"))
+					if (lastFragInStudies.equals("Studies"))
 						displayFragmentStudies();
 					else
 						displayFragmentLessons();
 				}
 				if (tabId == R.id.tab_articles) {
-					if (lastFragmentSelected.equals("Articles"))
+					if (lastFragInArticles.equals("Articles"))
 						displayFragmentArticles();
 					else
 						displayFragmentArticleDetails();
 				}
 				if (tabId == R.id.tab_answers) {
-					if (lastFragmentSelected.equals("Answers"))
+					if (lastFragInAnswers.equals("Answers"))
 						displayFragmentAnswers();
 					else
 						displayFragmentAnswerDetails();
 				}
 				if (tabId == R.id.tab_videos) {
-					if (lastFragmentSelected.equals("VideoChannels"))
+					if (lastFragInVideoChannels.equals("VideoChannels"))
 						displayFragmentVideoChannels();
 					else
 						displayFragmentVideos();
@@ -183,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 	// Replace the switch method
 	protected void displayFragmentStudies() {
 		lastFragmentSelected = "Studies";
+		lastFragInStudies = "Studies";
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (fragmentStudies.isAdded()) { // if the fragment is already in container
 			ft.show(fragmentStudies);
@@ -211,6 +215,7 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 
 	protected void displayFragmentArticles() {
 		lastFragmentSelected = "Articles";
+		lastFragInArticles = "Articles";
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (fragmentArticles.isAdded()) { // if the fragment is already in container
 			ft.show(fragmentArticles);
@@ -236,6 +241,7 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 
 	protected void displayFragmentAnswers() {
 		lastFragmentSelected = "Answers";
+		lastFragInAnswers = "Answers";
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (fragmentAnswers.isAdded()) { // if the fragment is already in container
 			ft.show(fragmentAnswers);
@@ -259,6 +265,7 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 
 	protected void displayFragmentVideoChannels() {
 		lastFragmentSelected = "VideoChannels";
+		lastFragInVideoChannels = "VideoChannels";
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (fragmentVideoChannels.isAdded()) { // if the fragment is already in container
 			ft.show(fragmentVideoChannels);
@@ -282,6 +289,7 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 
 	protected void displayFragmentLessons() {
 		lastFragmentSelected = "Lessons";
+		lastFragInStudies = "Lessons";
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (fragmentLessons.isAdded()) { // if the fragment is already in container
 			ft.show(fragmentLessons);
@@ -318,6 +326,7 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 
 	protected void displayFragmentArticleDetails() {
 		lastFragmentSelected = "ArticleDetails";
+		lastFragInArticles = "ArticleDetails";
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (fragmentArticleDetails.isAdded()) { // if the fragment is already in container
 			ft.show(fragmentArticleDetails);
@@ -351,6 +360,7 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 
 	protected void displayFragmentAnswerDetails() {
 		lastFragmentSelected = "AnswerDetails";
+		lastFragInAnswers = "AnswerDetails";
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (fragmentAnswerDetails.isAdded()) { // if the fragment is already in container
 			ft.show(fragmentAnswerDetails);
@@ -384,6 +394,7 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 
 	protected void displayFragmentVideos() {
 		lastFragmentSelected = "Videos";
+		lastFragInVideoChannels = "Videos";
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (fragmentVideos.isAdded()) { // if the fragment is already in container
 			ft.show(fragmentVideos);

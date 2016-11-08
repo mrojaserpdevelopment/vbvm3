@@ -351,8 +351,8 @@ public class LessonsFragment extends Fragment {
                 Lesson lesson = intent.getParcelableExtra("lesson");
                 System.out.println("status - progress: " + lesson.getDownloadStatusAudio() + " - " + lesson.getDownloadProgressAudio());
                 for (int i=0; i<listLessons.size(); i++) {
-//                    if (lesson.getIdProperty().equals(listLessons.get(i).getIdProperty())) {
-                    if ( lesson.getIdProperty().equals(LessonsAdapter.mCurrentLesson) ) {
+                    if (lesson.getIdProperty().equals(listLessons.get(i).getIdProperty())) {
+//                    if ( lesson.getIdProperty().equals(LessonsAdapter.mCurrentLesson) ) {
                         System.out.println("lesson: " + lesson.getIdProperty());
 //                        List<Lesson> listLesson = intent.getParcelableArrayListExtra("listLessons");
 ////                        adapterLessons.setLessonListItems(listLesson);
@@ -461,7 +461,7 @@ public class LessonsFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             btnPlay.setImageResource(R.drawable.media_play);
 //            tvIconPlayMini = (TextView) activity.findViewById(R.id.tv_icon_play_mini);
-            btnPlayMini.setImageResource(R.drawable.icon_mini_player2);
+            btnPlayMini.setImageResource(R.drawable.icon_mini_player);
             if ( MainActivity.settings.getBoolean("switchAuto",true) ) {
                 DBHandleLessons.updateLessonState(FilesManager.lastLessonId, 0, "complete");
                 FilesManager.lastLessonId = "";

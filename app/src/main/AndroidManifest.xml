@@ -154,7 +154,9 @@
             android:exported="true">
         </service>
 
-        <activity android:name=".activity.SettingsActivity">
+        <activity android:name=".activity.SettingsActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

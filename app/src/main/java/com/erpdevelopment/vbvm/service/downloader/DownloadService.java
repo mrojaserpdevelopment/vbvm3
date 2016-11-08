@@ -105,7 +105,7 @@ public class DownloadService extends Service {
             stopSelf();
         }
 //        downloaderThread.start();
-        return START_STICKY;
+        return START_REDELIVER_INTENT;
     }
 
     @Override

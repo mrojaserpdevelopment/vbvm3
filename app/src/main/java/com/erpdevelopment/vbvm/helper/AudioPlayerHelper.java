@@ -89,10 +89,73 @@ public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMedi
             mService = ((AudioPlayerService.LocalBinder) binder).getService();
 //            if ( mService.isPlayingLesson() ) {
 //                if ( AudioPlayerService.created ) {
+//            mService.setClient(AudioPlayerHelper.this);
+
+//            if (!mService.isPaused()) {
+//                btnPlay.setImageResource(R.drawable.media_pause);
+//                mService.playAudio(mLesson);
+//                System.out.println("step 1");
+//            }else {
+//                btnPlay.setImageResource(R.drawable.media_play);
+//                System.out.println("step 2");
+//            }
+
+
+//            if (mLesson.isPlaying()) {
+//                btnPlay.setImageResource(R.drawable.media_pause);
+//                mService.playAudio(mLesson);
+//                System.out.println("step 1");
+//            }else { // lesson is paused
+//                btnPlay.setImageResource(R.drawable.media_play);
+//                System.out.println("step 2");
+//            }
+
+//            System.out.println("onServiceConnected...");
+//            if ( !mService.isPlayingLesson() ) {
+//                System.out.println("step 1");
+//                if ( AudioPlayerService.created ) {
+//                    System.out.println("step 2");
                     btnPlay.setImageResource(R.drawable.media_pause);
-                    System.out.println("mp is playing lesson");
+//                    System.out.println("mp is playing lesson");
 //                }
 //            }
+
+
+//                }
+//            }
+
+
+
+//            if(mService.isPlayingLesson()){
+//                System.out.println("step 1");
+//                if(mService.isCreated()){
+//                    System.out.println("step 2");
+//                    mService.pauseLesson();
+//                    btnPlay.setImageResource(R.drawable.media_play);
+//                    btnPlayMini.setImageResource(R.drawable.icon_mini_player);
+////                        tvIconPlayMini.setText(activity.getResources().getString(R.string.fa_icon_play_mini));
+//                }
+//            }else{
+//                if(mService.isCreated()){
+//                    System.out.println("step 3");
+//                    mService.playAudio();
+//                }else{
+//                    System.out.println("step 4");
+//                    if (mService.isStopped())
+//                        AudioPlayerService.playAfterStop = true;
+////                        mService.playAudio(currentSongIndex);
+//                    mService.playAudio(mLesson);
+//                    AudioPlayerService.currentPositionInTrack = 0;
+//                }
+//                DBHandleLessons.updateLessonState(FilesManager.lastLessonId, 0, "partial");
+//                FilesManager.lastLessonId = mLesson.getIdProperty();
+//                DBHandleLessons.updateLessonState(FilesManager.lastLessonId, 0, "playing");
+//                btnPlay.setImageResource(R.drawable.media_pause);
+//                btnPlayMini.setImageResource(R.drawable.media_pause);
+////                    tvIconPlayMini.setText(activity.getResources().getString(R.string.fa_icon_pause));
+//            }
+
+
             //send this instance to the service, so it can make callbacks on this instance as a client
             mService.setClient(AudioPlayerHelper.this);
 //            mService.playAudio(currentSongIndex);
@@ -233,13 +296,15 @@ public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMedi
                 if(mService.isPlayingLesson()){
                     if(mService.isCreated()){
                         mService.pauseLesson();
+                        mLesson.setPlaying(false);
                         btnPlay.setImageResource(R.drawable.media_play);
-                        btnPlayMini.setImageResource(R.drawable.icon_mini_player2);
+                        btnPlayMini.setImageResource(R.drawable.icon_mini_player);
 //                        tvIconPlayMini.setText(activity.getResources().getString(R.string.fa_icon_play_mini));
                     }
                 }else{
                     if(mService.isCreated()){
                         mService.playAudio();
+                        mLesson.setPlaying(true);
                     }else{
                         if (mService.isStopped())
                             AudioPlayerService.playAfterStop = true;

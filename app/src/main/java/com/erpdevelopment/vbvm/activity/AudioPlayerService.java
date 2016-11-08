@@ -58,6 +58,7 @@ public class AudioPlayerService extends Service implements OnPreparedListener{
     private static int classID = 579; // just a number for startForeground notification
     private static boolean isLessonComplete = false;
     public static boolean playAfterStop = false;
+	private boolean paused = false;
 
 	public static final String NOTIFICATION_AUDIO_PROGRESS = "notification_audio_progress";
 	public static final String NOTIFICATION_AUDIO_COMPLETE = "notification_audio_complete";
@@ -218,6 +219,7 @@ public class AudioPlayerService extends Service implements OnPreparedListener{
 
 	public void playAudio(Lesson lesson){
 		stopped = false;
+		paused = false;
 //		String filename = BitmapManager2.getFileNameFromUrl(listTempLesson2.get(audioIndex).getAudioSource());
 		String filename = BitmapManager2.getFileNameFromUrl(lesson.getAudioSource());
 		System.out.println("AudioPlayerService.playAudio filename: " + filename);
@@ -284,7 +286,12 @@ public class AudioPlayerService extends Service implements OnPreparedListener{
 	
 	public void pauseLesson() {
 		pauseMediaPlayer();
+		paused = true;
     }
+
+	public boolean isPaused() {
+		return paused;
+	}
 	
 	public void stopLesson() {
 		stopped = true;
@@ -294,7 +301,7 @@ public class AudioPlayerService extends Service implements OnPreparedListener{
 	public boolean isPlayingLesson(){
 		return mp.isPlaying();
 	}
-	
+
 	public boolean isStopped(){
 		return stopped;
 	}

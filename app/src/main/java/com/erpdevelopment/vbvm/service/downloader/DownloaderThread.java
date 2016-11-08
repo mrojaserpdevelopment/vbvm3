@@ -112,24 +112,28 @@ public class DownloaderThread extends Thread {
         catch(MalformedURLException e)
         {
             downloadStatus = 0;
+            downloadProgress = 0;
             outputTemp.delete();
             e.printStackTrace();
         }
         catch(FileNotFoundException e)
         {
             downloadStatus = 0;
+            downloadProgress = 0;
             outputTemp.delete();
             e.printStackTrace();
         }
         catch(IOException e)
         {
             downloadStatus = 0;
+            downloadProgress = 0;
             outputTemp.delete();
             e.printStackTrace();
         }
         catch(Exception e)
         {
             downloadStatus = 0;
+            downloadProgress = 0;
             outputTemp.delete();
             e.printStackTrace();
         }finally {
