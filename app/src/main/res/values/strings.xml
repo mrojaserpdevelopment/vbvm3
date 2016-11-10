@@ -18,7 +18,8 @@
     <string name="user_message_download_canceled">Download canceled!</string>
     <string name="error_message_bad_url">Error: Invalid URL!</string>
     <string name="error_message_file_not_found">Error: File not found!</string>
-    <string name="error_message_general">Error downloading file!</string>
+    <string name="error_message_downloading">Error downloading file!</string>
+    <string name="error_message_connecting">Error connecting to server</string>
     <string name="title_activity_study_details">StudyDetailsActivity</string>
     <string name="msg_progress_dialog">Please wait...</string>
     <string name="msg_progress_dialog_loading">Loading, please wait...</string>

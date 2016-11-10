@@ -89,7 +89,7 @@ public class DownloadService extends Service {
         if (intent.getAction().equals(Constants.ACTION.STARTFOREGROUND_ACTION)) {
             Log.i(LOG_TAG, "Received Start Foreground Intent ");
             showNotification();
-            Toast.makeText(this, "Downloading lesson", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Downloading lesson", Toast.LENGTH_SHORT).show();
             downloaderThread.start();
             countDownloads++;
             handler.postDelayed(runnable, 1000);

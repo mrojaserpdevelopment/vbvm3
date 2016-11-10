@@ -10,11 +10,19 @@
 
         <include layout="@layout/layout_search_listview" android:id="@+id/et_search_answers"/>
 
+        <LinearLayout
+            android:id="@+id/ll_topic_filter2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:orientation="horizontal"
+            android:layout_below="@id/et_search_answers"/>
+
         <ListView
             android:id="@+id/lvAnswers"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/et_search_answers"/>
+            android:layout_below="@id/ll_topic_filter2"/>
 
     </RelativeLayout>
 

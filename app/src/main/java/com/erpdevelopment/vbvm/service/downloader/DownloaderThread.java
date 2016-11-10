@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.erpdevelopment.vbvm.MainActivity;
+import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.adapter.LessonsAdapter;
 import com.erpdevelopment.vbvm.db.DBHandleLessons;
 import com.erpdevelopment.vbvm.model.Lesson;
@@ -22,6 +24,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +35,7 @@ public class DownloaderThread extends Thread {
     private FileCache fileCache;
     public int downloadProgress = 0;
     private static final int DOWNLOAD_BUFFER_SIZE = 16*1024;
+    private static final int CONNECTION_TIMEOUT = 10000;
     private boolean stopDownload = false;
 
     private Lesson mLesson;
@@ -40,6 +44,7 @@ public class DownloaderThread extends Thread {
     private Activity mActivity;
     private LessonsAdapter mAdapter;
     private int downloadStatus = 0;
+    private String messageError = "";
 
     private int totalRead = 0;
     private int lengthOfFile = 0;
@@ -74,7 +79,7 @@ public class DownloaderThread extends Thread {
             }
             URL url = new URL(mUrl);
             URLConnection conn = url.openConnection();
-            conn.setConnectTimeout(20000);
+            conn.setConnectTimeout(CONNECTION_TIMEOUT);
             lengthOfFile = conn.getContentLength();
             // start download
             InputStream inStream = new BufferedInputStream(conn.getInputStream());
@@ -110,21 +115,15 @@ public class DownloaderThread extends Thread {
             }
         }
         catch(MalformedURLException e)
-        {
+        {   messageError = mActivity.getResources().getString(R.string.error_message_connecting);
             downloadStatus = 0;
             downloadProgress = 0;
             outputTemp.delete();
             e.printStackTrace();
         }
-        catch(FileNotFoundException e)
+        catch(UnknownHostException e)
         {
-            downloadStatus = 0;
-            downloadProgress = 0;
-            outputTemp.delete();
-            e.printStackTrace();
-        }
-        catch(IOException e)
-        {
+            messageError = mActivity.getResources().getString(R.string.error_message_connecting);
             downloadStatus = 0;
             downloadProgress = 0;
             outputTemp.delete();
@@ -132,14 +131,19 @@ public class DownloaderThread extends Thread {
         }
         catch(Exception e)
         {
+            messageError = mActivity.getResources().getString(R.string.error_message_connecting);
             downloadStatus = 0;
             downloadProgress = 0;
             outputTemp.delete();
             e.printStackTrace();
-        }finally {
+        } finally {
+            System.out.println("finally block...");
             updateUiDownloadProgress();
             DBHandleLessons.updateLessonDownloadStatus(idLesson, downloadStatus, mDownloadType);
             DownloadService.decrementCount();
+            if (!messageError.equals(""))
+                Toast.makeText(mActivity, messageError, Toast.LENGTH_SHORT).show();
+            messageError = "";
         }
     }
 

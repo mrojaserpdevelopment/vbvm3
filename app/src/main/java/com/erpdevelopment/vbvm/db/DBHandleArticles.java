@@ -125,7 +125,7 @@ public class DBHandleArticles {
     	List<String> topics = new ArrayList<String>();
 	    if (c.moveToFirst()) {
 	        do {
-	            topics.add(c.getString((c.getColumnIndex("topic"))));
+				topics.add(c.getString(c.getColumnIndex("topic")));
 	        } while (c.moveToNext());
 	    }
 	    c.close();

@@ -6,6 +6,7 @@ import java.util.Locale;
 
 import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.model.Article;
+import com.erpdevelopment.vbvm.utils.FilesManager;
 import com.erpdevelopment.vbvm.utils.Utilities;
 
 import android.app.Activity;
@@ -27,6 +28,7 @@ public class ArticlesAdapter extends BaseAdapter implements Filterable{
 	private List<Article> originalListArticles;
     private ItemFilter mFilter = new ItemFilter();
 	private final LinearLayout.LayoutParams lparams;
+	private LinearLayout llTopicFilter;
 	// used to keep selected position in ListView
 	private int selectedPos = -1;	// init value for not-selected
 
@@ -37,6 +39,7 @@ public class ArticlesAdapter extends BaseAdapter implements Filterable{
 		lparams = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 		lparams.setMargins(0,0,10,0);
+		llTopicFilter = (LinearLayout) activity.findViewById(R.id.ll_topic_filter);
 	}
 	
 	@Override
@@ -87,6 +90,13 @@ public class ArticlesAdapter extends BaseAdapter implements Filterable{
 			tvTopic.setText(topic);
 			tvTopic.setTextColor(ContextCompat.getColor(activity, R.color.light_gray));
 			tvTopic.setTextSize(12);
+			tvTopic.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					TextView tvTopicFilter = (TextView) v;
+					filterByTopic(tvTopicFilter.getText().toString());
+				}
+			});
 			viewHolder.llTopics.addView(tvTopic);
 			count++;
 			if (count==3)
@@ -154,8 +164,41 @@ public class ArticlesAdapter extends BaseAdapter implements Filterable{
 
 	@Override
 	public Filter getFilter() {
-		// TODO Auto-generated method stub
 		return mFilter;
 	}
+
+	private void filterByTopic(String topic){
+		List<Article> tempList = new ArrayList<>();
+		for (int i = 0; i < FilesManager.listArticles.size(); i++) {
+			List<String> topics = FilesManager.listArticles.get(i).getTopics();
+			for ( int j=0; j < topics.size(); j++) {
+				if ( topics.get(j).equals(topic) ) {
+					tempList.add(FilesManager.listArticles.get(i));
+					break;
+				}
+			}
+		}
+		setArticleListItems(tempList);
+		llTopicFilter.removeAllViews();
+		TextView tvTopic = new TextView(activity);
+		tvTopic.setLayoutParams(lparams);
+		tvTopic.setBackgroundResource( R.drawable.bg_text_topics);
+		tvTopic.setPadding(10,5,10,5);
+		tvTopic.setText(topic);
+		tvTopic.setTextColor(ContextCompat.getColor(activity, R.color.light_gray));
+		tvTopic.setTextSize(12);
+		tvTopic.setCompoundDrawablesWithIntrinsicBounds(activity.getResources().getDrawable(R.drawable.ic_action_cancel_16), null, null, null);
+		llTopicFilter.addView(tvTopic);
+
+		llTopicFilter.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				setArticleListItems(FilesManager.listArticles);
+				tvTopic.setText("");
+				llTopicFilter.removeAllViews();
+			}
+		});
+	}
+
 
 }

@@ -123,7 +123,7 @@ public class QAndAPostsActivity extends Activity {
          	 String topic = data.getExtras().getString("selectedTopic");
          	 if (!topic.equals("done")) {
          		 if ( topic.equals("clear"))
-         			postsAdapter.setQAndAPostsListItems(postsList);
+         			postsAdapter.setAnswersListItems(postsList);
          		 else
              		filterByTopic(topic);
          	 }         		 
@@ -146,7 +146,7 @@ public class QAndAPostsActivity extends Activity {
 		    		}    			
 	    		}
 	    	}
-	    	postsAdapter.setQAndAPostsListItems(tempList);
+	    	postsAdapter.setAnswersListItems(tempList);
 		}
     }
 	
@@ -185,7 +185,7 @@ public class QAndAPostsActivity extends Activity {
 		}
        
         protected void onPostExecute(List<Answer> result) {
-        	postsAdapter.setQAndAPostsListItems(result);  
+        	postsAdapter.setAnswersListItems(result);
         	postsList = result;
         	//get last selected row
         	prefs = getSharedPreferences(Constants.VBVM_PREFS, Context.MODE_PRIVATE);

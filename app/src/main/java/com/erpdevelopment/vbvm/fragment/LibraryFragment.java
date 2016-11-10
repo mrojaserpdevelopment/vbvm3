@@ -414,7 +414,7 @@ public class LibraryFragment extends Fragment implements OnTabChangeListener, Te
 	    		}
 			}
     	}
-    	adapterQAPosts.setQAndAPostsListItems(tempList);
+    	adapterQAPosts.setAnswersListItems(tempList);
     }
 	
 	private void filterArticlesByAuthor(String author) {
@@ -438,7 +438,7 @@ public class LibraryFragment extends Fragment implements OnTabChangeListener, Te
          	 String topic = data.getExtras().getString("selectedItem");
          	 if (!topic.equals("cancel")) {
          		 if ( topic.equals("clear"))
-         			adapterQAPosts.setQAndAPostsListItems(FilesManager.listAnswers);
+         			adapterQAPosts.setAnswersListItems(FilesManager.listAnswers);
          		 else
          			filterPostsByTopic(topic);
          	 }         		 

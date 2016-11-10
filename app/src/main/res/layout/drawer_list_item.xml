@@ -34,6 +34,6 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="8dp"
-        android:textColor="@color/counter_text_color"/>
+        android:textColor="@color/light_gray2"/>
 
 </RelativeLayout>

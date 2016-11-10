@@ -126,13 +126,15 @@ public class Utilities {
 		return bitmapDrawable;
 	}
 
-
-
 	public static String getSimpleDateFormat(String dateString, String format) {
 		long timeMills = Long.parseLong(dateString);
 		Date d = new Date(timeMills);
 		SimpleDateFormat df = new SimpleDateFormat(format);
 		return df.format(d);
+	}
+
+	public static String capitalizeFirst(String word) {
+		return word.substring(0, 1).toUpperCase() + word.substring(1);
 	}
 
 }

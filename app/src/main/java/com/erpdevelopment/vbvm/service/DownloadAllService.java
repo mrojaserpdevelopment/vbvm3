@@ -42,7 +42,7 @@ public class DownloadAllService extends IntentService {
 	public static boolean downloading = false;
 	//private static ByteArrayBuffer baf;
 	private static final int DOWNLOAD_BUFFER_SIZE = 4096;
-	private boolean stopped = false;
+	public static boolean stopped = false;
 
 	private String mIdLesson;
 	private String mDownloadType;
@@ -70,16 +70,17 @@ public class DownloadAllService extends IntentService {
 	// will be called asynchronously by Android
    	  @Override
    	  protected void onHandleIntent(Intent intent) {
-		  System.out.println("DownloadAllService.onHandleIntent");
-		  downloading = true;
+		  System.out.println("DownloadAllService.onHandleIntent: " + intent.getExtras().getString("idLesson"));
+		  if ( !stopped ) {
+			  downloading = true;
 //		  lesson = (Lesson) intent.getExtras().getParcelable("lesson");
-		  String idLesson = intent.getExtras().getString("idLesson");
-		  String url = intent.getExtras().getString("url");
-		  String downloadType = intent.getExtras().getString("downloadType");
+			  String idLesson = intent.getExtras().getString("idLesson");
+			  String url = intent.getExtras().getString("url");
+			  String downloadType = intent.getExtras().getString("downloadType");
 
-		  mIdLesson = idLesson;
-		  mDownloadProgress = 0;
-		  mDownloadType = downloadType;
+			  mIdLesson = idLesson;
+			  mDownloadProgress = 0;
+			  mDownloadType = downloadType;
 
 //		  if ( !url.equals("") ) {
 			  DBHandleLessons.updateLessonDownloadStatus(idLesson, 2, downloadType);
@@ -87,11 +88,14 @@ public class DownloadAllService extends IntentService {
 //			  i.putExtra("updateDownloadingStatus", true);
 //			  sendBroadcast(i);
 //		  publishDownloadStart(idLesson);
-		  downloadFromUrl(idLesson, url, downloadType);
+			  downloadFromUrl(idLesson, url, downloadType);
 //		  publishDownloadResults(idLesson, BitmapManager.getFileNameFromUrl(url), url);
 //		  }
 //		  IS_SERVICE_RUNNING = false;
 //		  }
+		  } else {
+			  downloading = false;
+		  }
    	  }
 	  
 	  public void downloadFromUrl(String idLesson, String urlPath, String downloadType) {
@@ -126,6 +130,7 @@ public class DownloadAllService extends IntentService {
 				  if(stopped){
 //					  publishDownloadProgress(idLesson,0,downloadType);
 					  mDownloadProgress = 0;
+					  handler.removeCallbacks(runnable);
 					  break;
 				  }
 //				  publishDownloadProgress(idLesson,  (int)((totalRead*100)/lengthOfFile), downloadType);
@@ -144,7 +149,7 @@ public class DownloadAllService extends IntentService {
 				  DBHandleLessons.updateLessonDownloadStatus(idLesson, 0, downloadType);
 				  publishDownloadResults(idLesson, BitmapManager2.getFileNameFromUrl(urlPath), downloadType);
 				  downloading = false;
-				  stopSelf();
+//				  stopSelf();
 			  } else {
 				  // successfully finished
 				  result = Activity.RESULT_OK;
@@ -157,9 +162,6 @@ public class DownloadAllService extends IntentService {
 				  publishDownloadResults(idLesson, BitmapManager2.getFileNameFromUrl(urlPath), downloadType);
 				  handler.removeCallbacks(runnable);
 			  }
-//			  outputTemp.delete();
-//			  DBHandleLessons.updateLessonDownloadStatus(idLesson, downloadStatus, downloadType);
-//			  publishDownloadResults(idLesson, BitmapManager.getFileNameFromUrl(urlPath), downloadType);
 		   }
 		   catch(MalformedURLException e)
 		   {
@@ -213,45 +215,10 @@ public class DownloadAllService extends IntentService {
 
 	@Override
 	public void onDestroy() {
-//		stopped = true;
+		stopped = false;
 		System.out.println("DownloadAllService.onDestroy");
 		super.onDestroy();
 	}
-
-	private BroadcastReceiver receiverStopDownload = new BroadcastReceiver() {
-
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			Bundle bundle = intent.getExtras();
-			boolean oneDownloadComplete = false; //At least one download has finished successfully
-			if (bundle != null) {
-//                int resultCode = bundle.getInt(DownloadAllService.RESULT);
-//                String fileName = bundle.getString(DownloadAllService.FILENAME);
-//                if (resultCode == RESULT_OK) {
-//                    System.out.println("Downloaded: " + fileName);
-//                    Toast.makeText(BibleStudyLessonsActivity.this,
-//                            "Downloaded: " + fileName,
-//                            Toast.LENGTH_LONG).show();
-//                    oneDownloadComplete = true;
-//                    new asyncGetStudyLessons().execute(mStudy);
-//                } else {
-//                    Toast.makeText(BibleStudyLessonsActivity.this, "Download failed!: " + fileName,
-//                            Toast.LENGTH_LONG).show();
-//                }
-//                DownloadAllService.decrementCount();
-//                if (oneDownloadComplete) {
-//                    if (DownloadAllService.countDownloads == 0){
-//                        DownloadAllService.IS_SERVICE_RUNNING = false;
-//                        tvDownloading.setVisibility(View.GONE);
-//                        tvDownloading.setText("");
-//                        tvTitle.setVisibility(View.VISIBLE);
-//                        imgMenuBarOptions.setVisibility(View.VISIBLE);
-//                        new asyncGetStudyLessons().execute(mStudy);
-//                    }
-//                }
-			}
-		}
-	};
 
 
 }

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.activity.ArticleDetailsActivity;
@@ -21,10 +22,12 @@ import com.erpdevelopment.vbvm.model.Article;
 import com.erpdevelopment.vbvm.utils.DownloadJsonData;
 import com.erpdevelopment.vbvm.utils.FilesManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ArticlesFragment extends Fragment implements TextWatcher {
 
     private View rootView;
-//    private Resources res;
     private ArticlesAdapter adapterArticles;
     private ListView lvArticles;
     private EditText etSearchArticles;
@@ -64,7 +67,8 @@ public class ArticlesFragment extends Fragment implements TextWatcher {
             public void onItemClick(AdapterView<?> parent, View v, int position,
                                     long id) {
                 Article article = (Article) parent.getItemAtPosition(position);
-                mListener.onArticleSelected(article);
+                if (mListener != null)
+                    mListener.onArticleSelected(article);
             }
         });
 
@@ -117,12 +121,36 @@ public class ArticlesFragment extends Fragment implements TextWatcher {
         super.onHiddenChanged(hidden);
         if (!hidden) {
             System.out.println("ArticlesFragment.onHiddenChanged");
-            View current = getActivity().getCurrentFocus();
-            if (current != null) {
-                System.out.println("clearing focus...");
-                current.clearFocus();
-            }
+//            View current = getActivity().getCurrentFocus();
+//            if (current != null) {
+//                System.out.println("clearing focus...");
+//                current.clearFocus();
+//            }
+            if ( (FilesManager.listArticles == null) || (FilesManager.listArticles.size() == 0) )
+                DownloadJsonData.getInstance().asyncJsonArticles(adapterArticles);
+            else
+                adapterArticles.setArticleListItems(FilesManager.listArticles);
         }
 
     }
+
+//    private void filterByTopic(String topic){
+////        if ( !CheckConnectivity.isOnline(QAndAPostsActivity.this)) {
+////            CheckConnectivity.showMessage(QAndAPostsActivity.this);
+////        } else {
+//            List<Article> tempList = new ArrayList<Article>();
+//            for ( int i=0; i < FilesManager.listArticles.size(); i++) {
+//                if ( FilesManager.listArticles != null ) {
+//                    List<String> topics = FilesManager.listArticles.get(i).getTopics();
+//                    for ( int j=0; j < topics.size(); j++) {
+//                        if ( topics.get(j).equals(topic) ) {
+//                            tempList.add(FilesManager.listArticles.get(i));
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
+//            adapterArticles.setArticleListItems(tempList);
+////        }
+//    }
 }

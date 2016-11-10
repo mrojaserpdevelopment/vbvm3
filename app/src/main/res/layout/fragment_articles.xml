@@ -10,11 +10,35 @@
 
         <include layout="@layout/layout_search_listview" android:id="@+id/et_search_articles"/>
 
+        <!--<TextView-->
+            <!--android:id="@+id/tv_article_filter"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:drawableLeft="@drawable/ic_action_cancel_16"-->
+            <!--android:text=""-->
+            <!--android:textSize="10dp"-->
+            <!--android:layout_below="@id/et_search_articles"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:background="@drawable/bg_text_topics"-->
+            <!--android:paddingLeft="10dp"-->
+            <!--android:paddingRight="10dp"-->
+            <!--android:paddingTop="5dp"-->
+            <!--android:paddingBottom="5dp"-->
+            <!--android:visibility="gone"/>-->
+
+        <LinearLayout
+            android:id="@+id/ll_topic_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:orientation="horizontal"
+            android:layout_below="@id/et_search_articles"/>
+
         <ListView
             android:id="@+id/lvArticles"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/et_search_articles"/>
+            android:layout_below="@id/ll_topic_filter"/>
 
     </RelativeLayout>
 

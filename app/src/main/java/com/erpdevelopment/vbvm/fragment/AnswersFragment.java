@@ -16,7 +16,6 @@ import android.widget.ListView;
 import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.adapter.AnswersAdapter;
 import com.erpdevelopment.vbvm.model.Answer;
-import com.erpdevelopment.vbvm.model.Article;
 import com.erpdevelopment.vbvm.utils.DownloadJsonData;
 import com.erpdevelopment.vbvm.utils.FilesManager;
 
@@ -59,11 +58,7 @@ public class AnswersFragment extends Fragment implements TextWatcher {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position,
                                     long id) {
-//                adapterAnswers.setSelectedPosition(position);
                 Answer answer = (Answer) parent.getItemAtPosition(position);
-//                Intent i = new Intent(getActivity(), QAndAPostDetailsActivity.class);
-//                i.putExtra("article", post);
-//                startActivity(i);
                 mListener.onAnswerSelected(answer);
             }
         });
@@ -74,7 +69,7 @@ public class AnswersFragment extends Fragment implements TextWatcher {
             DownloadJsonData.getInstance().asyncJsonAnswers(adapterAnswers);
             System.out.println("FilesManager.listAnswers is null");
         } else {
-            adapterAnswers.setQAndAPostsListItems(FilesManager.listAnswers);
+            adapterAnswers.setAnswersListItems(FilesManager.listAnswers);
             System.out.println("FilesManager.listAnswers not null");
         }
     }
@@ -120,14 +115,8 @@ public class AnswersFragment extends Fragment implements TextWatcher {
         super.onHiddenChanged(hidden);
         if (!hidden) {
             System.out.println("AnswersFragment.onHiddenChanged");
-            View current = getActivity().getCurrentFocus();
-            if (current != null) {
-                System.out.println("clearing focus...");
-                current.clearFocus();
-            }
         }
 
     }
-
-
+    
 }

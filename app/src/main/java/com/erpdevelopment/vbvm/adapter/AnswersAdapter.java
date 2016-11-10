@@ -6,6 +6,7 @@ import java.util.Locale;
 
 import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.model.Answer;
+import com.erpdevelopment.vbvm.utils.FilesManager;
 import com.erpdevelopment.vbvm.utils.Utilities;
 
 import android.app.Activity;
@@ -27,6 +28,7 @@ public class AnswersAdapter extends BaseAdapter implements Filterable {
 	private List<Answer> filteredListPosts;
     private ItemFilter mFilter = new ItemFilter();
 	private final LinearLayout.LayoutParams lparams;
+	private LinearLayout llTopicFilterA;
 	// used to keep selected position in ListView
 	private int selectedPos = -1;	// init value for not-selected
 
@@ -37,6 +39,7 @@ public class AnswersAdapter extends BaseAdapter implements Filterable {
 		lparams = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 		lparams.setMargins(0,0,10,0);
+		llTopicFilterA = (LinearLayout) activity.findViewById(R.id.ll_topic_filter2);
 	}
 	
 	@Override
@@ -72,7 +75,6 @@ public class AnswersAdapter extends BaseAdapter implements Filterable {
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-
 		viewHolder.tvTitle.setText(answer.getTitle());
 		viewHolder.tvAuthor.setText(answer.getAuthorName());
 		viewHolder.tvDate.setText(Utilities.getSimpleDateFormat(answer.getPostedDate(),"dd/MM/yy"));
@@ -84,8 +86,15 @@ public class AnswersAdapter extends BaseAdapter implements Filterable {
 			tvTopic.setBackgroundResource( R.drawable.bg_text_topics);
 			tvTopic.setPadding(10,5,10,5);
 			tvTopic.setText(topic);
-			tvTopic.setTextColor(ContextCompat.getColor(activity, R.color.light_gray));
+			tvTopic.setTextColor(ContextCompat.getColor(activity, R.color.light_gray2));
 			tvTopic.setTextSize(12);
+			tvTopic.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					TextView tvTopicFilter = (TextView) v;
+					filterByTopic(tvTopicFilter.getText().toString());
+				}
+			});
 			viewHolder.llTopics.addView(tvTopic);
 			count++;
 			if (count==3)
@@ -111,7 +120,7 @@ public class AnswersAdapter extends BaseAdapter implements Filterable {
 		notifyDataSetChanged();
 	}
 	
-	public void setQAndAPostsListItems(List<Answer> newList) {
+	public void setAnswersListItems(List<Answer> newList) {
 	    originalListPosts = newList;
 	    filteredListPosts = newList;
 	    selectedPos = -1;
@@ -156,6 +165,38 @@ public class AnswersAdapter extends BaseAdapter implements Filterable {
 	@Override
 	public Filter getFilter() {
 		return mFilter;
+	}
+
+	private void filterByTopic(String topic){
+		List<Answer> tempList = new ArrayList<>();
+		for (int i = 0; i < FilesManager.listAnswers.size(); i++) {
+			List<String> topics = FilesManager.listAnswers.get(i).getTopics();
+			for ( int j=0; j < topics.size(); j++) {
+				if ( topics.get(j).equals(topic) ) {
+					tempList.add(FilesManager.listAnswers.get(i));
+					break;
+				}
+			}
+		}
+		setAnswersListItems(tempList);
+		llTopicFilterA.removeAllViews();
+		TextView tvTopic = new TextView(activity);
+		tvTopic.setLayoutParams(lparams);
+		tvTopic.setBackgroundResource( R.drawable.bg_text_topics);
+		tvTopic.setPadding(10,5,10,5);
+		tvTopic.setText(topic);
+		tvTopic.setTextColor(ContextCompat.getColor(activity, R.color.light_gray2));
+		tvTopic.setTextSize(12);
+		tvTopic.setCompoundDrawablesWithIntrinsicBounds(activity.getResources().getDrawable(R.drawable.ic_action_cancel_16), null, null, null);
+		llTopicFilterA.addView(tvTopic);
+		llTopicFilterA.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				setAnswersListItems(FilesManager.listAnswers);
+				tvTopic.setText("");
+				llTopicFilterA.removeAllViews();
+			}
+		});
 	}
 	
 }

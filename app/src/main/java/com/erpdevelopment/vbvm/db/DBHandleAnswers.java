@@ -16,7 +16,7 @@ import com.erpdevelopment.vbvm.service.WebServiceCall;
 
 public class DBHandleAnswers {
 
-	private static final String LOG = "DatabaseHelper Article";
+	private static final String LOG = "DatabaseHelper Answers";
     
 	private static final String COLUMN_ID_POST = "id_post";
 	private static final String COLUMN_POSTED_DATE = "posted_date";
@@ -106,7 +106,7 @@ public class DBHandleAnswers {
 	    if (c.moveToFirst()) {
 	        do {
 	            WebServiceCall.topicSet.add(c.getString(c.getColumnIndex("topic")));
-	            topics.add(c.getString((c.getColumnIndex("topic"))));
+	            topics.add(c.getString(c.getColumnIndex("topic")));
 	        } while (c.moveToNext());
 	    }
 	    c.close();

@@ -95,7 +95,7 @@ public class WebServiceCall {
 	public static boolean eventsInDB = false;
 	public static boolean videosInDB = false;
 	
-	public List<Study> getStudies(Context context) {		
+	public List<Study> getStudies(Context context) {
 				
 		// Creating new JSON Parser
 		JSONParser jParser = new JSONParser();

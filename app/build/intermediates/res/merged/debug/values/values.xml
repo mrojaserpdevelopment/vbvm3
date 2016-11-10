@@ -72,9 +72,8 @@
     <color name="colorPrimary">#009688</color>
     <color name="colorPrimaryDark">#00796b</color>
     <color name="coral_blue">#1DAEFA</color>
-    <color name="counter_text_bg">#626262</color>
-    <color name="counter_text_color">#c5c4c4</color>
     <color name="dark_blue">#125D9D</color>
+    <color name="dark_gray">#626262</color>
     <color name="design_fab_shadow_end_color">@android:color/transparent</color>
     <color name="design_fab_shadow_mid_color">#14000000</color>
     <color name="design_fab_shadow_start_color">#44000000</color>
@@ -97,7 +96,9 @@
     <color name="hint_foreground_material_dark">@color/bright_foreground_disabled_material_dark</color>
     <color name="hint_foreground_material_light">@color/bright_foreground_disabled_material_light</color>
     <color name="light_blue">#03A9F4</color>
+    <color name="light_blue2">#B3E5FC</color>
     <color name="light_gray">#ABBAC2</color>
+    <color name="light_gray2">#c5c4c4</color>
     <color name="list_background">#303030</color>
     <color name="list_background_pressed">#992416</color>
     <color name="list_divider">#272727</color>
@@ -490,8 +491,9 @@
     <string name="drawer_close">Slider Menu Closed</string>
     <string name="drawer_open">Slider Menu Opened</string>
     <string name="error_message_bad_url">Error: Invalid URL!</string>
+    <string name="error_message_connecting">Error connecting to server</string>
+    <string name="error_message_downloading">Error downloading file!</string>
     <string name="error_message_file_not_found">Error: File not found!</string>
-    <string name="error_message_general">Error downloading file!</string>
     <string name="eula"/>
     <string name="fa_icon_arrow_circle_down"></string>
     <string name="fa_icon_ellipsis_h"></string>
@@ -625,12 +627,8 @@ distribution media, documentation, registration cards, and insertions.</string>
         <item name="android:windowExitAnimation">@anim/design_bottom_sheet_slide_out</item>
     </style>
     <style name="AppBaseTheme" parent="@style/Theme.AppCompat.Light">
-        <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
-        <!-- Customize your theme here. -->
+        
+        
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -1674,7 +1672,7 @@ distribution media, documentation, registration cards, and insertions.</string>
     </style>
     <style name="CustomLightTheme" parent="@android:style/Theme.Holo.Light">
         <item name="android:actionBarStyle">@style/ActionBarCustomLightTheme</item>
-<!--         <item name="android:homeAsUpIndicator">@drawable/ic_action_cancel</item> -->
+
     </style>
     <style name="Platform.AppCompat" parent="android:Theme">
         <item name="android:windowNoTitle">true</item>

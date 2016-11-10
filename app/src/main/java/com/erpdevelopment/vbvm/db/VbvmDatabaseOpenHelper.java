@@ -83,10 +83,10 @@ public class VbvmDatabaseOpenHelper extends SQLiteOpenHelper {
     		" author_thumbnail_alt_text TEXT );";
     
     private static final String CREATE_TABLE_TOPIC_ARTICLE = "CREATE TABLE IF NOT EXISTS topic_article (" +
-    		" _id INTEGER PRIMARY KEY AUTOINCREMENT," +
     		" id_topic TEXT," +
     		" topic TEXT," +
-    		" id_article TEXT );";
+    		" id_article TEXT," +
+			" PRIMARY KEY (id_topic,id_article));";
     
     private static final String CREATE_TABLE_EVENT = "CREATE TABLE IF NOT EXISTS event (" +
     		" id_event TEXT PRIMARY KEY," +
@@ -116,12 +116,12 @@ public class VbvmDatabaseOpenHelper extends SQLiteOpenHelper {
     		" author_thumbnail_alt_text TEXT );";
     
     private static final String CREATE_TABLE_TOPIC_POST = "CREATE TABLE IF NOT EXISTS topic_post (" +
-    		" _id INTEGER PRIMARY KEY AUTOINCREMENT," +
     		" id_topic TEXT," +
     		" topic TEXT," +
-    		" id_post TEXT );";
-    
-    private static final String CREATE_TABLE_RECENTLY_VIEWED = "CREATE TABLE IF NOT EXISTS recently_viewed (" +
+    		" id_post TEXT," +
+			" PRIMARY KEY (id_topic,id_post));";
+
+	private static final String CREATE_TABLE_RECENTLY_VIEWED = "CREATE TABLE IF NOT EXISTS recently_viewed (" +
     		" _id INTEGER PRIMARY KEY AUTOINCREMENT," +
     		" id_item TEXT," +
     		" table_name TEXT," +

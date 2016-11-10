@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.AsyncTask;
-import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ScrollView;
@@ -45,9 +44,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- * Created by usuario on 13/09/2016.
- */
 public class DownloadJsonData {
 
     private ProgressDialog pDialog;
@@ -63,6 +59,8 @@ public class DownloadJsonData {
     private TextView tvStudiesOld;
     private TextView tvStudiesSingle;
     public static final int COUNT_PARALLEL_DOWNLOADS = 3;
+
+    private static final int EXPIRATION_CACHE = 60 * 60 * 1000;
 
     public static DownloadJsonData getInstance() {
         if (sInstance == null) {
@@ -89,20 +87,9 @@ public class DownloadJsonData {
         tvStudiesOld = (TextView) rootView.findViewById(R.id.tvStudiesOld);
         tvStudiesSingle = (TextView) rootView.findViewById(R.id.tvStudiesSingle);
 
-//        tvStudiesNew.setVisibility(View.VISIBLE);
-//        tvStudiesOld.setVisibility(View.VISIBLE);
-//        tvStudiesSingle.setVisibility(View.VISIBLE);
-
         WebServiceCall.studiesInDB = MainActivity.settings.getBoolean("studiesInDB", false);
         if ( WebServiceCall.studiesInDB ){
             Log.d("Database", "Studies - working offline on DB...");
-//            List<Study> dbListStudies = DBHandleStudies.getAllStudies();
-//            List<Lesson> dbListLessons = DBHandleLessons.getLessons(null);
-//            studiesAdapter.setLessonListItems(dbListLessons);
-//            studiesAdapter.setStudyListItems(dbListStudies);
-//            FilesManager.listStudies = dbListStudies;
-
-            System.out.println("asyncJsonGetStudies updating from db");
             List<List<Study>> dbListStudiesByType = DBHandleStudies.getAllStudiesByType();
             FilesManager.listStudiesTypeNew = dbListStudiesByType.get(0);
             FilesManager.listStudiesTypeOld = dbListStudiesByType.get(1);
@@ -123,10 +110,6 @@ public class DownloadJsonData {
             tvStudiesOld.setVisibility(View.VISIBLE);
             tvStudiesSingle.setVisibility(View.VISIBLE);
 
-//            new asyncGetAllLessons().execute();
-//            asyncJsonArticles();
-//            asyncJsonAnswers();
-//            asyncJsonVideos();
             mScroll.scrollTo(0, 0);
             pDialog.dismiss();
         } else {
@@ -193,29 +176,25 @@ public class DownloadJsonData {
                             e.putBoolean("studiesInDB", true);
                             e.commit();
 
+                            Resources res = mActivity.getResources();
+                            String messageCountStudies = res.getString(R.string.message_count_studies, (FilesManager.listStudiesTypeNew).size());
+                            tvCountStudiesNew.setText(messageCountStudies);
+                            messageCountStudies = res.getString(R.string.message_count_studies, (FilesManager.listStudiesTypeOld).size());
+                            tvCountStudiesOld.setText(messageCountStudies);
+                            messageCountStudies = res.getString(R.string.message_count_studies, (FilesManager.listStudiesTypeSingle).size());
+                            tvCountStudiesSingle.setText(messageCountStudies);
+
+                            tvStudiesNew.setVisibility(View.VISIBLE);
+                            tvStudiesOld.setVisibility(View.VISIBLE);
+                            tvStudiesSingle.setVisibility(View.VISIBLE);
+
                         }else{
+                            Toast.makeText(mAQuery.getContext(), mActivity.getResources().getString(R.string.error_message_connecting), Toast.LENGTH_SHORT).show();
                             //ajax error, show error code
-                            Toast.makeText(mAQuery.getContext(), "Server not available. Please try later...", Toast.LENGTH_LONG).show();
+//                            Toast.makeText(mAQuery.getContext(), "Server not available. Please try later...", Toast.LENGTH_LONG).show();
                         }
                         scroll.scrollTo(0, 0);
                         pDialog.dismiss();
-
-                        Resources res = mActivity.getResources();
-                        String messageCountStudies = res.getString(R.string.message_count_studies, (FilesManager.listStudiesTypeNew).size());
-                        tvCountStudiesNew.setText(messageCountStudies);
-                        messageCountStudies = res.getString(R.string.message_count_studies, (FilesManager.listStudiesTypeOld).size());
-                        tvCountStudiesOld.setText(messageCountStudies);
-                        messageCountStudies = res.getString(R.string.message_count_studies, (FilesManager.listStudiesTypeSingle).size());
-                        tvCountStudiesSingle.setText(messageCountStudies);
-
-                        tvStudiesNew.setVisibility(View.VISIBLE);
-                        tvStudiesOld.setVisibility(View.VISIBLE);
-                        tvStudiesSingle.setVisibility(View.VISIBLE);
-
-//                        new asyncGetAllLessons().execute();
-//                        asyncJsonArticles();
-//                        asyncJsonAnswers();
-//                        asyncJsonVideos();
                     }
                 });
             }
@@ -255,10 +234,6 @@ public class DownloadJsonData {
             System.out.println("finished IS_SERVICE_RUNNING lessons...");
             //Get all the lessons in DB
             List<Lesson> dbListLessons = DBHandleLessons.getLessons(null);
-//            newestAdapter.setLessonListItems(dbListLessons);
-//            asyncJsonArticles();
-//            asyncJsonAnswers();
-//            asyncJsonVideos();
             pDialog.dismiss();
             if ( countThreads.incrementAndGet() == COUNT_PARALLEL_DOWNLOADS ) {
                 countThreads.set(0);
@@ -341,7 +316,8 @@ public class DownloadJsonData {
                             FilesManager.listArticles = listArticles;
                             adapter.setArticleListItems(listArticles);
                         } else
-                            Toast.makeText(mAQuery.getContext(), "Error:" + status.getCode(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(mAQuery.getContext(), mActivity.getResources().getString(R.string.error_message_connecting), Toast.LENGTH_LONG).show();
+//                            Toast.makeText(mAQuery.getContext(), "Error:" + status.getCode(), Toast.LENGTH_LONG).show();
 //                        pDialog.dismiss();
                     }
                 });
@@ -364,7 +340,7 @@ public class DownloadJsonData {
         if ( WebServiceCall.postsInDB ) {
             Log.d("Database", "QA Posts - working offline on DB...");
             FilesManager.listAnswers = DBHandleAnswers.getAllPosts(false);
-            adapter.setQAndAPostsListItems(FilesManager.listAnswers);
+            adapter.setAnswersListItems(FilesManager.listAnswers);
             pDialog.dismiss();
         } else {
             if ( !CheckConnectivity.isOnline(mActivity) ) {
@@ -424,9 +400,10 @@ public class DownloadJsonData {
                                 e.printStackTrace();
                             }
                             FilesManager.listAnswers = listAnswers;
-                            adapter.setQAndAPostsListItems(listAnswers);
+                            adapter.setAnswersListItems(listAnswers);
                         } else
-                            Toast.makeText(mAQuery.getContext(), "Error:" + status.getCode(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(mAQuery.getContext(), mActivity.getResources().getString(R.string.error_message_connecting), Toast.LENGTH_LONG).show();
+//                            Toast.makeText(mAQuery.getContext(), "Error:" + status.getCode(), Toast.LENGTH_LONG).show();
 //                        pDialog.dismiss();
                     }
                 });
@@ -511,7 +488,8 @@ public class DownloadJsonData {
                             FilesManager.listVideoChannels = listVideoChannels;
                             adapter.setVideoListItems(listVideoChannels);
                         } else
-                            Toast.makeText(mAQuery.getContext(), "Error:" + status.getCode(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(mAQuery.getContext(), mActivity.getResources().getString(R.string.error_message_connecting), Toast.LENGTH_LONG).show();
+//                            Toast.makeText(mAQuery.getContext(), "Error:" + status.getCode(), Toast.LENGTH_LONG).show();
 //                        pDialog.dismiss();
                     }
                 });

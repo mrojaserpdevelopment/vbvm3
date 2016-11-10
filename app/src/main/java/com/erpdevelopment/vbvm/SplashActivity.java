@@ -2,7 +2,9 @@ package com.erpdevelopment.vbvm;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -27,6 +29,7 @@ import com.erpdevelopment.vbvm.model.VideoVbvm;
 import com.erpdevelopment.vbvm.service.WebServiceCall;
 import com.erpdevelopment.vbvm.utils.CheckConnectivity;
 import com.erpdevelopment.vbvm.utils.FilesManager;
+import com.erpdevelopment.vbvm.utils.Utilities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -86,32 +89,20 @@ public class SplashActivity extends Activity {
 	    };
 	    Timer timer = new Timer();
 //	    timer.schedule(task, splashDelay);//Pasado los 3 segundos dispara la tarea
-
-		if (WebServiceCall.articlesInDB) {
-//			Intent mainIntent = new Intent().setClass(SplashActivity.this, MainActivity.class);
-//			startActivity(mainIntent);
-//			finish();
-			timer.schedule(task, splashDelay);
-		} else {
+		checkUserFirstVisit();
+//		if (WebServiceCall.articlesInDB) {
+////			Intent mainIntent = new Intent().setClass(SplashActivity.this, MainActivity.class);
+////			startActivity(mainIntent);
+////			finish();
+//			timer.schedule(task, splashDelay);
+//		} else {
 			asyncJsonArticles();
 			asyncJsonAnswers();
 			asyncJsonVideos();
 			handler.postDelayed(runnable, 100);
-		}
+//		}
 	}
 
-	//    private Runnable r = new Runnable() {
-//        public void run() {
-//            System.out.println("checking download service count... " + countDownloads);
-//            if (countDownloads==0) {
-//                Log.i(LOG_TAG, "Received Stop Foreground Intent");
-//                stopForeground(true);
-//                stopSelf();
-//                handler.removeCallbacks(this);
-//            }
-//            handler.postDelayed(this, 1000);
-//        }
-//    };
 	private Runnable runnable = new Runnable() {
 		@Override
 		public void run() {
@@ -127,28 +118,18 @@ public class SplashActivity extends Activity {
 	};
 
 	public void asyncJsonArticles(){
-
-//		pDialog = new ProgressDialog(this);
-//		pDialog.setMessage(mActivity.getResources().getString(R.string.msg_progress_dialog_loading));
-//		pDialog.setIndeterminate(false);
-//		pDialog.setCancelable(false);
-//        pDialog.show();
 		incrementCount();
-
 		WebServiceCall.articlesInDB = MainActivity.settings.getBoolean("articlesInDB", false);
 		if ( WebServiceCall.articlesInDB ){
 			Log.d("Database", "Articles - working offline on DB...");
 			FilesManager.listArticles = DBHandleArticles.getAllArticles(false);
-//			adapter.setArticleListItems(FilesManager.listArticles);
-//			pDialog.dismiss();
 			decrementCount();
 		} else {
 			if ( !CheckConnectivity.isOnline(this)) {
 				CheckConnectivity.showMessage(this);
-//				pDialog.dismiss();
 			} else {
 				String url = WebServiceCall.JSON_ARTICLE_URL;
-				long expire = 30 * 60 * 1000;
+				long expire = 60 * 60 * 1000;
 
 				mAQuery.ajax(url, JSONObject.class, expire, new AjaxCallback<JSONObject>() {
 
@@ -174,21 +155,19 @@ public class SplashActivity extends Activity {
 									article.setTitle(StringEscapeUtils.unescapeJava(StringEscapeUtils.unescapeHtml(c.getString("title"))));
 									article.setArticleThumbnailAltText(StringEscapeUtils.unescapeJava(StringEscapeUtils.unescapeHtml(c.getString("articleThumbnailAltText"))));
 									article.setAuthorThumbnailAltText(StringEscapeUtils.unescapeJava(StringEscapeUtils.unescapeHtml(c.getString("authorThumbnailAltText"))));
-									List<String> topics = new ArrayList<String>();
-									//List of topics for filter
-									JSONArray jsonArrayTopics = c.getJSONArray("topics");
-									for ( int j=0; j < jsonArrayTopics.length(); j++ ) {
-										JSONObject p = jsonArrayTopics.getJSONObject(j);
-										topics.add(p.getString("topic"));
-										Topic topic = new Topic();
-										topic.setIdProperty(p.getString("ID"));
-										topic.setTopic(p.getString("topic"));
-										topic.setIdParent(article.getIdProperty());
-										DBHandleStudies.createTopicArticle(topic);
-									}
-									DBHandleStudies.createArticle(article);
+								//List of topics for filter
+								JSONArray jsonArrayTopics = c.getJSONArray("topics");
+								for ( int j=0; j < jsonArrayTopics.length(); j++ ) {
+									JSONObject p = jsonArrayTopics.getJSONObject(j);
+									Topic topic = new Topic();
+									topic.setIdProperty(p.getString("ID"));
+									topic.setTopic(Utilities.capitalizeFirst(p.getString("topic")));
+									topic.setIdParent(article.getIdProperty());
+									DBHandleStudies.createTopicArticle(topic);
 								}
-								listArticles = DBHandleArticles.getAllArticles(false);
+								DBHandleStudies.createArticle(article);
+							}
+							listArticles = DBHandleArticles.getAllArticles(false);
 								//Save state flag for sync Webservice/DB
 								SharedPreferences.Editor e = MainActivity.settings.edit();
 								e.putBoolean("articlesInDB", true);
@@ -198,35 +177,22 @@ public class SplashActivity extends Activity {
 								e.printStackTrace();
 							}
 							FilesManager.listArticles = listArticles;
-//							adapter.setArticleListItems(listArticles);
 						} else
-							Toast.makeText(mAQuery.getContext(), "Error:" + status.getCode(), Toast.LENGTH_LONG).show();
-//                        pDialog.dismiss();
+							Toast.makeText(mAQuery.getContext(), getResources().getString(R.string.error_message_connecting), Toast.LENGTH_SHORT).show();
+//							Toast.makeText(mAQuery.getContext(), "Error:" + status.getCode(), Toast.LENGTH_LONG).show();
 						decrementCount();
 					}
 				});
 			}
-//			mScroll.scrollTo(0, 0);
 		}
 	}
 
 	public void asyncJsonAnswers(){
 
-//		pDialog = new ProgressDialog(this);
-//		pDialog.setMessage(mActivity.getResources().getString(R.string.msg_progress_dialog_loading));
-//		pDialog.setIndeterminate(false);
-//		pDialog.setCancelable(false);
-//        pDialog.show();
-
-
-		Log.d("onPostExecute=", "Cargando lista Posts");
 		WebServiceCall.postsInDB = MainActivity.settings.getBoolean("postsInDB", false);
 		if ( WebServiceCall.postsInDB ) {
 			Log.d("Database", "QA Posts - working offline on DB...");
 			FilesManager.listAnswers = DBHandleAnswers.getAllPosts(false);
-//			adapter.setQAndAPostsListItems(FilesManager.listAnswers);
-//			pDialog.dismiss();
-
 		} else {
 			if ( !CheckConnectivity.isOnline(this) ) {
 				CheckConnectivity.showMessage(this);
@@ -244,6 +210,7 @@ public class SplashActivity extends Activity {
 							try {
 								JSONObject vbv = json.getJSONObject(WebServiceCall.TAG_VERSE_BY_VERSE);
 								JSONArray qAPosts = vbv.getJSONArray(WebServiceCall.TAG_QANDAPOSTS);
+								Set<String> topicSet = new HashSet<>();
 								List<String> topics;
 								for ( int i=0; i < qAPosts.length(); i++ ) {
 									JSONObject c = qAPosts.getJSONObject(i);
@@ -268,7 +235,7 @@ public class SplashActivity extends Activity {
 										topics.add(p.getString("topic"));
 										Topic topic = new Topic();
 										topic.setIdProperty(p.getString("ID"));
-										topic.setTopic(p.getString("topic"));
+										topic.setTopic(Utilities.capitalizeFirst(p.getString("topic")));
 										topic.setIdParent(qAPost.getIdProperty());
 										DBHandleStudies.createTopicPost(topic);
 									}
@@ -286,31 +253,21 @@ public class SplashActivity extends Activity {
 							}
 							System.out.println("SplashActivity.callback: " + FilesManager.listAnswers.size());
 							FilesManager.listAnswers = listAnswers;
-//							adapter.setQAndAPostsListItems(listAnswers);
 						} else
-							Toast.makeText(mAQuery.getContext(), "Error:" + status.getCode(), Toast.LENGTH_LONG).show();
-//                        pDialog.dismiss();
+							Toast.makeText(mAQuery.getContext(), getResources().getString(R.string.error_message_connecting), Toast.LENGTH_SHORT).show();
 						decrementCount();					}
 				});
 			}
-//			mScroll.scrollTo(0, 0);
 		}
 	}
 
 	public void asyncJsonVideos(){
 
-//		pDialog = new ProgressDialog(this);
-//		pDialog.setMessage(mActivity.getResources().getString(R.string.msg_progress_dialog_loading));
-//		pDialog.setIndeterminate(false);
-//		pDialog.setCancelable(false);
-//        pDialog.show();
 		incrementCount();
 		WebServiceCall.videosInDB = MainActivity.settings.getBoolean("videosInDB", false);
 		if ( WebServiceCall.videosInDB ) {
 			Log.d("Database", "Videos - working offline on DB...");
 			FilesManager.listVideoChannels = DBHandleVideos.getChannels();
-//			adapter.setVideoListItems(FilesManager.listVideoChannels);
-//            pDialog.dismiss();
 			decrementCount();
 		} else {
 			if ( !CheckConnectivity.isOnline(this)) {
@@ -372,10 +329,9 @@ public class SplashActivity extends Activity {
 								e.printStackTrace();
 							}
 							FilesManager.listVideoChannels = listVideoChannels;
-//							adapter.setVideoListItems(listVideoChannels);
 						} else
-							Toast.makeText(mAQuery.getContext(), "Error:" + status.getCode(), Toast.LENGTH_LONG).show();
-//                        pDialog.dismiss();
+							Toast.makeText(mAQuery.getContext(), getResources().getString(R.string.error_message_connecting), Toast.LENGTH_SHORT).show();
+//							Toast.makeText(mAQuery.getContext(), "Error:" + status.getCode(), Toast.LENGTH_LONG).show();
 						decrementCount();
 					}
 				});
@@ -384,5 +340,30 @@ public class SplashActivity extends Activity {
 		}
 	}
 
+	private boolean checkUserFirstVisit(){
+		long lastUpdateTime = MainActivity.settings.getLong("lastUpdateKey", 0L);
+		long timeElapsed = System.currentTimeMillis() - lastUpdateTime;
+		// YOUR UPDATE FREQUENCY HERE
+		final long UPDATE_FREQ = 1000 * 60 * 60 * 3; //Every 1 hour
+		SharedPreferences.Editor e = MainActivity.settings.edit();
+		if (timeElapsed > UPDATE_FREQ) {
+			e.putBoolean("studiesInDB", false);
+			e.putBoolean("lessonsInDB", false);
+			e.putBoolean("articlesInDB", false);
+			e.putBoolean("postsInDB", false);
+			e.putBoolean("eventsInDB", false);
+			e.putBoolean("videosInDB", false);
+			Log.i("MainActivity info", "Update DB with data from Webservice");
+		}
+		// STORE LATEST UPDATE TIME
+		e.putLong("lastUpdateKey", System.currentTimeMillis());
+		e.commit();
+		return false;
+	}
 
+	@Override
+	protected void onStop() {
+		super.onStop();
+		handler.removeCallbacks(runnable);
+	}
 }

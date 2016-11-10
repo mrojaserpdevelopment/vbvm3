@@ -317,7 +317,13 @@ public class LessonsAdapter extends BaseAdapter {
 	}
 
 	private void stopDownloadAll(View view, String downloadType, Lesson lesson) {
-
+		DownloadAllService.stopped = true;
+		TextView tvPlayMini = (TextView) view.findViewById(R.id.tv_icon_play_mini);
+		tvPlayMini.setText(context.getResources().getString(R.string.fa_icon_play_mini));
+		tvPlayMini.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+		lesson.setDownloadStatusAudio(0);
+		lesson.setDownloadProgressAudio(0);
+		setLessonListItems(lessons);
 	}
 
 	public Handler activityHandler = new Handler()

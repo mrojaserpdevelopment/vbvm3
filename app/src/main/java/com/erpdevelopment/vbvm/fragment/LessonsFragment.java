@@ -218,9 +218,9 @@ public class LessonsFragment extends Fragment {
         System.out.println("DownloadAllService.IS_SERVICE_RUNNING: " + DownloadAllService.downloading);
         System.out.println("DownloadService.countDownloads: " + DownloadAllService.countDownloads);
         if ( !DownloadAllService.downloading && DownloadService.countDownloads == 0) {
-            for (int i = 0; i < mStudy.getLessons().size(); i++) {
-                System.out.println("LessonsFragment.downloadAllLessons 2 ");
-                Lesson lesson = mStudy.getLessons().get(i);
+            for (int i = 0; i < listLessons.size(); i++) {
+                System.out.println("LessonsFragment.downloadAllLessons");
+                Lesson lesson = listLessons.get(i);
                 //Download if lesson is not downloaded or is IS_SERVICE_RUNNING
                 if ( !lesson.getAudioSource().equals("") && (lesson.getDownloadStatusAudio()!=1) ) {
                     System.out.println("Downloading audio: " + lesson.getAudioSource());
@@ -248,11 +248,12 @@ public class LessonsFragment extends Fragment {
         DownloadAllService.incrementCount();
     }
 
-    private void deleteAllLessons(List<Lesson> lessons) {
+    private void deleteAllLessons() {
+        listLessons = DBHandleLessons.getLessons(mStudy.getIdProperty());
         if ( !DownloadAllService.downloading ) {
             int count = 0;
-            for (int i=0; i<lessons.size(); i++){
-                Lesson lesson = lessons.get(i);
+            for (int i=0; i<listLessons.size(); i++){
+                Lesson lesson = listLessons.get(i);
                 String urlAudio = lesson.getAudioSource();
                 String urlTranscript = lesson.getTranscript();
                 String urlTeacherAid = lesson.getTeacherAid();
@@ -273,11 +274,12 @@ public class LessonsFragment extends Fragment {
                     lesson.setDownloadStatusTeacherAid(0);
                     DBHandleLessons.updateLessonDownloadStatus(idLesson, 0, "teacher");
                 }
+                listLessons.set(i,lesson);
             }
             Toast.makeText(activity, count + " lesson(s) deleted", Toast.LENGTH_LONG).show();
-            adapterLessons.setLessonListItems(lessons);
+            adapterLessons.setLessonListItems(listLessons);
         } else {
-            Toast.makeText(activity, "Download all is in progress...", Toast.LENGTH_LONG).show();
+            Toast.makeText(activity, "Stop download first", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -319,7 +321,7 @@ public class LessonsFragment extends Fragment {
                 downloadAllLessons();
                 return true;
             case R.id.action_delete_all_files:
-                deleteAllLessons(mStudy.getLessons());
+                deleteAllLessons();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -347,7 +349,7 @@ public class LessonsFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             int downloadStatus = intent.getIntExtra("downloadStatus", 0);
-            if (downloadStatus > 0) {
+//            if (downloadStatus > 0) {
                 Lesson lesson = intent.getParcelableExtra("lesson");
                 System.out.println("status - progress: " + lesson.getDownloadStatusAudio() + " - " + lesson.getDownloadProgressAudio());
                 for (int i=0; i<listLessons.size(); i++) {
@@ -362,7 +364,7 @@ public class LessonsFragment extends Fragment {
                         break;
                     }
                 }
-            }
+//            }
 //            if ( DownloadService.IS_SERVICE_RUNNING && DownloadService.countDownloads==0 ){
 //                System.out.println("Stopping download service...");
 //                Intent service = new Intent(context, DownloadService.class);
@@ -459,10 +461,12 @@ public class LessonsFragment extends Fragment {
     private BroadcastReceiver receiverAudioComplete = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            System.out.println("LessonsFragment.onReceive: receiverAudioComplete");
             btnPlay.setImageResource(R.drawable.media_play);
 //            tvIconPlayMini = (TextView) activity.findViewById(R.id.tv_icon_play_mini);
             btnPlayMini.setImageResource(R.drawable.icon_mini_player);
             if ( MainActivity.settings.getBoolean("switchAuto",true) ) {
+                System.out.println("LessonsFragment.onReceive: receiverAudioComplete 2");
                 DBHandleLessons.updateLessonState(FilesManager.lastLessonId, 0, "complete");
                 FilesManager.lastLessonId = "";
                 new asyncGetStudyLessons().execute(mStudy);

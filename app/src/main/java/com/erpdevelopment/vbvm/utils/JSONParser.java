@@ -131,17 +131,17 @@ public class JSONParser {
 				.url(url)
 				.build();
 		Response responses = null;
+		String jsonData = "";
 		try {
 			responses = client.newCall(request).execute();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		try {
-			String jsonData = responses.body().string();
+			if (responses != null)
+				jsonData = responses.body().string();
 			jsonObject = new JSONObject(jsonData);
 		} catch (IOException e) {
-
+			e.printStackTrace();
 		} catch (JSONException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return jsonObject;

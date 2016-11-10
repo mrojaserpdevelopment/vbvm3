@@ -17,10 +17,8 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         switchAutoComplete = (Switch) findViewById(R.id.switch_auto);
-
         boolean checked = MainActivity.settings.getBoolean("switchAuto", true);
         switchAutoComplete.setChecked(checked);
-
         switchAutoComplete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

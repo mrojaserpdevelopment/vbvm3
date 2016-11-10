@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		fragmentVideos = VideosFragment.newInstance(0);
 
 		BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
-		bottomBar.setActiveTabColor(ContextCompat.getColor(this, R.color.blue));
+//		bottomBar.setActiveTabColor(ContextCompat.getColor(this, R.color.blue));
 		bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
 			@Override
 			public void onTabSelected(@IdRes int tabId) {
@@ -306,7 +306,7 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setDisplayShowTitleEnabled(true);
-		actionBar.setTitle(mStudy.getTitle());
+//		actionBar.setTitle(mStudy.getTitle());
 		Drawable textHomeUp = Utilities.getTextViewAsDrawable(this, "Studies");
 		actionBar.setLogo(textHomeUp);
 
@@ -516,7 +516,7 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 				switch (lastFragmentSelected) {
 					case "Lessons": displayFragmentStudies();
 						break;
-					case "ArticleDetails": displayFragmentArticles();
+					case "ArticleDetails": displayFragmentAnswers();
 						break;
 					case "AnswerDetails": displayFragmentArticles();
 						break;
