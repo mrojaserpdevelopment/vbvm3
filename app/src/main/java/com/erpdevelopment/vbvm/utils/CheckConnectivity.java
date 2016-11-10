@@ -12,9 +12,7 @@ import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
 import android.os.Handler;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;

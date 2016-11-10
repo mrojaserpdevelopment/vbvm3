@@ -3686,6 +3686,8 @@ containing a value of this type.
         public static final int Base_Widget_AppCompat_Toolbar=0x7f0800c8;
         public static final int Base_Widget_AppCompat_Toolbar_Button_Navigation=0x7f08007f;
         public static final int Base_Widget_Design_TabLayout=0x7f0800c9;
+        /**          <item name="android:homeAsUpIndicator">@drawable/ic_action_cancel</item> 
+         */
         public static final int CustomLightTheme=0x7f0800ca;
         public static final int Platform_AppCompat=0x7f08001b;
         public static final int Platform_AppCompat_Light=0x7f08001c;

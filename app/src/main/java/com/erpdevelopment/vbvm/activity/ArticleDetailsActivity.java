@@ -2,13 +2,11 @@ package com.erpdevelopment.vbvm.activity;
 
 import java.util.List;
 
-import com.erpdevelopment.vbvm.MainActivity;
 import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.db.DBHandleFavorites;
 import com.erpdevelopment.vbvm.model.Article;
 import com.erpdevelopment.vbvm.model.Favorite;
 import com.erpdevelopment.vbvm.model.ItemInfo;
-import com.erpdevelopment.vbvm.model.Topic;
 import com.erpdevelopment.vbvm.utils.FavoritesLRU;
 import com.erpdevelopment.vbvm.utils.Utilities;
 
@@ -21,13 +19,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.ToggleButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class ArticleDetailsActivity extends Activity {
 

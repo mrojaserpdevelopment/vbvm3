@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.erpdevelopment.vbvm.MainActivity;
 import com.erpdevelopment.vbvm.R;

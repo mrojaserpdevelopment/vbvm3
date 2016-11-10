@@ -56,12 +56,12 @@
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\img_btn_pause.png"
     },
     {
-        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\adele.jpg",
-        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\adele.jpg"
-    },
-    {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_seekbar_tick_mark_material.xml",
         "source": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.2.1\\res\\drawable\\abc_seekbar_tick_mark_material.xml"
+    },
+    {
+        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\adele.jpg",
+        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\adele.jpg"
     },
     {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\icon_articles_24.png",
@@ -128,16 +128,20 @@
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\img_btn_next_pressed_48.png"
     },
     {
-        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\photo_board_anonymous.bmp",
-        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\photo_board_anonymous.bmp"
-    },
-    {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\photo_ivette_scaled.png",
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\photo_ivette_scaled.png"
     },
     {
+        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\photo_board_anonymous.bmp",
+        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\photo_board_anonymous.bmp"
+    },
+    {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\playing_now.png",
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\playing_now.png"
+    },
+    {
+        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\icon_media_pause_16.png",
+        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\icon_media_pause_16.png"
     },
     {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_edit_text_material.xml",
@@ -152,12 +156,12 @@
         "source": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.2.1\\res\\drawable\\abc_dialog_material_background.xml"
     },
     {
-        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\ic_expand_holo_light.xml",
-        "source": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.ms-square\\expandableTextView\\0.1.4\\res\\drawable\\ic_expand_holo_light.xml"
-    },
-    {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\icon_reveal.png",
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\icon_reveal.png"
+    },
+    {
+        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\ic_expand_holo_light.xml",
+        "source": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.ms-square\\expandableTextView\\0.1.4\\res\\drawable\\ic_expand_holo_light.xml"
     },
     {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_item_background_holo_dark.xml",
@@ -192,12 +196,12 @@
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\photo_brian_scaled.png"
     },
     {
-        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\custom_progressbar.xml",
-        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\custom_progressbar.xml"
-    },
-    {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\img_btn_previous_pressed_48.png",
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\img_btn_previous_pressed_48.png"
+    },
+    {
+        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\custom_progressbar.xml",
+        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\custom_progressbar.xml"
     },
     {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\toggle_play.xml",
@@ -324,6 +328,10 @@
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\icon_share.png"
     },
     {
+        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\img_btn_backward_48.png",
+        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\img_btn_backward_48.png"
+    },
+    {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_text_cursor_material.xml",
         "source": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.2.1\\res\\drawable\\abc_text_cursor_material.xml"
     },
@@ -334,10 +342,6 @@
     {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_item_background_holo_light.xml",
         "source": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.2.1\\res\\drawable\\abc_item_background_holo_light.xml"
-    },
-    {
-        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\img_btn_backward_48.png",
-        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\img_btn_backward_48.png"
     },
     {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\img_btn_forward_pressed_48.png",
@@ -352,12 +356,12 @@
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\list_item_bg_normal.xml"
     },
     {
-        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\photo_board_joe.bmp",
-        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\photo_board_joe.bmp"
-    },
-    {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\q.png",
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\q.png"
+    },
+    {
+        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\photo_board_joe.bmp",
+        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\photo_board_joe.bmp"
     },
     {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\icon_slide_player2.png",
@@ -480,12 +484,12 @@
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\app_logo_24.png"
     },
     {
-        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\edittext_rounded_corners.xml",
-        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\edittext_rounded_corners.xml"
-    },
-    {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\icon_mini_player2.png",
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\icon_mini_player2.png"
+    },
+    {
+        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\edittext_rounded_corners.xml",
+        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\edittext_rounded_corners.xml"
     },
     {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\back_button_64.png",
@@ -628,24 +632,24 @@
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\presenter.png"
     },
     {
-        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\img_seekbar_bg.png",
-        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\img_seekbar_bg.png"
-    },
-    {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\handouts.png",
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\handouts.png"
+    },
+    {
+        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\img_seekbar_bg.png",
+        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\img_seekbar_bg.png"
     },
     {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_list_selector_background_transition_holo_dark.xml",
         "source": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.2.1\\res\\drawable\\abc_list_selector_background_transition_holo_dark.xml"
     },
     {
-        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\photo_bmp_kathryn.bmp",
-        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\photo_bmp_kathryn.bmp"
-    },
-    {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\top_title_bar.xml",
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\top_title_bar.xml"
+    },
+    {
+        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\photo_bmp_kathryn.bmp",
+        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\photo_bmp_kathryn.bmp"
     },
     {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\banner_vbvm_2.png",

@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.model.VideoVbvm;
-import com.erpdevelopment.vbvm.utils.BitmapManager2;
 import com.erpdevelopment.vbvm.utils.imageloading.ImageLoader2;
 import com.squareup.picasso.Picasso;
 

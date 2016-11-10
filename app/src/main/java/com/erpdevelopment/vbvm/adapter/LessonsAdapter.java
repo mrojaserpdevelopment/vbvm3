@@ -1,11 +1,8 @@
 package com.erpdevelopment.vbvm.adapter;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeSet;
 
 import com.erpdevelopment.vbvm.R;
-import com.erpdevelopment.vbvm.activity.AudioControllerActivity;
 import com.erpdevelopment.vbvm.activity.AudioPlayerService;
 import com.erpdevelopment.vbvm.db.DBHandleLessons;
 import com.erpdevelopment.vbvm.helper.AudioPlayerHelper;
@@ -13,13 +10,11 @@ import com.erpdevelopment.vbvm.model.Lesson;
 import com.erpdevelopment.vbvm.service.DownloadAllService;
 import com.erpdevelopment.vbvm.service.downloader.DownloadService;
 import com.erpdevelopment.vbvm.service.downloader.DownloaderThread;
-import com.erpdevelopment.vbvm.utils.Constants;
 import com.erpdevelopment.vbvm.utils.FilesManager;
 import com.erpdevelopment.vbvm.utils.FontManager;
 import com.erpdevelopment.vbvm.utils.PDFTools;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;

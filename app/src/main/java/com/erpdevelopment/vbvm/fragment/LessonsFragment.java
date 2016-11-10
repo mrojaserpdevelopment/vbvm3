@@ -2,7 +2,6 @@ package com.erpdevelopment.vbvm.fragment;
 
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -22,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.erpdevelopment.vbvm.MainActivity;
@@ -37,7 +35,6 @@ import com.erpdevelopment.vbvm.service.WebServiceCall;
 import com.erpdevelopment.vbvm.service.downloader.DownloadService;
 import com.erpdevelopment.vbvm.utils.BitmapManager2;
 import com.erpdevelopment.vbvm.utils.CheckConnectivity;
-import com.erpdevelopment.vbvm.utils.Constants;
 import com.erpdevelopment.vbvm.utils.FilesManager;
 import com.erpdevelopment.vbvm.utils.imageloading.FileCache;
 import com.erpdevelopment.vbvm.utils.imageloading.ImageLoader2;

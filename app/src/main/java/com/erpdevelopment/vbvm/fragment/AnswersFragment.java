@@ -118,5 +118,5 @@ public class AnswersFragment extends Fragment implements TextWatcher {
         }
 
     }
-    
+
 }

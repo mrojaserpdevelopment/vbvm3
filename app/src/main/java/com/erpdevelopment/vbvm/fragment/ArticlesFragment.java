@@ -2,7 +2,6 @@ package com.erpdevelopment.vbvm.fragment;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -13,17 +12,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.erpdevelopment.vbvm.R;
-import com.erpdevelopment.vbvm.activity.ArticleDetailsActivity;
 import com.erpdevelopment.vbvm.adapter.ArticlesAdapter;
 import com.erpdevelopment.vbvm.model.Article;
 import com.erpdevelopment.vbvm.utils.DownloadJsonData;
 import com.erpdevelopment.vbvm.utils.FilesManager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ArticlesFragment extends Fragment implements TextWatcher {
 

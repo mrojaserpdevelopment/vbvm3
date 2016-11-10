@@ -7,14 +7,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
-import com.erpdevelopment.vbvm.adapter.AnswersAdapter;
-import com.erpdevelopment.vbvm.adapter.ArticlesAdapter;
-import com.erpdevelopment.vbvm.adapter.VideoChannelsAdapter;
 import com.erpdevelopment.vbvm.db.DBHandleAnswers;
 import com.erpdevelopment.vbvm.db.DBHandleArticles;
 import com.erpdevelopment.vbvm.db.DBHandleStudies;
@@ -31,16 +27,12 @@ import com.erpdevelopment.vbvm.utils.CheckConnectivity;
 import com.erpdevelopment.vbvm.utils.FilesManager;
 import com.erpdevelopment.vbvm.utils.Utilities;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.Environment;
 import android.os.Handler;
-import android.text.Html;
 import android.util.Log;
 import android.widget.Toast;
 

@@ -10,10 +10,7 @@ import java.io.InputStream;
 
 import android.app.Activity;
 import android.app.IntentService;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 

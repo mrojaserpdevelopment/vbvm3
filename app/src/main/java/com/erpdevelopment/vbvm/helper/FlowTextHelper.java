@@ -3,7 +3,6 @@ package com.erpdevelopment.vbvm.helper;
 import android.os.Build;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.util.FloatMath;
 import android.view.Display;
 import android.view.View;
 import android.widget.RelativeLayout;

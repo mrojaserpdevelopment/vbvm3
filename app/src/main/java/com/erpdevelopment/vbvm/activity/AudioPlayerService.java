@@ -1,8 +1,6 @@
 package com.erpdevelopment.vbvm.activity;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.erpdevelopment.vbvm.MainActivity;
 import com.erpdevelopment.vbvm.R;

@@ -9,7 +9,6 @@ import android.util.Log;
 
 import com.erpdevelopment.vbvm.MainActivity;
 import com.erpdevelopment.vbvm.model.Lesson;
-import com.erpdevelopment.vbvm.model.Study;
 
 public class DBHandleLessons {
 	
