@@ -1,9 +1,6 @@
-package com.erpdevelopment.vbvm;
+package com.erpdevelopment.vbvm.activity;
 
-import java.util.ArrayList;
-
-import com.erpdevelopment.vbvm.activity.AudioPlayerService;
-import com.erpdevelopment.vbvm.adapter.NavDrawerListAdapter;
+import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.db.DatabaseManager;
 import com.erpdevelopment.vbvm.db.VbvmDatabaseOpenHelper;
 import com.erpdevelopment.vbvm.fragment.AnswerDetailsFragment;
@@ -17,27 +14,23 @@ import com.erpdevelopment.vbvm.fragment.VideosFragment;
 import com.erpdevelopment.vbvm.helper.AudioPlayerHelper;
 import com.erpdevelopment.vbvm.model.Article;
 import com.erpdevelopment.vbvm.model.VideoChannel;
-import com.erpdevelopment.vbvm.model.NavDrawerItem;
 import com.erpdevelopment.vbvm.model.Answer;
 import com.erpdevelopment.vbvm.model.Study;
-import com.erpdevelopment.vbvm.model.VideoVbvm;
 import com.erpdevelopment.vbvm.utils.Utilities;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.TypedArray;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.IdRes;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -45,9 +38,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.ListView;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements StudiesFragment.OnStudyItemSelectedListener,
 		ArticlesFragment.OnArticleSelectedListener,
@@ -59,15 +55,9 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 	public static final String SETTING_IMAGES_DIRECTORY_NAME = "vbvmi";
 	public static final String SETTING_DATABASE_FILE_PATH = "db-path";
 
-	public static final String LAST_FRAGMENT_STUDIES = "last_fragment_selected";
-
 	public static SQLiteDatabase db;
 	public static Context mainCtx;
 	public static SharedPreferences settings;
-
-    private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
-    private ActionBarDrawerToggle mDrawerToggle;
 
 	private ActionBar actionBar;
 
@@ -82,53 +72,52 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 
 	private RelativeLayout viewMiniPlayer;
 	private SlidingUpPanelLayout slidingLayout;
+	private ImageButton btnPlayMini;
 
 	private TextView tvPlayerLessonTitleMini;
 	private TextView tvPlayerLessonDescriptionMini;
-
-    // nav drawer title
-    private CharSequence mDrawerTitle;
-
-    // used to store app title
-    private CharSequence mTitle;
-
-    // slide menu items
-    private String[] navMenuTitles;
-    private TypedArray navMenuIcons;
-
-    private ArrayList<NavDrawerItem> navDrawerItems;
-    private NavDrawerListAdapter adapter;
 
 	private Study mStudy;
 	private Article mArticle;
 	private Answer mAnswer;
 	private VideoChannel mVideoChannel;
-	private VideoVbvm mVideo;
 
-	public static String lastFragmentSelected = "Studies";
+	public static String lastFragSelected = "Studies";
 	public static String lastFragInStudies = "Studies";
 	public static String lastFragInArticles = "Articles";
 	public static String lastFragInAnswers = "Answers";
 	public static String lastFragInVideoChannels = "VideoChannels";
 
-//	private static final int PIXELS_PANEL_HEIGHT = 0;
+	public static String locale;
+
+//	public static InputMethodManager imm;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
 		getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		mainCtx = this;
         settings = getPreferences(Activity.MODE_PRIVATE);
+//		imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         VbvmDatabaseOpenHelper mDbHelper = VbvmDatabaseOpenHelper.getInstance(mainCtx);
         DatabaseManager.initializeInstance(mDbHelper);
         db = DatabaseManager.getInstance().openDatabase();
 
+		locale = getResources().getConfiguration().locale.getDisplayName();
+
 		viewMiniPlayer = (RelativeLayout) findViewById(R.id.view_mini_player);
 		slidingLayout = (SlidingUpPanelLayout)findViewById(R.id.sliding_layout);
+		slidingLayout.setDragView(viewMiniPlayer.findViewById(R.id.ll_player_mini_title));
 		tvPlayerLessonTitleMini = (TextView) viewMiniPlayer.findViewById(R.id.tv_player_lesson_title_mini);
 		tvPlayerLessonDescriptionMini = (TextView) viewMiniPlayer.findViewById(R.id.tv_player_lesson_description_mini);
+//		btnPlayMini = (ImageButton) viewMiniPlayer.findViewById(R.id.btn_play_mini);
+
+		lastFragSelected = "Studies";
+		lastFragInStudies = "Studies";
+		lastFragInArticles = "Articles";
+		lastFragInAnswers = "Answers";
+		lastFragInVideoChannels = "VideoChannels";
 
 		actionBar = getSupportActionBar();
 		if (actionBar != null) {
@@ -149,11 +138,11 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		fragmentVideos = VideosFragment.newInstance(0);
 
 		BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
-//		bottomBar.setActiveTabColor(ContextCompat.getColor(this, R.color.blue));
 		bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
 			@Override
 			public void onTabSelected(@IdRes int tabId) {
 				if (tabId == R.id.tab_studies) {
+					System.out.println("MainActivity.onTabSelected " + lastFragInStudies);
 					if (lastFragInStudies.equals("Studies"))
 						displayFragmentStudies();
 					else
@@ -180,11 +169,17 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 			}
 		});
 
+//		if (AudioPlayerService.created) {
+//			if (AudioPlayerService.stopped)
+//				btnPlayMini.setImageResource(R.drawable.icon_mini_play);
+//			else
+//				btnPlayMini.setImageResource(R.drawable.icon_media_pause_16);
+//		}
 	}
 
 	// Replace the switch method
 	protected void displayFragmentStudies() {
-		lastFragmentSelected = "Studies";
+		lastFragSelected = "Studies";
 		lastFragInStudies = "Studies";
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (fragmentStudies.isAdded()) { // if the fragment is already in container
@@ -213,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 	}
 
 	protected void displayFragmentArticles() {
-		lastFragmentSelected = "Articles";
+		lastFragSelected = "Articles";
 		lastFragInArticles = "Articles";
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (fragmentArticles.isAdded()) { // if the fragment is already in container
@@ -230,16 +225,18 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		if (fragmentAnswerDetails.isAdded()) { ft.hide(fragmentAnswerDetails); }
 		if (fragmentVideoChannels.isAdded()) { ft.hide(fragmentVideoChannels); }
 
+		actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(false);
 		actionBar.setDisplayShowTitleEnabled(true);
 		actionBar.setLogo(Utilities.getTextViewAsDrawable(this,"Articles"));
 		actionBar.setTitle("Articles");
+		actionBar.show();
 
 		ft.commit();
 	}
 
 	protected void displayFragmentAnswers() {
-		lastFragmentSelected = "Answers";
+		lastFragSelected = "Answers";
 		lastFragInAnswers = "Answers";
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (fragmentAnswers.isAdded()) { // if the fragment is already in container
@@ -255,15 +252,17 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		if (fragmentAnswerDetails.isAdded()) { ft.hide(fragmentAnswerDetails); }
 		if (fragmentVideoChannels.isAdded()) { ft.hide(fragmentVideoChannels); }
 
+		actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(false);
 		actionBar.setDisplayShowTitleEnabled(true);
 		actionBar.setTitle("Answers");
+		actionBar.show();
 
 		ft.commit();
 	}
 
 	protected void displayFragmentVideoChannels() {
-		lastFragmentSelected = "VideoChannels";
+		lastFragSelected = "VideoChannels";
 		lastFragInVideoChannels = "VideoChannels";
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (fragmentVideoChannels.isAdded()) { // if the fragment is already in container
@@ -279,15 +278,17 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		if (fragmentAnswerDetails.isAdded()) { ft.hide(fragmentAnswerDetails); }
 		if (fragmentVideos.isAdded()) { ft.hide(fragmentVideos); }
 
+		actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(false);
 		actionBar.setDisplayShowTitleEnabled(true);
 		actionBar.setTitle("Videos");
+		actionBar.show();
 
 		ft.commit();
 	}
 
 	protected void displayFragmentLessons() {
-		lastFragmentSelected = "Lessons";
+		lastFragSelected = "Lessons";
 		lastFragInStudies = "Lessons";
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (fragmentLessons.isAdded()) { // if the fragment is already in container
@@ -303,15 +304,12 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		if (fragmentAnswerDetails.isAdded()) { ft.hide(fragmentAnswerDetails); }
 		if (fragmentVideoChannels.isAdded()) { ft.hide(fragmentVideoChannels); }
 
+		actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setDisplayShowTitleEnabled(true);
-//		actionBar.setTitle(mStudy.getTitle());
 		Drawable textHomeUp = Utilities.getTextViewAsDrawable(this, "Studies");
 		actionBar.setLogo(textHomeUp);
-
-//		SharedPreferences.Editor e = MainActivity.settings.edit();
-//		e.putString(LAST_FRAGMENT_STUDIES, "Lessons");
-//		e.commit();
+		actionBar.show();
 
 		Bundle bundle = new Bundle();
 		bundle.putParcelable("study", mStudy);
@@ -319,12 +317,11 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 
 		ft.detach(fragmentLessons);
 		ft.attach(fragmentLessons);
-
 		ft.commit();
 	}
 
 	protected void displayFragmentArticleDetails() {
-		lastFragmentSelected = "ArticleDetails";
+		lastFragSelected = "ArticleDetails";
 		lastFragInArticles = "ArticleDetails";
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (fragmentArticleDetails.isAdded()) { // if the fragment is already in container
@@ -341,11 +338,15 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		if (fragmentVideoChannels.isAdded()) { ft.hide(fragmentVideoChannels); }
 		if (fragmentVideos.isAdded()) { ft.hide(fragmentVideos); }
 
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setDisplayShowTitleEnabled(true);
-		actionBar.setTitle(mArticle.getTitle());
-		Drawable textHomeUp = Utilities.getTextViewAsDrawable(this, "Articles");
-		actionBar.setLogo(textHomeUp);
+//		actionBar = getSupportActionBar();
+//		actionBar.setDisplayHomeAsUpEnabled(true);
+//		actionBar.setDisplayShowTitleEnabled(true);
+//		actionBar.setTitle(mArticle.getTitle());
+//		Drawable textHomeUp = Utilities.getTextViewAsDrawable(this, "Articles");
+//		actionBar.setLogo(textHomeUp);
+//		actionBar.show();
+
+		Utilities.setActionBar(this, mArticle.getTitle());
 
 		Bundle bundle = new Bundle();
 		bundle.putParcelable("article", mArticle);
@@ -358,7 +359,7 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 	}
 
 	protected void displayFragmentAnswerDetails() {
-		lastFragmentSelected = "AnswerDetails";
+		lastFragSelected = "AnswerDetails";
 		lastFragInAnswers = "AnswerDetails";
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (fragmentAnswerDetails.isAdded()) { // if the fragment is already in container
@@ -375,11 +376,13 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		if (fragmentVideoChannels.isAdded()) { ft.hide(fragmentVideoChannels); }
 		if (fragmentVideos.isAdded()) { ft.hide(fragmentVideos); }
 
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setDisplayShowTitleEnabled(true);
-		actionBar.setTitle(mAnswer.getTitle());
-		Drawable textHomeUp = Utilities.getTextViewAsDrawable(this, "Answers");
-		actionBar.setLogo(textHomeUp);
+//		actionBar.setDisplayHomeAsUpEnabled(true);
+//		actionBar.setDisplayShowTitleEnabled(true);
+//		actionBar.setTitle(mAnswer.getTitle());
+//		Drawable textHomeUp = Utilities.getTextViewAsDrawable(this, "Answers");
+//		actionBar.setLogo(textHomeUp);
+
+		Utilities.setActionBar(this, mAnswer.getTitle());
 
 		Bundle bundle = new Bundle();
 		bundle.putParcelable("answer", mAnswer);
@@ -392,7 +395,7 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 	}
 
 	protected void displayFragmentVideos() {
-		lastFragmentSelected = "Videos";
+		lastFragSelected = "Videos";
 		lastFragInVideoChannels = "Videos";
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (fragmentVideos.isAdded()) { // if the fragment is already in container
@@ -408,11 +411,13 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		if (fragmentArticleDetails.isAdded()) { ft.hide(fragmentArticleDetails); }
 		if (fragmentAnswerDetails.isAdded()) { ft.hide(fragmentAnswerDetails); }
 
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setDisplayShowTitleEnabled(true);
-		actionBar.setTitle(mVideoChannel.getTitle());
-		Drawable textHomeUp = Utilities.getTextViewAsDrawable(this, "Videos");
-		actionBar.setLogo(textHomeUp);
+//		actionBar.setDisplayHomeAsUpEnabled(true);
+//		actionBar.setDisplayShowTitleEnabled(true);
+//		actionBar.setTitle(mVideoChannel.getTitle());
+//		Drawable textHomeUp = Utilities.getTextViewAsDrawable(this, "Videos");
+//		actionBar.setLogo(textHomeUp);
+
+		Utilities.setActionBar(this, mVideoChannel.getTitle());
 
 		Bundle bundle = new Bundle();
 		bundle.putParcelable("videoChannel", mVideoChannel);
@@ -451,28 +456,23 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 	@Override
 	protected void onStart() {
 		super.onStart();
-		if (AudioPlayerService.created) {
-			viewMiniPlayer.setVisibility(View.VISIBLE);
-			slidingLayout.setShadowHeight(4);
-			slidingLayout.setPanelHeight(getResources().getDimensionPixelSize(R.dimen.sliding_panel_height));
-			tvPlayerLessonTitleMini.setText(settings.getString("lessonTitle",""));
-			tvPlayerLessonDescriptionMini.setText(settings.getString("lessonDescription",""));
-			System.out.println("MainActivity.onStart 1");
-		} else {
-			viewMiniPlayer.setVisibility(View.GONE);
-			slidingLayout.setShadowHeight(0);
-			slidingLayout.setPanelHeight(0);
-			System.out.println("MainActivity.onStart 2");
-		}
-		checkUserFirstVisit();
+//		if (AudioPlayerService.created) {
+//			viewMiniPlayer.setVisibility(View.VISIBLE);
+//			slidingLayout.setShadowHeight(4);
+//			slidingLayout.setPanelHeight(getResources().getDimensionPixelSize(R.dimen.sliding_panel_height));
+//			tvPlayerLessonTitleMini.setText(settings.getString("lessonTitle",""));
+//			tvPlayerLessonDescriptionMini.setText(settings.getString("lessonDescription",""));
+//			System.out.println("MainActivity.onStart 1");
+//		} else {
+//			viewMiniPlayer.setVisibility(View.GONE);
+//			slidingLayout.setShadowHeight(0);
+//			slidingLayout.setPanelHeight(0);
+//			System.out.println("MainActivity.onStart 2");
+//		}
+//		checkUserFirstVisit();
 	}
 
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		AudioPlayerHelper helper = new AudioPlayerHelper();
-		helper.unregisterReceiverProgress(this);
-	}
+
 
 	//    /**
 //     * CHECK LAST UPDATE TIME
@@ -512,12 +512,12 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 				return true;
 			case android.R.id.home:
 				System.out.println("MainActivity.onOptionsItemSelected...");
-				switch (lastFragmentSelected) {
+				switch (lastFragSelected) {
 					case "Lessons": displayFragmentStudies();
 						break;
-					case "ArticleDetails": displayFragmentAnswers();
+					case "ArticleDetails": displayFragmentArticles();
 						break;
-					case "AnswerDetails": displayFragmentArticles();
+					case "AnswerDetails": displayFragmentAnswers();
 						break;
 					case "Videos": displayFragmentVideoChannels();
 						break;
@@ -529,4 +529,53 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		}
 	}
 
+	private void handleBackEvent() {
+		switch (lastFragSelected) {
+			case "Studies": displayFragmentStudies();
+				break;
+			case "Articles": displayFragmentArticles();
+				break;
+			case "Answers": displayFragmentAnswers();
+				break;
+			case "VideoChannels": displayFragmentVideoChannels();
+				break;
+			case "Lessons": displayFragmentStudies();
+				break;
+			case "ArticleDetails": displayFragmentArticles();
+				break;
+			case "AnswerDetails": displayFragmentAnswers();
+				break;
+			case "Videos": displayFragmentVideoChannels();
+				break;
+			default:
+				break;
+		}
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		System.out.println("MainActivity.onConfigurationChanged");
+	}
+
+	@Override
+	protected void onStop() {
+		System.out.println("MainActivity.onStop");
+		AudioPlayerHelper helper = new AudioPlayerHelper();
+		helper.unregisterReceiverProgress(this);
+		super.onStop();
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+//		AudioPlayerHelper helper = new AudioPlayerHelper();
+//		helper.unregisterReceiverProgress(this);
+//		System.out.println("MainActivity.onDestroy");
+	}
+
+	//	@Override
+//	public void onBackPressed() {
+//		super.onBackPressed();
+//	}
 }

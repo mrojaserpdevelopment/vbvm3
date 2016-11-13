@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.erpdevelopment.vbvm.MainActivity;
+import com.erpdevelopment.vbvm.activity.MainActivity;
 import com.erpdevelopment.vbvm.model.Article;
 import com.erpdevelopment.vbvm.model.VideoChannel;
 import com.erpdevelopment.vbvm.model.ItemInfo;

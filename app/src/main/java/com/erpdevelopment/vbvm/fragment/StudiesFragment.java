@@ -18,7 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.erpdevelopment.vbvm.MainActivity;
+import com.erpdevelopment.vbvm.activity.MainActivity;
 import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.activity.SettingsActivity;
 import com.erpdevelopment.vbvm.adapter.StudiesAdapter;

@@ -9,7 +9,7 @@ import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import com.erpdevelopment.vbvm.MainActivity;
+import com.erpdevelopment.vbvm.activity.MainActivity;
 
 import android.app.Activity;
 import android.graphics.Bitmap;

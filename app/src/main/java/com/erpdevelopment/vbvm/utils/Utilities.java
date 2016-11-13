@@ -2,13 +2,17 @@ package com.erpdevelopment.vbvm.utils;
 
 
 import com.erpdevelopment.vbvm.R;
+import com.erpdevelopment.vbvm.helper.LeadingMarginSpanHelper;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.text.SpannableString;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -100,15 +104,24 @@ public class Utilities {
 		});
 	}
 	
-	public static void setActionBar(Activity activity, String title) {
-        ActionBar actionBar = activity.getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowTitleEnabled(true);
-        if ( title==null )
-        	actionBar.setTitle("Back");
-        else
-        	actionBar.setTitle(title);
-        actionBar.setDisplayUseLogoEnabled(false);
+	public static void setActionBar(AppCompatActivity activity, String title) {
+        ActionBar actionBar = activity.getSupportActionBar();
+//        actionBar.setDisplayHomeAsUpEnabled(true);
+//        actionBar.setDisplayShowTitleEnabled(true);
+//        if ( title==null )
+//        	actionBar.setTitle("Back");
+//        else
+//        	actionBar.setTitle(title);
+//        actionBar.setDisplayUseLogoEnabled(false);
+
+
+//		actionBar = getSupportActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setDisplayShowTitleEnabled(true);
+		actionBar.setTitle(title);
+		Drawable textHomeUp = Utilities.getTextViewAsDrawable(activity, title);
+		actionBar.setLogo(textHomeUp);
+		actionBar.show();
 	}
 
 	public static Drawable getTextViewAsDrawable(Activity activity, String text) {
@@ -136,5 +149,29 @@ public class Utilities {
 	public static String capitalizeFirst(String word) {
 		return word.substring(0, 1).toUpperCase() + word.substring(1);
 	}
+
+	public static SpannableString getFloatingText(Activity activity, String description, int iconRefSize) {
+//        String text = getString(R.string.text);
+
+		// Получаем иконку и ее ширину
+//        Drawable dIcon = getResources().getDrawable(R.drawable.photo_brady);
+		Drawable dIcon = ResourcesCompat.getDrawable(activity.getResources(), iconRefSize, null);
+		int leftMargin = (dIcon != null ? dIcon.getIntrinsicWidth() : 0) + 15;
+//        int leftMargin = 100;
+
+		// Устанавливаем иконку в R.id.icon
+//        ImageView icon = (ImageView) findViewById(R.id.icon);
+//        icon.setBackgroundDrawable(dIcon);
+
+//        SpannableString ss = new SpannableString(text);
+		SpannableString ss = new SpannableString(description);
+		// Выставляем отступ для первых трех строк абазца
+		ss.setSpan(new LeadingMarginSpanHelper(leftMargin, 5), 0, ss.length(), 0);
+
+//        TextView messageView = (TextView) findViewById(R.id.message_view);
+//        messageView.setText(ss);
+		return ss;
+	}
+
 
 }

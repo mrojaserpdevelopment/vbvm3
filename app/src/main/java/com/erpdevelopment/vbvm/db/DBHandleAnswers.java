@@ -10,7 +10,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.erpdevelopment.vbvm.MainActivity;
+import com.erpdevelopment.vbvm.activity.MainActivity;
 import com.erpdevelopment.vbvm.model.Answer;
 import com.erpdevelopment.vbvm.service.WebServiceCall;
 

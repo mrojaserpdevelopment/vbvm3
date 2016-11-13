@@ -1,6 +1,7 @@
 package com.erpdevelopment.vbvm.adapter;
 
 import java.util.List;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -20,10 +21,12 @@ public class VideoChannelsAdapter extends BaseAdapter{
 	private Activity activity;
 	private int selectedPos = -1;	// init value for not-selected
 	private List<VideoChannel> listVideoChannels;
+	private String dateFormat;
 
 	public VideoChannelsAdapter(Activity a, List<VideoChannel> listVideoChannels) {
 		activity = a;
 		this.listVideoChannels = listVideoChannels;
+		dateFormat = Locale.getDefault().getCountry().equals("US") ? "MM/dd/yy" : "dd/MM/yy";
 	}
 	
 	@Override
@@ -64,7 +67,7 @@ public class VideoChannelsAdapter extends BaseAdapter{
 		int countVideos = videoChannel.getVideos().size();
 		String textCountVideos = countVideos + " video" + (countVideos > 1 ? "s" : "");
 		viewHolder.tvAuthor.setText(textCountVideos);
-		viewHolder.tvDate.setText(Utilities.getSimpleDateFormat(videoChannel.getPostedDate(),"dd/MM/yy"));
+		viewHolder.tvDate.setText(Utilities.getSimpleDateFormat(videoChannel.getPostedDate(),dateFormat));
 		viewHolder.llTopics.setVisibility(View.GONE);
 
 		if(selectedPos == position)

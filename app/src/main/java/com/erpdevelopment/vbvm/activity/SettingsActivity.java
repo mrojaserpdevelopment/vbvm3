@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
-import com.erpdevelopment.vbvm.MainActivity;
 import com.erpdevelopment.vbvm.R;
 
 public class SettingsActivity extends AppCompatActivity {

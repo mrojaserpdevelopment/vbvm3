@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.erpdevelopment.vbvm"
-    android:versionCode="14"
-    android:versionName="2.2" >
+    android:versionCode="16"
+    android:versionName="3.0" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -29,7 +29,7 @@
         <!-- android:theme="@style/AppBaseTheme"> -->
 
         <activity
-            android:name="com.erpdevelopment.alpha.SplashActivity"
+            android:name="com.erpdevelopment.vbvm.activity.SplashActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -41,119 +41,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.erpdevelopment.alpha.MainActivity"
+            android:name="com.erpdevelopment.vbvm.activity.MainActivity"
             android:configChanges="orientation"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" >
         </activity>
-        <activity
-            android:name="com.erpdevelopment.alpha.activity.BibleStudyLessonsActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="com.erpdevelopment.alpha.activity.AudioControllerActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" >
 
-            <!-- <meta-data -->
-            <!-- android:name="android.support.UI_OPTIONS" android:value="splitActionBarWhenNarrow"/> -->
-        </activity>
-        <activity
-            android:name="com.erpdevelopment.alpha.activity.EventDetailsActivity"
-            android:configChanges="orientation"
-            android:label="@string/title_activity_event_details"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="com.erpdevelopment.alpha.activity.ArticleDetailsActivity"
-            android:configChanges="orientation"
-            android:label="@string/title_activity_article_details"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="com.erpdevelopment.alpha.activity.VideosVbvmActivity"
-            android:configChanges="orientation"
-            android:label="@string/title_activity_video"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="com.erpdevelopment.alpha.activity.VideoVbvmDetailsActivity"
-            android:configChanges="orientation"
-            android:label="@string/title_activity_qand_aposts"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="com.erpdevelopment.alpha.activity.QAndAPostDetailsActivity"
-            android:configChanges="orientation"
-            android:label="@string/title_activity_qand_apost_details"
-            android:parentActivityName="com.erpdevelopment.alpha.MainActivity"
-            android:screenOrientation="portrait" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.erpdevelopment.alpha.MainActivity" />
-        </activity>
-        <activity
-            android:name="com.erpdevelopment.alpha.activity.AboutActivity"
-            android:configChanges="orientation"
-            android:label="@string/title_activity_vbvm"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="com.erpdevelopment.alpha.activity.AboutDetailsActivity"
-            android:configChanges="orientation"
-            android:label="@string/title_activity_vbvm_details"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="com.erpdevelopment.alpha.activity.DonateActivity"
-            android:configChanges="orientation"
-            android:label="@string/title_activity_vbvm_donate"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="com.erpdevelopment.alpha.activity.StaffBoardActivity"
-            android:configChanges="orientation"
-            android:label="@string/title_activity_staff_vbvm"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="com.erpdevelopment.alpha.activity.StaffBoardDetailsActivity"
-            android:configChanges="orientation"
-            android:label="@string/title_activity_vbvm_staff_details"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="com.erpdevelopment.alpha.activity.FindByTopicActivity"
-            android:configChanges="orientation"
-            android:label="@string/title_activity_find_by_topic"
-            android:screenOrientation="portrait" >
-        </activity>
-
-        <service android:name="com.erpdevelopment.alpha.activity.AudioPlayerService" >
+        <service android:name="com.erpdevelopment.vbvm.activity.AudioPlayerService" >
         </service>
-        <service android:name="com.erpdevelopment.alpha.service.DownloadAllService" >
+        <service android:name="com.erpdevelopment.vbvm.service.DownloadAllService" >
         </service>
-
-        <!-- <receiver android:name=".ShutdownReceiver"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.intent.action.ACTION_SHUTDOWN"/> -->
-        <!-- </intent-filter> -->
-        <!-- </receiver> -->
-
-
-        <!-- <activity -->
-        <!-- android:name=".MailSenderActivity" -->
-        <!-- android:label="@string/title_activity_mail_sender"> -->
-        <!-- </activity> -->
         <service
-            android:name="com.erpdevelopment.alpha.service.downloader.DownloadService"
+            android:name="com.erpdevelopment.vbvm.service.downloader.DownloadService"
             android:enabled="true"
             android:exported="true" >
         </service>
 
         <activity
-            android:name="com.erpdevelopment.alpha.activity.SettingsActivity"
+            android:name="com.erpdevelopment.vbvm.activity.SettingsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" >
         </activity>

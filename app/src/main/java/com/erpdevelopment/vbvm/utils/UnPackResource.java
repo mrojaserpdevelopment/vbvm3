@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import com.erpdevelopment.vbvm.MainActivity;
+import com.erpdevelopment.vbvm.activity.MainActivity;
 import com.erpdevelopment.vbvm.db.VbvmDatabaseOpenHelper;
 
 import android.content.Context;

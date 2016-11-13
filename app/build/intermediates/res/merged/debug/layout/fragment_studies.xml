@@ -34,7 +34,7 @@
                 android:textColor="@android:color/black"
                 android:textSize="10dp"
                 android:layout_gravity="right" />
-            <com.erpdevelopment.alpha.view.ExpandableHeightGridview
+            <com.erpdevelopment.vbvm.view.ExpandableHeightGridview
                 android:id="@+id/gvStudiesNew"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
                 android:textColor="@android:color/black"
                 android:textSize="10dp"
                 android:layout_gravity="right" />
-            <com.erpdevelopment.alpha.view.ExpandableHeightGridview
+            <com.erpdevelopment.vbvm.view.ExpandableHeightGridview
                 android:id="@+id/gvStudiesOld"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
                 android:textColor="@android:color/black"
                 android:textSize="10dp"
                 android:layout_gravity="right" />
-            <com.erpdevelopment.alpha.view.ExpandableHeightGridview
+            <com.erpdevelopment.vbvm.view.ExpandableHeightGridview
                 android:id="@+id/gvStudiesSingle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

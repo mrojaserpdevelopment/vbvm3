@@ -15,6 +15,8 @@ import com.erpdevelopment.vbvm.model.Answer;
 import com.erpdevelopment.vbvm.utils.Utilities;
 import com.erpdevelopment.vbvm.utils.imageloading.ImageLoader2;
 
+import java.util.Locale;
+
 public class AnswerDetailsFragment extends Fragment {
 
     private View rootView;
@@ -25,8 +27,9 @@ public class AnswerDetailsFragment extends Fragment {
     private TextView tvAnswerDetailsDescription;
     private ImageView imgAuthor;
 //    private ImageLoader imageLoader;
-private ImageLoader2 imageLoader2;
+//    private ImageLoader2 imageLoader2;
     private Activity activity;
+    private String dateFormat;
 
     public AnswerDetailsFragment() {
     }
@@ -60,7 +63,8 @@ private ImageLoader2 imageLoader2;
 
         tvAnswerDetailsTitle.setText(mAnswer.getTitle());
         tvAnswerDetailsAuthor.setText(mAnswer.getAuthorName());
-        tvAnswerDetailsDate.setText(Utilities.getSimpleDateFormat(mAnswer.getPostedDate(),"dd MMM yyyy"));
+        dateFormat = Locale.getDefault().getCountry().equals("US") ? "MMM dd yyyy" : "dd MMM yyyy";
+        tvAnswerDetailsDate.setText(Utilities.getSimpleDateFormat(mAnswer.getPostedDate(),dateFormat));
         tvAnswerDetailsDescription.setText(mAnswer.getBody());
     }
 

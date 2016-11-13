@@ -7,7 +7,7 @@ import java.util.List;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.erpdevelopment.vbvm.MainActivity;
+import com.erpdevelopment.vbvm.activity.MainActivity;
 import com.erpdevelopment.vbvm.model.Article;
 import com.erpdevelopment.vbvm.service.WebServiceCall;
 
@@ -109,7 +109,8 @@ public class DBHandleArticles {
 	        	article.setAuthorThumbnailAltText(c.getString((c.getColumnIndex(COLUMN_AUTHOR_THUMBNAIL_ALT_TEXT))));
 	        	List<String> topics = getTopicsArticle(article.getIdProperty());
 	        	article.setTopics(topics);
-	            articles.add(article);
+				if (!article.getBody().equals(""))
+	            	articles.add(article);
 	            WebServiceCall.authorNameSet.add(article.getAuthorName());
 	        } while (c.moveToNext());
 			Collections.sort(articles);

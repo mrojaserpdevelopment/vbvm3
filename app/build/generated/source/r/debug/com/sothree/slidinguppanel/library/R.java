@@ -32,7 +32,7 @@ public final class R {
 	}
 	public static final class drawable {
 		public static final int above_shadow = 0x7f020053;
-		public static final int below_shadow = 0x7f02005f;
+		public static final int below_shadow = 0x7f02005b;
 	}
 	public static final class id {
 		public static final int anchored = 0x7f0d003e;

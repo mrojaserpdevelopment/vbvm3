@@ -27,14 +27,14 @@ public final class R {
 		public static final int curvedTextViewTextSize = 0x7f070057;
 	}
 	public static final class drawable {
-		public static final int cardinal_bird = 0x7f02006a;
-		public static final int circle_progress_background = 0x7f02006b;
-		public static final int circle_progress_foreground = 0x7f02006c;
+		public static final int cardinal_bird = 0x7f02005e;
+		public static final int circle_progress_background = 0x7f02005f;
+		public static final int circle_progress_foreground = 0x7f020060;
 	}
 	public static final class id {
 	}
 	public static final class layout {
-		public static final int activity_main = 0x7f030021;
+		public static final int activity_main = 0x7f03001e;
 	}
 	public static final class string {
 		public static final int app_name = 0x7f06002d;

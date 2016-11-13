@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
-import com.erpdevelopment.vbvm.MainActivity;
+import com.erpdevelopment.vbvm.activity.MainActivity;
 import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.adapter.ArticlesAdapter;
 import com.erpdevelopment.vbvm.adapter.VideoChannelsAdapter;

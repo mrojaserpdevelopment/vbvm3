@@ -10,7 +10,7 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.erpdevelopment.vbvm.MainActivity;
+import com.erpdevelopment.vbvm.activity.MainActivity;
 import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.model.Lesson;
 import com.erpdevelopment.vbvm.utils.Constants;

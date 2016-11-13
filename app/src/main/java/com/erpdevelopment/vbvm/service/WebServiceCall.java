@@ -15,7 +15,7 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.content.SharedPreferences.Editor;
 
-import com.erpdevelopment.vbvm.MainActivity;
+import com.erpdevelopment.vbvm.activity.MainActivity;
 import com.erpdevelopment.vbvm.db.DBHandleStudies;
 import com.erpdevelopment.vbvm.model.Article;
 import com.erpdevelopment.vbvm.model.VideoChannel;

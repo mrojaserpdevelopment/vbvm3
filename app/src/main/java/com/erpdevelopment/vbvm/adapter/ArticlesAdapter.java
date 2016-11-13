@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 
 import com.erpdevelopment.vbvm.R;
+import com.erpdevelopment.vbvm.activity.MainActivity;
 import com.erpdevelopment.vbvm.model.Article;
 import com.erpdevelopment.vbvm.utils.FilesManager;
 import com.erpdevelopment.vbvm.utils.Utilities;
@@ -15,11 +16,14 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class ArticlesAdapter extends BaseAdapter implements Filterable{
 
@@ -31,6 +35,8 @@ public class ArticlesAdapter extends BaseAdapter implements Filterable{
 	private LinearLayout llTopicFilter;
 	// used to keep selected position in ListView
 	private int selectedPos = -1;	// init value for not-selected
+	private InputMethodManager imm;
+	private String dateFormat;
 
 	public ArticlesAdapter(Activity a, List<Article> articleList) {
 		activity = a;
@@ -40,6 +46,8 @@ public class ArticlesAdapter extends BaseAdapter implements Filterable{
 				LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 		lparams.setMargins(0,0,10,0);
 		llTopicFilter = (LinearLayout) activity.findViewById(R.id.ll_topic_filter);
+		imm = (InputMethodManager) activity.getSystemService(INPUT_METHOD_SERVICE);
+		dateFormat = Locale.getDefault().getCountry().equals("US") ? "MM/dd/yy" : "dd/MM/yy";
 	}
 	
 	@Override
@@ -78,7 +86,7 @@ public class ArticlesAdapter extends BaseAdapter implements Filterable{
 
 		viewHolder.tvTitle.setText(article.getTitle());
 		viewHolder.tvAuthor.setText(article.getAuthorName());
-		viewHolder.tvDate.setText(Utilities.getSimpleDateFormat(article.getPostedDate(),"dd/MM/yy"));
+		viewHolder.tvDate.setText(Utilities.getSimpleDateFormat(article.getPostedDate(),dateFormat));
 
 		viewHolder.llTopics.removeAllViews();
 		int count = 0;
@@ -179,7 +187,8 @@ public class ArticlesAdapter extends BaseAdapter implements Filterable{
 			}
 		}
 		setArticleListItems(tempList);
-		llTopicFilter.removeAllViews();
+//		if (llTopicFilter.getChildCount()>0)
+			llTopicFilter.removeAllViews();
 		TextView tvTopic = new TextView(activity);
 		tvTopic.setLayoutParams(lparams);
 		tvTopic.setBackgroundResource( R.drawable.bg_text_topics);
@@ -189,7 +198,6 @@ public class ArticlesAdapter extends BaseAdapter implements Filterable{
 		tvTopic.setTextSize(12);
 		tvTopic.setCompoundDrawablesWithIntrinsicBounds(activity.getResources().getDrawable(R.drawable.ic_action_cancel_16), null, null, null);
 		llTopicFilter.addView(tvTopic);
-
 		llTopicFilter.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -198,6 +206,7 @@ public class ArticlesAdapter extends BaseAdapter implements Filterable{
 				llTopicFilter.removeAllViews();
 			}
 		});
+//		imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
 	}
 
 

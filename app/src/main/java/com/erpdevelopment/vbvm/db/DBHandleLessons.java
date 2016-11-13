@@ -7,7 +7,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.erpdevelopment.vbvm.MainActivity;
+import com.erpdevelopment.vbvm.activity.MainActivity;
 import com.erpdevelopment.vbvm.model.Lesson;
 
 public class DBHandleLessons {

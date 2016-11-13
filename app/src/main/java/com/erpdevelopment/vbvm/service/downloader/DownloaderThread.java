@@ -7,7 +7,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.erpdevelopment.vbvm.MainActivity;
+import com.erpdevelopment.vbvm.activity.MainActivity;
 import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.adapter.LessonsAdapter;
 import com.erpdevelopment.vbvm.db.DBHandleLessons;
@@ -74,6 +74,7 @@ public class DownloaderThread extends Thread {
                 outputTemp.delete();
                 outputTemp = fileCache.getFileTempFolder(mUrl);
             }
+            System.out.println("URL: " + mUrl);
             URL url = new URL(mUrl);
             URLConnection conn = url.openConnection();
             conn.setConnectTimeout(CONNECTION_TIMEOUT);
@@ -94,7 +95,7 @@ public class DownloaderThread extends Thread {
                 downloadProgress = (int)((totalRead*100)/lengthOfFile);
             }
             downloadProgress = 0;
-            handler.removeCallbacks(runnable);
+//            handler.removeCallbacks(runnable);
             outStream.close();
             fileStream.close();
             inStream.close();
@@ -138,9 +139,11 @@ public class DownloaderThread extends Thread {
             updateUiDownloadProgress();
             DBHandleLessons.updateLessonDownloadStatus(idLesson, downloadStatus, mDownloadType);
             DownloadService.decrementCount();
-            if (!messageError.equals(""))
-                Toast.makeText(mActivity, messageError, Toast.LENGTH_SHORT).show();
+//            if (!messageError.equals(""))
+//                Toast.makeText(mActivity, messageError, Toast.LENGTH_SHORT).show();
             messageError = "";
+            handler.removeCallbacks(runnable);
+            stopDownload = false;
         }
     }
 
@@ -174,6 +177,7 @@ public class DownloaderThread extends Thread {
 //                intent.putParcelableArrayListExtra("listLessons", (ArrayList)mListLessons);
                 intent.putExtra("lesson",mLesson);
                 intent.putExtra("downloadStatus", downloadStatus);
+                intent.putExtra("messageError", messageError);
                 LocalBroadcastManager.getInstance(mActivity).sendBroadcast(intent);
             }
         });

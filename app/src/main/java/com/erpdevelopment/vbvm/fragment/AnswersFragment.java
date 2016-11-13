@@ -1,23 +1,29 @@
 package com.erpdevelopment.vbvm.fragment;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 
 import com.erpdevelopment.vbvm.R;
+import com.erpdevelopment.vbvm.activity.MainActivity;
 import com.erpdevelopment.vbvm.adapter.AnswersAdapter;
 import com.erpdevelopment.vbvm.model.Answer;
 import com.erpdevelopment.vbvm.utils.DownloadJsonData;
 import com.erpdevelopment.vbvm.utils.FilesManager;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class AnswersFragment extends Fragment implements TextWatcher {
 
@@ -25,6 +31,8 @@ public class AnswersFragment extends Fragment implements TextWatcher {
     private AnswersAdapter adapterAnswers;
     private ListView lvAnswers;
     private EditText etSearchAnswers;
+    private InputMethodManager imm;
+    private Activity activity;
 
     private OnAnswerSelectedListener mListener;
 
@@ -37,6 +45,14 @@ public class AnswersFragment extends Fragment implements TextWatcher {
         args.putInt("index", index);
         f.setArguments(args);
         return f;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activity = getActivity();
+        imm = (InputMethodManager) activity.getSystemService(INPUT_METHOD_SERVICE);
+//        adapterAnswers = new AnswersAdapter(getActivity(), FilesManager.listAnswers);
     }
 
     @Override
@@ -56,10 +72,10 @@ public class AnswersFragment extends Fragment implements TextWatcher {
         lvAnswers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View v, int position,
-                                    long id) {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Answer answer = (Answer) parent.getItemAtPosition(position);
                 mListener.onAnswerSelected(answer);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
             }
         });
 

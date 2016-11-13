@@ -37,6 +37,7 @@ public class VideoChannelsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        adapterVideoChannels = new VideoChannelsAdapter(getActivity(), FilesManager.listVideoChannels);
     }
 
     @Override

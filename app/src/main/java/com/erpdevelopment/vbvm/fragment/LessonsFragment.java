@@ -23,7 +23,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.erpdevelopment.vbvm.MainActivity;
+import com.erpdevelopment.vbvm.activity.MainActivity;
 import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.activity.AudioPlayerService;
 import com.erpdevelopment.vbvm.adapter.LessonsAdapter;
@@ -346,21 +346,33 @@ public class LessonsFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             int downloadStatus = intent.getIntExtra("downloadStatus", 0);
+            String messageError = intent.getStringExtra("messageError");
 //            if (downloadStatus > 0) {
+
                 Lesson lesson = intent.getParcelableExtra("lesson");
                 System.out.println("status - progress: " + lesson.getDownloadStatusAudio() + " - " + lesson.getDownloadProgressAudio());
-                for (int i=0; i<listLessons.size(); i++) {
+                for (int i = 0; i < listLessons.size(); i++) {
                     if (lesson.getIdProperty().equals(listLessons.get(i).getIdProperty())) {
 //                    if ( lesson.getIdProperty().equals(LessonsAdapter.mCurrentLesson) ) {
                         System.out.println("lesson: " + lesson.getIdProperty());
 //                        List<Lesson> listLesson = intent.getParcelableArrayListExtra("listLessons");
 ////                        adapterLessons.setLessonListItems(listLesson);
-                        listLessons.set(i,lesson);
+                        listLessons.set(i, lesson);
 //                        adapterLessons.setLessonListItems(listLesson);
                         adapterLessons.notifyDataSetChanged();
                         break;
                     }
                 }
+            if (!messageError.equals("")) {
+                Toast.makeText(activity, messageError, Toast.LENGTH_SHORT).show();
+            }
+//            else {
+////                if (!messageError.equals(""))
+////                    Toast.makeText(activity, messageError, Toast.LENGTH_SHORT).show();
+//
+//            }
+
+
 //            }
 //            if ( DownloadService.IS_SERVICE_RUNNING && DownloadService.countDownloads==0 ){
 //                System.out.println("Stopping download service...");
@@ -369,6 +381,9 @@ public class LessonsFragment extends Fragment {
 //                DownloadService.IS_SERVICE_RUNNING = false;
 //                context.startService(service);
 //            }
+
+
+
         }
     };
 
@@ -461,13 +476,14 @@ public class LessonsFragment extends Fragment {
             System.out.println("LessonsFragment.onReceive: receiverAudioComplete");
             btnPlay.setImageResource(R.drawable.media_play);
 //            tvIconPlayMini = (TextView) activity.findViewById(R.id.tv_icon_play_mini);
-            btnPlayMini.setImageResource(R.drawable.icon_mini_player);
+            btnPlayMini.setImageResource(R.drawable.icon_mini_play);
             if ( MainActivity.settings.getBoolean("switchAuto",true) ) {
                 System.out.println("LessonsFragment.onReceive: receiverAudioComplete 2");
                 DBHandleLessons.updateLessonState(FilesManager.lastLessonId, 0, "complete");
-                FilesManager.lastLessonId = "";
+//                FilesManager.lastLessonId = "";
                 new asyncGetStudyLessons().execute(mStudy);
             }
+            FilesManager.lastLessonId = "";
         }
     };
 

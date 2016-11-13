@@ -29,7 +29,7 @@ public class VideoVbvmAdapter extends BaseAdapter {
 		listVideos = listVideoVbvm;
 		this.imageLoader = imageLoader;
 	}
-	
+
 	@Override
 	public int getCount() {
 
@@ -67,28 +67,12 @@ public class VideoVbvmAdapter extends BaseAdapter {
 		viewHolder.tvTitle.setText(video.getTitle());
 		viewHolder.tvDescription.setText(video.getDescription());
 		viewHolder.tvLength.setText(video.getVideoLength());
-		System.out.println("VideoVbvmAdapter.getView: " + position);
-//		BitmapManager2.bitmapWidth = 100;
-//		BitmapManager2.bitmapHeight = 60;
-//		ImageLoader2.useCache = false;
-//		imageLoader.DisplayImage("https://i.ytimg.com/vi/YOQocnhCm_A/sddefault.jpg",viewHolder.imgVideoThumbnail);
-//		imageLoader.DisplayImage(video.getThumbnailSource(),viewHolder.imgVideoThumbnail);
 
 		Picasso.with(activity)
 				.load(video.getThumbnailSource())
 				.resize(120,90)
 				.centerCrop()
 				.into(viewHolder.imgVideoThumbnail);
-
-//       ImageView img = (ImageView) convertView.findViewById(R.id.img_bible_study);
-//       img.setBackgroundResource(R.drawable.youtube3);
-////       imageLoader.DisplayImage(video.getThumbnailSource(), img);
-//
-//       TextView txt = (TextView) convertView.findViewById(R.id.tv_title_bible_study);
-//       txt.setText(video.getTitle());
-//
-//       TextView txt2 = (TextView) convertView.findViewById(R.id.tv_type_bible_study);
-//       txt2.setVisibility(View.GONE);
 
        if(selectedPos == position)
     	   convertView.setBackgroundColor(Color.CYAN);
@@ -111,7 +95,6 @@ public class VideoVbvmAdapter extends BaseAdapter {
 	}
 	
 	public void setVideoListItems(List<VideoVbvm> newList) {
-		System.out.println("VideoVbvmAdapter.setVideoListItems: " + newList.size());
 		listVideos = newList;
 	    notifyDataSetChanged();
 	}

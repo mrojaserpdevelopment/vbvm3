@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 
 import com.erpdevelopment.vbvm.R;
+import com.erpdevelopment.vbvm.activity.MainActivity;
 import com.erpdevelopment.vbvm.model.Answer;
 import com.erpdevelopment.vbvm.utils.FilesManager;
 import com.erpdevelopment.vbvm.utils.Utilities;
@@ -15,11 +16,14 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class AnswersAdapter extends BaseAdapter implements Filterable {
 
@@ -31,6 +35,8 @@ public class AnswersAdapter extends BaseAdapter implements Filterable {
 	private LinearLayout llTopicFilterA;
 	// used to keep selected position in ListView
 	private int selectedPos = -1;	// init value for not-selected
+	private InputMethodManager imm;
+	private String dateFormat;
 
 	public AnswersAdapter(Activity a, List<Answer> postsList) {
 		activity = a;
@@ -40,6 +46,8 @@ public class AnswersAdapter extends BaseAdapter implements Filterable {
 				LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 		lparams.setMargins(0,0,10,0);
 		llTopicFilterA = (LinearLayout) activity.findViewById(R.id.ll_topic_filter2);
+		imm = (InputMethodManager) activity.getSystemService(INPUT_METHOD_SERVICE);
+		dateFormat = Locale.getDefault().getCountry().equals("US") ? "MM/dd/yy" : "dd/MM/yy";
 	}
 	
 	@Override
@@ -77,7 +85,7 @@ public class AnswersAdapter extends BaseAdapter implements Filterable {
 		}
 		viewHolder.tvTitle.setText(answer.getTitle());
 		viewHolder.tvAuthor.setText(answer.getAuthorName());
-		viewHolder.tvDate.setText(Utilities.getSimpleDateFormat(answer.getPostedDate(),"dd/MM/yy"));
+		viewHolder.tvDate.setText(Utilities.getSimpleDateFormat(answer.getPostedDate(),dateFormat));
 		viewHolder.llTopics.removeAllViews();
 		int count = 0;
 		for (String topic : answer.getTopics()){
@@ -179,7 +187,8 @@ public class AnswersAdapter extends BaseAdapter implements Filterable {
 			}
 		}
 		setAnswersListItems(tempList);
-		llTopicFilterA.removeAllViews();
+//		if (llTopicFilterA.getChildCount()>0)
+			llTopicFilterA.removeAllViews();
 		TextView tvTopic = new TextView(activity);
 		tvTopic.setLayoutParams(lparams);
 		tvTopic.setBackgroundResource( R.drawable.bg_text_topics);
@@ -197,6 +206,7 @@ public class AnswersAdapter extends BaseAdapter implements Filterable {
 				llTopicFilterA.removeAllViews();
 			}
 		});
+//		imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
 	}
 	
 }

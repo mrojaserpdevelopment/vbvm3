@@ -3,7 +3,7 @@ package com.erpdevelopment.vbvm.db;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.erpdevelopment.vbvm.MainActivity;
+import com.erpdevelopment.vbvm.activity.MainActivity;
 import com.erpdevelopment.vbvm.model.Article;
 import com.erpdevelopment.vbvm.model.VideoChannel;
 import com.erpdevelopment.vbvm.model.EventVbvm;

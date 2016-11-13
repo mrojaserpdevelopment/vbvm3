@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.SpannableString;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +15,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.erpdevelopment.vbvm.R;
+import com.erpdevelopment.vbvm.activity.MainActivity;
+import com.erpdevelopment.vbvm.helper.FlowTextHelper;
 import com.erpdevelopment.vbvm.helper.LeadingMarginSpanHelper;
 import com.erpdevelopment.vbvm.model.Article;
 import com.erpdevelopment.vbvm.utils.BitmapManager2;
 import com.erpdevelopment.vbvm.utils.Utilities;
 import com.erpdevelopment.vbvm.utils.imageloading.ImageLoader2;
+
+import java.util.Locale;
 
 public class ArticleDetailsFragment extends Fragment {
 
@@ -28,10 +33,12 @@ public class ArticleDetailsFragment extends Fragment {
     private TextView tvArticleDetailsAuthor;
     private TextView tvArticleDetailsDate;
     private TextView tvArticleDetailsDescription;
+    private TextView tvArticleDetailsDescription2;
     private ImageView imgArticleDetailsAuthor;
 //    private ImageLoader imageLoader;
     private ImageLoader2 imageLoader2;
     private Activity activity;
+    private String dateFormat;
 
     public ArticleDetailsFragment() {
     }
@@ -68,19 +75,20 @@ public class ArticleDetailsFragment extends Fragment {
         tvArticleDetailsAuthor = (TextView) rootView.findViewById(R.id.tv_article_details_author);
         tvArticleDetailsDate = (TextView) rootView.findViewById(R.id.tv_article_details_date);
         tvArticleDetailsDescription = (TextView) rootView.findViewById(R.id.tv_article_details_description);
+        tvArticleDetailsDescription2 = (TextView) rootView.findViewById(R.id.tv_article_details_description2);
         imgArticleDetailsAuthor = (ImageView) rootView.findViewById(R.id.img_article_details_author);
 
         tvArticleDetailsTitle.setText(mArticle.getTitle());
         tvArticleDetailsAuthor.setText(mArticle.getAuthorName());
-        tvArticleDetailsDate.setText(Utilities.getSimpleDateFormat(mArticle.getPostedDate(),"dd MMM yyyy"));
 
-//        Display display = activity.getWindowManager().getDefaultDisplay();
-//        FlowTextHelper.tryFlowText(mArticle.getBody(), imgArticleDetailsAuthor, tvArticleDetailsDescription, display);
+        dateFormat = Locale.getDefault().getCountry().equals("US") ? "MMM dd yyyy" : "dd MMM yyyy";
+        tvArticleDetailsDate.setText(Utilities.getSimpleDateFormat(mArticle.getPostedDate(),dateFormat));
 
-//        imageLoader.DisplayImage(mArticle.getAuthorThumbnailSource(),imgArticleDetailsAuthor,200,true);
-        //Reference image 100px
-        tvArticleDetailsDescription.setText(getFloatingText(mArticle.getBody(), R.drawable.photo_brady));
-//        tvArticleDetailsDescription.setMovementMethod(new ScrollingMovementMethod());
+        String text = mArticle.getBody();
+        int index = text.indexOf("\n");
+        text = text.substring(0, index);
+        tvArticleDetailsDescription.setText(Utilities.getFloatingText(activity, text, R.drawable.photo_brady));
+        tvArticleDetailsDescription2.setText( mArticle.getBody().substring(index+1) );
 
         switch (mArticle.getAuthorName()) {
             case "Stephen Armstrong": BitmapManager2.setImageBitmap(activity, imgArticleDetailsAuthor, R.drawable.photo_stephen_scaled);
@@ -103,27 +111,27 @@ public class ArticleDetailsFragment extends Fragment {
 
     }
 
-    private SpannableString getFloatingText(String description, int iconRefSize) {
-//        String text = getString(R.string.text);
-
-        // Получаем иконку и ее ширину
-//        Drawable dIcon = getResources().getDrawable(R.drawable.photo_brady);
-        Drawable dIcon = ResourcesCompat.getDrawable(getResources(), iconRefSize, null);
-        int leftMargin = dIcon.getIntrinsicWidth() + 15;
-//        int leftMargin = 100;
-
-        // Устанавливаем иконку в R.id.icon
-//        ImageView icon = (ImageView) findViewById(R.id.icon);
-//        icon.setBackgroundDrawable(dIcon);
-
-//        SpannableString ss = new SpannableString(text);
-        SpannableString ss = new SpannableString(description);
-        // Выставляем отступ для первых трех строк абазца
-        ss.setSpan(new LeadingMarginSpanHelper(leftMargin, 5), 0, ss.length(), 0);
-
-//        TextView messageView = (TextView) findViewById(R.id.message_view);
-//        messageView.setText(ss);
-        return ss;
-    }
+//    private SpannableString getFloatingText(String description, int iconRefSize) {
+////        String text = getString(R.string.text);
+//
+//        // Получаем иконку и ее ширину
+////        Drawable dIcon = getResources().getDrawable(R.drawable.photo_brady);
+//        Drawable dIcon = ResourcesCompat.getDrawable(getResources(), iconRefSize, null);
+//        int leftMargin = (dIcon != null ? dIcon.getIntrinsicWidth() : 0) + 15;
+////        int leftMargin = 100;
+//
+//        // Устанавливаем иконку в R.id.icon
+////        ImageView icon = (ImageView) findViewById(R.id.icon);
+////        icon.setBackgroundDrawable(dIcon);
+//
+////        SpannableString ss = new SpannableString(text);
+//        SpannableString ss = new SpannableString(description);
+//        // Выставляем отступ для первых трех строк абазца
+//        ss.setSpan(new LeadingMarginSpanHelper(leftMargin, 5), 0, ss.length(), 0);
+//
+////        TextView messageView = (TextView) findViewById(R.id.message_view);
+////        messageView.setText(ss);
+//        return ss;
+//    }
 
 }

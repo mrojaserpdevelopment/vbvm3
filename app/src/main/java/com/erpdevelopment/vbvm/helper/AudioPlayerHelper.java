@@ -20,7 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.erpdevelopment.vbvm.MainActivity;
+import com.erpdevelopment.vbvm.activity.MainActivity;
 import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.activity.AudioPlayerService;
 import com.erpdevelopment.vbvm.db.DBHandleLessons;
@@ -29,14 +29,12 @@ import com.erpdevelopment.vbvm.utils.FilesManager;
 import com.erpdevelopment.vbvm.utils.FontManager;
 import com.erpdevelopment.vbvm.utils.IMediaPlayerServiceClient;
 import com.erpdevelopment.vbvm.utils.Utilities;
-import com.erpdevelopment.vbvm.utils.imageloading.ImageLoader2;
 import com.roughike.bottombar.BottomBar;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.squareup.picasso.Picasso;
 
 public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMediaPlayerServiceClient {
     private Activity activity;
-//    private ImageButton btnSlideDown;
     private TextView tvIconSlideDown;
     private ImageView imgPlayerStudy;
     private SeekBar sbAudioPlayer;
@@ -46,8 +44,6 @@ public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMedi
     private TextView tvPlayerLessonDescription;
     private TextView tvPlayerLessonTitleMini;
     private TextView tvPlayerLessonDescriptionMini;
-
-//    private TextView tvPlayerSpeed;
     private ImageButton btnBackward;
     private ImageButton btnPlay;
     private ImageButton btnForward;
@@ -55,8 +51,6 @@ public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMedi
     private SeekBar sbVolumeControl;
     private TextView tvIconVolumeUp;
 
-    //    private ImageButton tvIconPlayMini;
-//    private TextView tvIconPlayMini;
     private ImageButton btnPlayMini;
     private ImageButton btnSlideUp;
 
@@ -71,12 +65,10 @@ public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMedi
     private int seekForwardTime = 30000; // 15 sec
     private int seekBackwardTime = 30000; // 15 sec
 
-//    private int currentSongIndex = 0;
     private String thumbnailSource;
     private String description;
     private String title;
     private int size = 0;
-    private ImageLoader2 imageLoader;
     private Utilities utils = new Utilities();
 
     private Lesson mLesson;
@@ -126,7 +118,6 @@ public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMedi
         RelativeLayout rootViewMain = (RelativeLayout) ((rootView.getParent()).getParent()).getParent();
         bottomBar = (BottomBar) rootViewMain.findViewById(R.id.bottomBar);
         slidingLayout = (SlidingUpPanelLayout)rootViewMain.findViewById(R.id.sliding_layout);
-        imageLoader = new ImageLoader2(this.activity);
 
         viewMiniPlayer = (RelativeLayout) rootViewMain.findViewById(R.id.view_mini_player);
         rlAudioPlayerSlide = (RelativeLayout) rootViewMain.findViewById(R.id.rl_audio_player_slide);
@@ -156,10 +147,10 @@ public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMedi
         btnSlideUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                System.out.println("AudioPlayerHelper.onClick");
                 slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
             }
         });
-
         tvIconSlideDown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -210,7 +201,7 @@ public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMedi
                         mService.pauseLesson();
                         mLesson.setPlaying(false);
                         btnPlay.setImageResource(R.drawable.media_play);
-                        btnPlayMini.setImageResource(R.drawable.icon_mini_player);
+                        btnPlayMini.setImageResource(R.drawable.icon_mini_play);
                     }
                 }else{
                     if(mService.isCreated()){
@@ -342,7 +333,7 @@ public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMedi
             boolean isLessonComplete = intent.getBooleanExtra("isLessonComplete", false);
             if ( isLessonComplete ) {
                 btnPlay.setImageResource(R.drawable.media_play);
-                btnPlayMini.setImageResource(R.drawable.icon_mini_player);
+                btnPlayMini.setImageResource(R.drawable.icon_mini_play);
             }
         }
     };
@@ -381,6 +372,10 @@ public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMedi
     }
 
     public void unregisterReceiverProgress(Activity a) {
+        if (mConnection!=null && mService!=null) {
+            System.out.println("AudioPlayerHelper.unbindService: ");
+            a.getApplicationContext().unbindService(mConnection);
+        }
         if ( progressReceiver != null )
             LocalBroadcastManager.getInstance(a).unregisterReceiver(progressReceiver);
     }

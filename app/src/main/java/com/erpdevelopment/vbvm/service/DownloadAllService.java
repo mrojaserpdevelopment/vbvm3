@@ -18,7 +18,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-import com.erpdevelopment.vbvm.MainActivity;
+import com.erpdevelopment.vbvm.activity.MainActivity;
 import com.erpdevelopment.vbvm.db.DBHandleLessons;
 import com.erpdevelopment.vbvm.utils.BitmapManager2;
 import com.erpdevelopment.vbvm.utils.imageloading.FileCache;

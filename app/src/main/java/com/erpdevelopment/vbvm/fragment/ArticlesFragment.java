@@ -1,6 +1,7 @@
 package com.erpdevelopment.vbvm.fragment;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,15 +10,19 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 
 import com.erpdevelopment.vbvm.R;
+import com.erpdevelopment.vbvm.activity.MainActivity;
 import com.erpdevelopment.vbvm.adapter.ArticlesAdapter;
 import com.erpdevelopment.vbvm.model.Article;
 import com.erpdevelopment.vbvm.utils.DownloadJsonData;
 import com.erpdevelopment.vbvm.utils.FilesManager;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class ArticlesFragment extends Fragment implements TextWatcher {
 
@@ -25,6 +30,8 @@ public class ArticlesFragment extends Fragment implements TextWatcher {
     private ArticlesAdapter adapterArticles;
     private ListView lvArticles;
     private EditText etSearchArticles;
+    private InputMethodManager imm;
+    private Activity activity;
 
     private OnArticleSelectedListener mListener;
 
@@ -39,6 +46,9 @@ public class ArticlesFragment extends Fragment implements TextWatcher {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = getActivity();
+        imm = (InputMethodManager) activity.getSystemService(INPUT_METHOD_SERVICE);
+//        adapterArticles = new ArticlesAdapter(getActivity(), FilesManager.listArticles);
     }
 
     @Override
@@ -58,11 +68,11 @@ public class ArticlesFragment extends Fragment implements TextWatcher {
         lvArticles.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View v, int position,
-                                    long id) {
+            public void onItemClick(AdapterView<?> parent, View v, int position,long id) {
                 Article article = (Article) parent.getItemAtPosition(position);
                 if (mListener != null)
                     mListener.onArticleSelected(article);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
             }
         });
 

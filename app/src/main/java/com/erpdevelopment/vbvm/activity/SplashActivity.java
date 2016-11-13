@@ -1,4 +1,4 @@
-package com.erpdevelopment.vbvm;
+package com.erpdevelopment.vbvm.activity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,6 +11,7 @@ import java.util.TimerTask;
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
 import com.androidquery.callback.AjaxStatus;
+import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.db.DBHandleAnswers;
 import com.erpdevelopment.vbvm.db.DBHandleArticles;
 import com.erpdevelopment.vbvm.db.DBHandleStudies;
@@ -28,6 +29,7 @@ import com.erpdevelopment.vbvm.utils.FilesManager;
 import com.erpdevelopment.vbvm.utils.Utilities;
 
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -47,7 +49,7 @@ public class SplashActivity extends Activity {
 	private ProgressDialog pDialog;
 	private AQuery mAQuery;
 
-	private static int downloadCounter = 0;
+	private static int downloadCounter = 3;
 
 	private static synchronized void incrementCount() {
 		downloadCounter++;
@@ -65,7 +67,7 @@ public class SplashActivity extends Activity {
 		mAQuery = new AQuery(this);
 
 		MainActivity.settings = getPreferences(Activity.MODE_PRIVATE);
-		WebServiceCall.articlesInDB = MainActivity.settings.getBoolean("articlesInDB", false);
+		WebServiceCall.studiesInDB = MainActivity.settings.getBoolean("studiesInDB", false);
 
 		VbvmDatabaseOpenHelper mDbHelper = VbvmDatabaseOpenHelper.getInstance(this);
 		DatabaseManager.initializeInstance(mDbHelper);
@@ -88,11 +90,46 @@ public class SplashActivity extends Activity {
 ////			finish();
 //			timer.schedule(task, splashDelay);
 //		} else {
+
+		downloadCounter = 3;
+
 			asyncJsonArticles();
 			asyncJsonAnswers();
 			asyncJsonVideos();
-			handler.postDelayed(runnable, 100);
+//			handler.postDelayed(runnable, 100);
 //		}
+
+		//		if (WebServiceCall.articlesInDB) {
+
+//		if (AudioPlayerService.created) {
+//
+//
+//
+//		} else {
+
+			new Thread(new Runnable() {
+				public void run() {
+					//				handler.postDelayed(runnable, 100);
+					while (true) {
+						System.out.println("checking downloadCounter: " + downloadCounter);
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						if (downloadCounter == 0) {
+							System.out.println("SplashActivity.run");
+							Intent mainIntent = new Intent().setClass(SplashActivity.this, MainActivity.class);
+							startActivity(mainIntent);
+							finish(); //Destruimos esta activity para prevenir que el usuario retorne aqui presionando el boton Atras.
+							return;
+						}
+					}
+				}
+			}).start();
+
+//		}
+
 	}
 
 	private Runnable runnable = new Runnable() {
@@ -110,12 +147,23 @@ public class SplashActivity extends Activity {
 	};
 
 	public void asyncJsonArticles(){
-		incrementCount();
+//		incrementCount();
+//		System.out.println("checking downloadCounter: " + downloadCounter);
 		WebServiceCall.articlesInDB = MainActivity.settings.getBoolean("articlesInDB", false);
 		if ( WebServiceCall.articlesInDB ){
-			Log.d("Database", "Articles - working offline on DB...");
-			FilesManager.listArticles = DBHandleArticles.getAllArticles(false);
-			decrementCount();
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					Log.d("Database", "Articles - working offline on DB...");
+					FilesManager.listArticles = DBHandleArticles.getAllArticles(false);
+					decrementCount();
+//					System.out.println("checking downloadCounter: " + downloadCounter);
+				}
+			}).start();
+//			Log.d("Database", "Articles - working offline on DB...");
+//			FilesManager.listArticles = DBHandleArticles.getAllArticles(false);
+//			decrementCount();
+//			System.out.println("checking downloadCounter: " + downloadCounter);
 		} else {
 			if ( !CheckConnectivity.isOnline(this)) {
 				CheckConnectivity.showMessage(this);
@@ -173,6 +221,7 @@ public class SplashActivity extends Activity {
 							Toast.makeText(mAQuery.getContext(), getResources().getString(R.string.error_message_connecting), Toast.LENGTH_SHORT).show();
 //							Toast.makeText(mAQuery.getContext(), "Error:" + status.getCode(), Toast.LENGTH_LONG).show();
 						decrementCount();
+//						System.out.println("checking downloadCounter: " + downloadCounter);
 					}
 				});
 			}
@@ -180,18 +229,28 @@ public class SplashActivity extends Activity {
 	}
 
 	public void asyncJsonAnswers(){
-
+//		incrementCount();
+//		System.out.println("checking downloadCounter: " + downloadCounter);
 		WebServiceCall.postsInDB = MainActivity.settings.getBoolean("postsInDB", false);
 		if ( WebServiceCall.postsInDB ) {
-			Log.d("Database", "QA Posts - working offline on DB...");
-			FilesManager.listAnswers = DBHandleAnswers.getAllPosts(false);
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					Log.d("Database", "QA Posts - working offline on DB...");
+					FilesManager.listAnswers = DBHandleAnswers.getAllPosts(false);
+					decrementCount();
+//					System.out.println("checking downloadCounter: " + downloadCounter);
+				}
+			}).start();
+//			Log.d("Database", "QA Posts - working offline on DB...");
+//			FilesManager.listAnswers = DBHandleAnswers.getAllPosts(false);
+//			decrementCount();
 		} else {
 			if ( !CheckConnectivity.isOnline(this) ) {
 				CheckConnectivity.showMessage(this);
 			} else {
 				String url = WebServiceCall.JSON_QANDA_URL;
 				long expire = 30 * 60 * 1000;
-				incrementCount();
 				mAQuery.ajax(url, JSONObject.class, expire, new AjaxCallback<JSONObject>() {
 
 					@Override
@@ -247,7 +306,9 @@ public class SplashActivity extends Activity {
 							FilesManager.listAnswers = listAnswers;
 						} else
 							Toast.makeText(mAQuery.getContext(), getResources().getString(R.string.error_message_connecting), Toast.LENGTH_SHORT).show();
-						decrementCount();					}
+						decrementCount();
+//						System.out.println("checking downloadCounter: " + downloadCounter);
+					}
 				});
 			}
 		}
@@ -255,12 +316,23 @@ public class SplashActivity extends Activity {
 
 	public void asyncJsonVideos(){
 
-		incrementCount();
+//		incrementCount();
+//		System.out.println("checking downloadCounter: " + downloadCounter);
 		WebServiceCall.videosInDB = MainActivity.settings.getBoolean("videosInDB", false);
 		if ( WebServiceCall.videosInDB ) {
-			Log.d("Database", "Videos - working offline on DB...");
-			FilesManager.listVideoChannels = DBHandleVideos.getChannels();
-			decrementCount();
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					Log.d("Database", "Videos - working offline on DB...");
+					FilesManager.listVideoChannels = DBHandleVideos.getChannels();
+					decrementCount();
+//					System.out.println("checking downloadCounter: " + downloadCounter);
+				}
+			}).start();
+
+//			Log.d("Database", "Videos - working offline on DB...");
+//			FilesManager.listVideoChannels = DBHandleVideos.getChannels();
+//			decrementCount();
 		} else {
 			if ( !CheckConnectivity.isOnline(this)) {
 				CheckConnectivity.showMessage(this);
@@ -325,6 +397,7 @@ public class SplashActivity extends Activity {
 							Toast.makeText(mAQuery.getContext(), getResources().getString(R.string.error_message_connecting), Toast.LENGTH_SHORT).show();
 //							Toast.makeText(mAQuery.getContext(), "Error:" + status.getCode(), Toast.LENGTH_LONG).show();
 						decrementCount();
+//						System.out.println("checking downloadCounter: " + downloadCounter);
 					}
 				});
 			}
@@ -350,6 +423,7 @@ public class SplashActivity extends Activity {
 		// STORE LATEST UPDATE TIME
 		e.putLong("lastUpdateKey", System.currentTimeMillis());
 		e.commit();
+		FilesManager.lastLessonId = MainActivity.settings.getString("currentLessonId","");
 		return false;
 	}
 

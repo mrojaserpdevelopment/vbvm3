@@ -6,7 +6,7 @@ import java.util.List;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.erpdevelopment.vbvm.MainActivity;
+import com.erpdevelopment.vbvm.activity.MainActivity;
 import com.erpdevelopment.vbvm.model.Favorite;
 
 public class DBHandleFavorites {
