@@ -2,8 +2,10 @@ package com.erpdevelopment.vbvm.activity;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -28,13 +30,20 @@ import com.erpdevelopment.vbvm.utils.CheckConnectivity;
 import com.erpdevelopment.vbvm.utils.FilesManager;
 import com.erpdevelopment.vbvm.utils.Utilities;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -43,13 +52,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class SplashActivity extends Activity {	
+public class SplashActivity extends AppCompatActivity {
 	
-	private long splashDelay = 2000;
-	private ProgressDialog pDialog;
 	private AQuery mAQuery;
-
 	private static int downloadCounter = 3;
+	private static final int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
 
 	private static synchronized void incrementCount() {
 		downloadCounter++;
@@ -64,6 +71,96 @@ public class SplashActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_init);
+		showPermissionsRequest();
+	}
+
+	private void showPermissionsRequest() {
+		List<String> permissionsNeeded = new ArrayList<String>();
+		final List<String> permissionsList = new ArrayList<String>();
+		if (!addPermission(permissionsList, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+			permissionsNeeded.add("Storage");
+		if (!addPermission(permissionsList, Manifest.permission.READ_PHONE_STATE))
+			permissionsNeeded.add("Phone");
+		if (permissionsList.size() > 0) {
+			if (permissionsNeeded.size() > 0) {
+				// Need Rationale
+				String message = "You need to grant access to " + permissionsNeeded.get(0);
+				for (int i = 1; i < permissionsNeeded.size(); i++)
+					message = message + ", " + permissionsNeeded.get(i);
+				showMessageOKCancel(message,
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								if (which==-1) {
+									ActivityCompat.requestPermissions(SplashActivity.this,
+											permissionsList.toArray(new String[permissionsList.size()]),
+											REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
+								} else {
+									finish();
+								}
+							}
+						});
+				return;
+			}
+			ActivityCompat.requestPermissions(SplashActivity.this,
+					permissionsList.toArray(new String[permissionsList.size()]),
+					REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
+			return;
+		}
+		startApp();
+	}
+
+	private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+		new AlertDialog.Builder(SplashActivity.this)
+				.setMessage(message)
+				.setPositiveButton("OK", okListener)
+				.setNegativeButton("Cancel", okListener)
+				.create()
+				.show();
+	}
+
+	private boolean addPermission(List<String> permissionsList, String permission) {
+		if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+			permissionsList.add(permission);
+			// Check for Rationale Option
+			if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permission))
+				return false;
+		}
+		return true;
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+		switch (requestCode) {
+			case REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS:
+			{
+				Map<String, Integer> perms = new HashMap<String, Integer>();
+				// Initial
+				perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+				perms.put(Manifest.permission.READ_PHONE_STATE, PackageManager.PERMISSION_GRANTED);
+
+				// Fill with results
+				for (int i = 0; i < permissions.length; i++)
+					perms.put(permissions[i], grantResults[i]);
+				// Check for ACCESS_FINE_LOCATION
+				if (perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+						&& perms.get(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+					// All Permissions Granted
+					startApp();
+				} else {
+					// Permission Denied
+					Toast.makeText(SplashActivity.this, "Some Permission is Denied", Toast.LENGTH_LONG)
+							.show();
+					finish();
+				}
+			}
+			break;
+			default:
+				super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		}
+	}
+
+	private void startApp() {
 		mAQuery = new AQuery(this);
 
 		MainActivity.settings = getPreferences(Activity.MODE_PRIVATE);
@@ -73,78 +170,44 @@ public class SplashActivity extends Activity {
 		DatabaseManager.initializeInstance(mDbHelper);
 		MainActivity.db = DatabaseManager.getInstance().openDatabase();
 
-		TimerTask task = new TimerTask() {
-	      @Override
-	      public void run() {
-	        Intent mainIntent = new Intent().setClass(SplashActivity.this, MainActivity.class);
-	        startActivity(mainIntent);
-	        finish(); //Destruimos esta activity para prevenir que el usuario retorne aqui presionando el boton Atras.
-	      }
-	    };
-	    Timer timer = new Timer();
-//	    timer.schedule(task, splashDelay);//Pasado los 3 segundos dispara la tarea
 		checkUserFirstVisit();
-//		if (WebServiceCall.articlesInDB) {
-////			Intent mainIntent = new Intent().setClass(SplashActivity.this, MainActivity.class);
-////			startActivity(mainIntent);
-////			finish();
-//			timer.schedule(task, splashDelay);
-//		} else {
-
 		downloadCounter = 3;
-
-			asyncJsonArticles();
-			asyncJsonAnswers();
-			asyncJsonVideos();
-//			handler.postDelayed(runnable, 100);
-//		}
-
-		//		if (WebServiceCall.articlesInDB) {
-
-//		if (AudioPlayerService.created) {
-//
-//
-//
-//		} else {
-
-			new Thread(new Runnable() {
-				public void run() {
-					//				handler.postDelayed(runnable, 100);
-					while (true) {
-						System.out.println("checking downloadCounter: " + downloadCounter);
-						try {
-							Thread.sleep(1000);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-						if (downloadCounter == 0) {
-							System.out.println("SplashActivity.run");
-							Intent mainIntent = new Intent().setClass(SplashActivity.this, MainActivity.class);
-							startActivity(mainIntent);
-							finish(); //Destruimos esta activity para prevenir que el usuario retorne aqui presionando el boton Atras.
-							return;
-						}
+		asyncJsonArticles();
+		asyncJsonAnswers();
+		asyncJsonVideos();
+		new Thread(new Runnable() {
+			public void run() {
+				while (true) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					if (downloadCounter == 0) {
+						Intent mainIntent = new Intent().setClass(SplashActivity.this, MainActivity.class);
+						startActivity(mainIntent);
+						finish(); //Destruimos esta activity para prevenir que el usuario retorne aqui presionando el boton Atras.
+						return;
 					}
 				}
-			}).start();
-
-//		}
-
+			}
+		}).start();
 	}
 
-	private Runnable runnable = new Runnable() {
-		@Override
-		public void run() {
-			System.out.println("checking downloadCounter: " + downloadCounter);
-			if (downloadCounter == 0) {
-				Intent mainIntent = new Intent().setClass(SplashActivity.this, MainActivity.class);
-				startActivity(mainIntent);
-				finish(); //Destruimos esta activity para prevenir que el usuario retorne aqui presionando el boton Atras.
-				return;
-			}
-			handler.postDelayed(this, 100);
-		}
-	};
+
+//	private Runnable runnable = new Runnable() {
+//		@Override
+//		public void run() {
+//			System.out.println("checking downloadCounter: " + downloadCounter);
+//			if (downloadCounter == 0) {
+//				Intent mainIntent = new Intent().setClass(SplashActivity.this, MainActivity.class);
+//				startActivity(mainIntent);
+//				finish(); //Destruimos esta activity para prevenir que el usuario retorne aqui presionando el boton Atras.
+//				return;
+//			}
+//			handler.postDelayed(this, 100);
+//		}
+//	};
 
 	public void asyncJsonArticles(){
 //		incrementCount();
@@ -401,7 +464,6 @@ public class SplashActivity extends Activity {
 					}
 				});
 			}
-//			mScroll.scrollTo(0, 0);
 		}
 	}
 
@@ -427,9 +489,9 @@ public class SplashActivity extends Activity {
 		return false;
 	}
 
-	@Override
-	protected void onStop() {
-		super.onStop();
-		handler.removeCallbacks(runnable);
-	}
+//	@Override
+//	protected void onStop() {
+//		super.onStop();
+//		handler.removeCallbacks(runnable);
+//	}
 }

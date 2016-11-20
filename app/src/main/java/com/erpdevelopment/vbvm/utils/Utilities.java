@@ -91,31 +91,9 @@ public class Utilities {
 		// return current duration in milliseconds
 		return currentDuration * 1000;
 	}
-	
-	public static void setBackImageEventHandler(ImageView button, final Activity activity){
-		button.setVisibility(View.VISIBLE);
-		button.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				activity.finish();
-			}
-		});
-	}
-	
+
 	public static void setActionBar(AppCompatActivity activity, String title) {
         ActionBar actionBar = activity.getSupportActionBar();
-//        actionBar.setDisplayHomeAsUpEnabled(true);
-//        actionBar.setDisplayShowTitleEnabled(true);
-//        if ( title==null )
-//        	actionBar.setTitle("Back");
-//        else
-//        	actionBar.setTitle(title);
-//        actionBar.setDisplayUseLogoEnabled(false);
-
-
-//		actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setDisplayShowTitleEnabled(true);
 		actionBar.setTitle(title);
@@ -151,25 +129,10 @@ public class Utilities {
 	}
 
 	public static SpannableString getFloatingText(Activity activity, String description, int iconRefSize) {
-//        String text = getString(R.string.text);
-
-		// Получаем иконку и ее ширину
-//        Drawable dIcon = getResources().getDrawable(R.drawable.photo_brady);
 		Drawable dIcon = ResourcesCompat.getDrawable(activity.getResources(), iconRefSize, null);
 		int leftMargin = (dIcon != null ? dIcon.getIntrinsicWidth() : 0) + 15;
-//        int leftMargin = 100;
-
-		// Устанавливаем иконку в R.id.icon
-//        ImageView icon = (ImageView) findViewById(R.id.icon);
-//        icon.setBackgroundDrawable(dIcon);
-
-//        SpannableString ss = new SpannableString(text);
 		SpannableString ss = new SpannableString(description);
-		// Выставляем отступ для первых трех строк абазца
 		ss.setSpan(new LeadingMarginSpanHelper(leftMargin, 5), 0, ss.length(), 0);
-
-//        TextView messageView = (TextView) findViewById(R.id.message_view);
-//        messageView.setText(ss);
 		return ss;
 	}
 

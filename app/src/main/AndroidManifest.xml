@@ -2,12 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           package="com.erpdevelopment.vbvm"
-          android:versionCode="16"
+          android:versionCode="18"
           android:versionName="3.0">
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="23"
+        android:targetSdkVersion="22"
         tools:overrideLibrary="com.cardinalsolutions.progressindicator"/>
 
     <supports-screens
@@ -35,7 +35,8 @@
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen">
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <!--android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen">-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

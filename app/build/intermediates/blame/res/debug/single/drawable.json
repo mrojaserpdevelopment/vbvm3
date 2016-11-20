@@ -240,12 +240,12 @@
         "source": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.2.1\\res\\drawable\\abc_cab_background_top_material.xml"
     },
     {
-        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\action_bar_bg_selector.xml",
-        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\action_bar_bg_selector.xml"
-    },
-    {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\photo_stephen_scaled.png",
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\photo_stephen_scaled.png"
+    },
+    {
+        "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\action_bar_bg_selector.xml",
+        "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\drawable\\action_bar_bg_selector.xml"
     },
     {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\photo_guest.jpg",

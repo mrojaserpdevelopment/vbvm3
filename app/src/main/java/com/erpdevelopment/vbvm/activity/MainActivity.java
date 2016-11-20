@@ -23,6 +23,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.app.Activity;
@@ -90,7 +91,6 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 
 	public static String locale;
 
-//	public static InputMethodManager imm;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -99,19 +99,21 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		setContentView(R.layout.activity_main);
 		mainCtx = this;
         settings = getPreferences(Activity.MODE_PRIVATE);
-//		imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         VbvmDatabaseOpenHelper mDbHelper = VbvmDatabaseOpenHelper.getInstance(mainCtx);
         DatabaseManager.initializeInstance(mDbHelper);
         db = DatabaseManager.getInstance().openDatabase();
 
-		locale = getResources().getConfiguration().locale.getDisplayName();
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+			locale = getResources().getConfiguration().getLocales().get(0).getDisplayName();
+		} else {
+			locale = getResources().getConfiguration().locale.getDisplayName();
+		}
 
 		viewMiniPlayer = (RelativeLayout) findViewById(R.id.view_mini_player);
 		slidingLayout = (SlidingUpPanelLayout)findViewById(R.id.sliding_layout);
 		slidingLayout.setDragView(viewMiniPlayer.findViewById(R.id.ll_player_mini_title));
 		tvPlayerLessonTitleMini = (TextView) viewMiniPlayer.findViewById(R.id.tv_player_lesson_title_mini);
 		tvPlayerLessonDescriptionMini = (TextView) viewMiniPlayer.findViewById(R.id.tv_player_lesson_description_mini);
-//		btnPlayMini = (ImageButton) viewMiniPlayer.findViewById(R.id.btn_play_mini);
 
 		lastFragSelected = "Studies";
 		lastFragInStudies = "Studies";
@@ -198,10 +200,6 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		actionBar.setDisplayHomeAsUpEnabled(false);
 		actionBar.setDisplayShowTitleEnabled(true);
 		actionBar.setTitle("Studies");
-
-//		SharedPreferences.Editor e = MainActivity.settings.edit();
-//		e.putString(LAST_FRAGMENT_STUDIES, "Studies");
-//		e.commit();
 
 		// Commit changes
 		ft.commit();
@@ -338,14 +336,6 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		if (fragmentVideoChannels.isAdded()) { ft.hide(fragmentVideoChannels); }
 		if (fragmentVideos.isAdded()) { ft.hide(fragmentVideos); }
 
-//		actionBar = getSupportActionBar();
-//		actionBar.setDisplayHomeAsUpEnabled(true);
-//		actionBar.setDisplayShowTitleEnabled(true);
-//		actionBar.setTitle(mArticle.getTitle());
-//		Drawable textHomeUp = Utilities.getTextViewAsDrawable(this, "Articles");
-//		actionBar.setLogo(textHomeUp);
-//		actionBar.show();
-
 		Utilities.setActionBar(this, mArticle.getTitle());
 
 		Bundle bundle = new Bundle();
@@ -376,12 +366,6 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		if (fragmentVideoChannels.isAdded()) { ft.hide(fragmentVideoChannels); }
 		if (fragmentVideos.isAdded()) { ft.hide(fragmentVideos); }
 
-//		actionBar.setDisplayHomeAsUpEnabled(true);
-//		actionBar.setDisplayShowTitleEnabled(true);
-//		actionBar.setTitle(mAnswer.getTitle());
-//		Drawable textHomeUp = Utilities.getTextViewAsDrawable(this, "Answers");
-//		actionBar.setLogo(textHomeUp);
-
 		Utilities.setActionBar(this, mAnswer.getTitle());
 
 		Bundle bundle = new Bundle();
@@ -410,12 +394,6 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		if (fragmentVideoChannels.isAdded()) { ft.hide(fragmentVideoChannels); }
 		if (fragmentArticleDetails.isAdded()) { ft.hide(fragmentArticleDetails); }
 		if (fragmentAnswerDetails.isAdded()) { ft.hide(fragmentAnswerDetails); }
-
-//		actionBar.setDisplayHomeAsUpEnabled(true);
-//		actionBar.setDisplayShowTitleEnabled(true);
-//		actionBar.setTitle(mVideoChannel.getTitle());
-//		Drawable textHomeUp = Utilities.getTextViewAsDrawable(this, "Videos");
-//		actionBar.setLogo(textHomeUp);
 
 		Utilities.setActionBar(this, mVideoChannel.getTitle());
 
@@ -529,28 +507,28 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		}
 	}
 
-	private void handleBackEvent() {
-		switch (lastFragSelected) {
-			case "Studies": displayFragmentStudies();
-				break;
-			case "Articles": displayFragmentArticles();
-				break;
-			case "Answers": displayFragmentAnswers();
-				break;
-			case "VideoChannels": displayFragmentVideoChannels();
-				break;
-			case "Lessons": displayFragmentStudies();
-				break;
-			case "ArticleDetails": displayFragmentArticles();
-				break;
-			case "AnswerDetails": displayFragmentAnswers();
-				break;
-			case "Videos": displayFragmentVideoChannels();
-				break;
-			default:
-				break;
-		}
-	}
+//	private void handleBackEvent() {
+//		switch (lastFragSelected) {
+//			case "Studies": displayFragmentStudies();
+//				break;
+//			case "Articles": displayFragmentArticles();
+//				break;
+//			case "Answers": displayFragmentAnswers();
+//				break;
+//			case "VideoChannels": displayFragmentVideoChannels();
+//				break;
+//			case "Lessons": displayFragmentStudies();
+//				break;
+//			case "ArticleDetails": displayFragmentArticles();
+//				break;
+//			case "AnswerDetails": displayFragmentAnswers();
+//				break;
+//			case "Videos": displayFragmentVideoChannels();
+//				break;
+//			default:
+//				break;
+//		}
+//	}
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
@@ -574,8 +552,4 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 //		System.out.println("MainActivity.onDestroy");
 	}
 
-	//	@Override
-//	public void onBackPressed() {
-//		super.onBackPressed();
-//	}
 }
