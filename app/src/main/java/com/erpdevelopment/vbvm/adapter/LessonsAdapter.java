@@ -239,12 +239,18 @@ public class LessonsAdapter extends BaseAdapter {
 				TextView tvPlayMini = (TextView) view.findViewById(R.id.tv_icon_play_mini);
 				tvPlayMini.setText(context.getResources().getString(R.string.fa_icon_stop));
 				tvPlayMini.setTextSize(TypedValue.COMPLEX_UNIT_SP,14);
+				lesson.setDownloadStatusAudio(2);
+			} else if (downloadType.equals("teacher")) {
+				lesson.setDownloadStatusTeacherAid(2);
+			} else if (downloadType.equals("transcript")) {
+				lesson.setDownloadStatusTranscript(2);
 			}
+
 			DownloadService.startDownload((Activity)context, lesson, downloadUrl, downloadType, lessons);
 			DownloadService.threadMap.put(lesson.getIdProperty(),DownloadService.downloaderThread);
 //			for (int i=0; i<lessons.size(); i++) {
 //				if (lessons.get(i).getIdProperty().equals(lesson.getIdProperty())) {
-					lesson.setDownloadStatusAudio(2);
+//					lesson.setDownloadStatusAudio(2);
 //					break;
 //				}
 //			}
