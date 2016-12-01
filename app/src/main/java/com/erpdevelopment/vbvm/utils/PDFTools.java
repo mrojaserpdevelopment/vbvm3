@@ -42,7 +42,10 @@ public class PDFTools {
 		mContext = context;
 		mPdfUrl = pdfUrl;
 		if ( isPDFSupported( context ) ) {
-			new asyncDownloadPdf().execute();
+//			new asyncDownloadPdf().execute();
+			String filename = mPdfUrl.substring( mPdfUrl.lastIndexOf( "/" ) + 1 );
+			File tempFile = new File( FileCache.cacheDirAudio.getAbsolutePath(), filename );
+			openPDF( context, Uri.fromFile( tempFile ) );
 		} else {
 			askToOpenPDFThroughGoogleDrive( context, pdfUrl );
 		}
@@ -124,6 +127,7 @@ public class PDFTools {
 	 * Open a local PDF file with an installed reader
 	 */
 	public static final void openPDF(Context context, Uri localUri ) {
+
 		Intent i = new Intent( Intent.ACTION_VIEW );
 		i.setDataAndType( localUri, PDF_MIME_TYPE );
 		context.startActivity( i );
@@ -147,7 +151,6 @@ public class PDFTools {
 		// The place where the downloaded PDF file will be put
 //		final File tempFile = new File( context.getExternalFilesDir( Environment.DIRECTORY_DOWNLOADS ), filename );
 		final File tempFile = new File( FileCache.cacheDirAudio.getAbsolutePath(), filename );
-		System.out.println("tempfile pdf: " + tempFile.getAbsolutePath());
 		if ( tempFile.exists() ) {
 			System.out.println("pdf file already exists...");
 			// If we have downloaded the file before, just go ahead and show it.
