@@ -3665,6 +3665,7 @@ containing a value of this type.
     }
     public static final class xml {
         public static final int bottombar_tabs=0x7f050000;
+        public static final int provider_paths=0x7f050001;
     }
     public static final class styleable {
         /** Attributes that can be used with a ActionBar.

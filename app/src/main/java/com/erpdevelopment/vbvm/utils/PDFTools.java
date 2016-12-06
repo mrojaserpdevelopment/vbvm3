@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import com.erpdevelopment.vbvm.BuildConfig;
 import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.utils.imageloading.FileCache;
 
@@ -25,6 +26,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.support.v4.content.FileProvider;
 
 public class PDFTools {
 	private static final String GOOGLE_DRIVE_PDF_READER_PREFIX = "http://drive.google.com/viewer?url=";
@@ -45,7 +47,11 @@ public class PDFTools {
 //			new asyncDownloadPdf().execute();
 			String filename = mPdfUrl.substring( mPdfUrl.lastIndexOf( "/" ) + 1 );
 			File tempFile = new File( FileCache.cacheDirAudio.getAbsolutePath(), filename );
-			openPDF( context, Uri.fromFile( tempFile ) );
+//			openPDF( context, Uri.fromFile( tempFile ) );
+            Uri pdfURI = FileProvider.getUriForFile(context,
+                    BuildConfig.APPLICATION_ID + ".provider",
+                    tempFile);
+			openPDF( context, pdfURI);
 		} else {
 			askToOpenPDFThroughGoogleDrive( context, pdfUrl );
 		}
@@ -127,9 +133,9 @@ public class PDFTools {
 	 * Open a local PDF file with an installed reader
 	 */
 	public static final void openPDF(Context context, Uri localUri ) {
-
 		Intent i = new Intent( Intent.ACTION_VIEW );
 		i.setDataAndType( localUri, PDF_MIME_TYPE );
+        i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 		context.startActivity( i );
 	}
 	/**

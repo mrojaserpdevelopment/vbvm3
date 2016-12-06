@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\android\androidstudio\vbvm3\app\src\main\AndroidManifest.xml:2:1-70:12
+ADDED from C:\android\androidstudio\vbvm3\app\src\main\AndroidManifest.xml:2:1-81:12
 	package
 		ADDED from C:\android\androidstudio\vbvm3\app\src\main\AndroidManifest.xml:4:11-44
 		INJECTED from C:\android\androidstudio\vbvm3\app\src\main\AndroidManifest.xml
@@ -75,7 +75,7 @@ ADDED from C:\android\androidstudio\vbvm3\app\src\main\AndroidManifest.xml:23:5-
 	android:name
 		ADDED from C:\android\androidstudio\vbvm3\app\src\main\AndroidManifest.xml:23:22-77
 application
-ADDED from C:\android\androidstudio\vbvm3\app\src\main\AndroidManifest.xml:25:5-68:19
+ADDED from C:\android\androidstudio\vbvm3\app\src\main\AndroidManifest.xml:25:5-79:19
 MERGED from [com.android.support:design:23.3.0] C:\android\androidstudio\vbvm3\app\build\intermediates\exploded-aar\com.android.support\design\23.3.0\AndroidManifest.xml:22:5-20
 MERGED from [com.android.support:appcompat-v7:24.2.1] C:\android\androidstudio\vbvm3\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\24.2.1\AndroidManifest.xml:25:5-20
 MERGED from [com.android.support:support-v4:24.2.1] C:\android\androidstudio\vbvm3\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.2.1\AndroidManifest.xml:25:5-20
@@ -153,3 +153,20 @@ ADDED from C:\android\androidstudio\vbvm3\app\src\main\AndroidManifest.xml:64:9-
 		ADDED from C:\android\androidstudio\vbvm3\app\src\main\AndroidManifest.xml:65:13-48
 	android:name
 		ADDED from C:\android\androidstudio\vbvm3\app\src\main\AndroidManifest.xml:64:19-83
+provider#android.support.v4.content.FileProvider
+ADDED from C:\android\androidstudio\vbvm3\app\src\main\AndroidManifest.xml:69:9-77:20
+	android:authorities
+		ADDED from C:\android\androidstudio\vbvm3\app\src\main\AndroidManifest.xml:71:13-60
+		INJECTED from C:\android\androidstudio\vbvm3\app\src\main\AndroidManifest.xml
+	android:grantUriPermissions
+		ADDED from C:\android\androidstudio\vbvm3\app\src\main\AndroidManifest.xml:73:13-47
+	android:exported
+		ADDED from C:\android\androidstudio\vbvm3\app\src\main\AndroidManifest.xml:72:13-37
+	android:name
+		ADDED from C:\android\androidstudio\vbvm3\app\src\main\AndroidManifest.xml:70:13-67
+meta-data#android.support.FILE_PROVIDER_PATHS
+ADDED from C:\android\androidstudio\vbvm3\app\src\main\AndroidManifest.xml:74:13-76:57
+	android:resource
+		ADDED from C:\android\androidstudio\vbvm3\app\src\main\AndroidManifest.xml:76:17-55
+	android:name
+		ADDED from C:\android\androidstudio\vbvm3\app\src\main\AndroidManifest.xml:75:17-67
