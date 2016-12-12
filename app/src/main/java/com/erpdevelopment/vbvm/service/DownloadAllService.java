@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import java.net.MalformedURLException;
@@ -198,7 +199,8 @@ public class DownloadAllService extends IntentService {
 		intent.putExtra("idLesson", idLesson);
 		intent.putExtra("downloadProgress", downloadProgress);
 		intent.putExtra("downloadType", downloadType);
-		sendBroadcast(intent);
+//		sendBroadcast(intent);
+		LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 	}
 
 	private void publishDownloadResults(String idLesson, String fileName, String downloadType) {
@@ -207,7 +209,8 @@ public class DownloadAllService extends IntentService {
 		intent.putExtra(FILENAME, fileName);
 		intent.putExtra("idLesson", idLesson);
 		intent.putExtra("downloadType", downloadType);
-		sendBroadcast(intent);
+//		sendBroadcast(intent);
+		LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 	}
 
 	@Override

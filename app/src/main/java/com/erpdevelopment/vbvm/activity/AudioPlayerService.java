@@ -147,7 +147,7 @@ public class AudioPlayerService extends Service implements OnPreparedListener{
 					mp.setOnPreparedListener(this);
 					mp.prepareAsync();
 					isLessonComplete = false;
-					FilesManager.lastLessonId = "";
+//					FilesManager.lastLessonId = "";
 					mp.setOnCompletionListener(new OnCompletionListener() {
 						@Override
 						public void onCompletion(MediaPlayer arg0) {

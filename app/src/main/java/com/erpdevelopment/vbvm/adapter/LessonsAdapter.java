@@ -10,6 +10,7 @@ import com.erpdevelopment.vbvm.model.Lesson;
 import com.erpdevelopment.vbvm.service.DownloadAllService;
 import com.erpdevelopment.vbvm.service.downloader.DownloadService;
 import com.erpdevelopment.vbvm.service.downloader.DownloaderThread;
+import com.erpdevelopment.vbvm.utils.Constants;
 import com.erpdevelopment.vbvm.utils.FilesManager;
 import com.erpdevelopment.vbvm.utils.FontManager;
 import com.erpdevelopment.vbvm.utils.PDFTools;
@@ -219,68 +220,44 @@ public class LessonsAdapter extends BaseAdapter {
 			case R.id.rl_play_mini:
 				status = lesson.getDownloadStatusAudio();
 				downloadUrl = lesson.getAudioSource();
-				downloadType = "audio";
+				downloadType = Constants.LESSON_FILE.AUDIO;
 				break;
 			case R.id.rl_teacher_aid:
 				status = lesson.getDownloadStatusTeacherAid();
 				downloadUrl = lesson.getTeacherAid();
-				downloadType = "teacher";
+				downloadType = Constants.LESSON_FILE.TEACHER;
 				break;
 			case R.id.rl_transcript:
 				status = lesson.getDownloadStatusTranscript();
 				downloadUrl = lesson.getTranscript();
-				downloadType = "transcript";
+				downloadType = Constants.LESSON_FILE.TRANSCRIPT;
 				break;
 		}
 		if ( downloadUrl.isEmpty() )
 			return;
 		if ( status == 0 && !DownloadAllService.downloading && DownloadService.countDownloads < 2 ) {
-			if (downloadType.equals("audio")) {
+			if (downloadType.equals(Constants.LESSON_FILE.AUDIO)) {
 				TextView tvPlayMini = (TextView) view.findViewById(R.id.tv_icon_play_mini);
 				tvPlayMini.setText(context.getResources().getString(R.string.fa_icon_stop));
 				tvPlayMini.setTextSize(TypedValue.COMPLEX_UNIT_SP,14);
 				lesson.setDownloadStatusAudio(2);
-			} else if (downloadType.equals("teacher")) {
+			} else if (downloadType.equals(Constants.LESSON_FILE.TEACHER)) {
 				lesson.setDownloadStatusTeacherAid(2);
-			} else if (downloadType.equals("transcript")) {
+			} else if (downloadType.equals(Constants.LESSON_FILE.TRANSCRIPT)) {
 				lesson.setDownloadStatusTranscript(2);
 			}
-
 			DownloadService.startDownload((Activity)context, lesson, downloadUrl, downloadType, lessons);
 			DownloadService.threadMap.put(lesson.getIdProperty(),DownloadService.downloaderThread);
-//			for (int i=0; i<lessons.size(); i++) {
-//				if (lessons.get(i).getIdProperty().equals(lesson.getIdProperty())) {
-//					lesson.setDownloadStatusAudio(2);
-//					break;
-//				}
-//			}
 			setLessonListItems(lessons);
 		}
 		if (status == 1) {
-			if (downloadType.equals("audio")) {
-				if (!(lesson.getIdProperty().equals(FilesManager.lastLessonId))) {
-					AudioPlayerService.created = false;
-					//save current/old position in track before updating to new position
-					if (!FilesManager.lastLessonId.equals("")) {
-						DBHandleLessons.saveCurrentPositionInTrack(FilesManager.lastLessonId, (int) AudioPlayerService.currentPositionInTrack);
-						Lesson oldLesson = DBHandleLessons.getLessonById(FilesManager.lastLessonId);
-						if (oldLesson.getState().equals("playing"))
-							DBHandleLessons.updateLessonState(FilesManager.lastLessonId, AudioPlayerService.currentPositionInTrack, "partial");
-					}
-					Lesson newLesson = DBHandleLessons.getLessonById(lesson.getIdProperty());
-					AudioPlayerService.savedOldPositionInTrack =
-							AudioPlayerService.currentPositionInTrack =
-									newLesson.getCurrentPosition();
-				}
-				FilesManager.lastLessonId = lesson.getIdProperty();
-				AudioPlayerHelper helper = new AudioPlayerHelper();
-				helper.setLessonToPlay(lesson);
-				helper.initContext((Activity) context, rootView);
+			if (downloadType.equals(Constants.LESSON_FILE.AUDIO)) {
+				startAudio(lesson);
 			}
-			if (downloadType.equals("teacher")) {
+			if (downloadType.equals(Constants.LESSON_FILE.TEACHER)) {
 				new PDFTools().showPDFUrl(context,lesson.getTeacherAid());
 			}
-			if (downloadType.equals("transcript")) {
+			if (downloadType.equals(Constants.LESSON_FILE.TRANSCRIPT)) {
 				new PDFTools().showPDFUrl(context,lesson.getTranscript());
 			}
 		}
@@ -288,12 +265,34 @@ public class LessonsAdapter extends BaseAdapter {
 			if ( !DownloadAllService.downloading )
 				stopDownload(view,downloadType,lesson);
 			else
-				stopDownloadAll(view,downloadType,lesson);
+				stopDownloadAll(view,lesson);
 		}
 	}
 
+	public void startAudio(Lesson lesson) {
+		if (!(lesson.getIdProperty().equals(FilesManager.lastLessonId))) {
+			AudioPlayerService.created = false;
+			//save current/old position in track before updating to new position
+			if (!FilesManager.lastLessonId.equals("")) {
+				DBHandleLessons.saveCurrentPositionInTrack(FilesManager.lastLessonId, (int) AudioPlayerService.currentPositionInTrack);
+				Lesson oldLesson = DBHandleLessons.getLessonById(FilesManager.lastLessonId);
+				if (oldLesson.getState().equals("playing")) {
+					DBHandleLessons.updateLessonState(FilesManager.lastLessonId, AudioPlayerService.currentPositionInTrack, "partial");
+				}
+			}
+			Lesson newLesson = DBHandleLessons.getLessonById(lesson.getIdProperty());
+			AudioPlayerService.savedOldPositionInTrack =
+					AudioPlayerService.currentPositionInTrack =
+							newLesson.getCurrentPosition();
+		}
+		FilesManager.lastLessonId = lesson.getIdProperty();
+		AudioPlayerHelper helper = new AudioPlayerHelper();
+		helper.setLessonToPlay(lesson);
+		helper.initContext((Activity) context, rootView);
+	}
+
 	private void stopDownload(View view, String downloadType, Lesson lesson) {
-		if (downloadType.equals("audio")) {
+		if (downloadType.equals(Constants.LESSON_FILE.AUDIO)) {
 			TextView tvPlayMini = (TextView) view.findViewById(R.id.tv_icon_play_mini);
 			tvPlayMini.setText(context.getResources().getString(R.string.fa_icon_play_mini));
 			tvPlayMini.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
@@ -303,21 +302,11 @@ public class LessonsAdapter extends BaseAdapter {
 				lesson.setDownloadStatusAudio(0);
 				lesson.setDownloadProgressAudio(0);
 				setLessonListItems(lessons);
-//				t.interrupt();
-//				lesson.setDownloadStatusAudio(0);
-//				setLessonListItems(lessons);
 			}
 		}
-		//Stop the service if no downloads left
-//		if ( DownloadService.IS_SERVICE_RUNNING && DownloadService.countDownloads==0 ) {
-//			Intent service = new Intent(context, DownloadService.class);
-//			service.setAction(Constants.ACTION.STOPFOREGROUND_ACTION);
-//			DownloadService.IS_SERVICE_RUNNING = false;
-//			context.startService(service);
-//		}
 	}
 
-	private void stopDownloadAll(View view, String downloadType, Lesson lesson) {
+	private void stopDownloadAll(View view, Lesson lesson) {
 		DownloadAllService.stopped = true;
 		TextView tvPlayMini = (TextView) view.findViewById(R.id.tv_icon_play_mini);
 		tvPlayMini.setText(context.getResources().getString(R.string.fa_icon_play_mini));
@@ -326,45 +315,5 @@ public class LessonsAdapter extends BaseAdapter {
 		lesson.setDownloadProgressAudio(0);
 		setLessonListItems(lessons);
 	}
-
-	public Handler activityHandler = new Handler()
-	{
-		public void handleMessage(Message msg)
-		{
-			switch(msg.what)
-			{
-				case MESSAGE_UPDATE_PROGRESS_BAR:
-					String idLesson = msg.getData().getString("idLesson");
-					int downloadProgress = msg.getData().getInt("downloadProgress");
-					List<Lesson> listLessons = lessons;
-					for (int i=0; i<listLessons.size(); i++) {
-						if (listLessons.get(i).getIdProperty().equals(idLesson)) {
-							listLessons.get(i).setDownloadProgressAudio(downloadProgress);
-							break;
-						}
-					}
-					setLessonListItems(listLessons);
-					break;
-
-				case MESSAGE_CONNECTING_STARTED:
-					break;
-
-				case MESSAGE_DOWNLOAD_STARTED:
-					break;
-
-				case MESSAGE_DOWNLOAD_COMPLETE:
-					break;
-
-				case MESSAGE_DOWNLOAD_CANCELED:
-					break;
-
-				case MESSAGE_ENCOUNTERED_ERROR:
-					break;
-
-				default:
-					break;
-			}
-		}
-	};
 
 }

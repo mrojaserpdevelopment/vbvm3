@@ -174,9 +174,9 @@ public class DownloaderThread extends Thread {
                         break;
                 }
                 Intent intent = new Intent(DownloadService.NOTIFICATION_DOWNLOAD_PROGRESS);
-//                intent.putParcelableArrayListExtra("listLessons", (ArrayList)mListLessons);
                 intent.putExtra("lesson",mLesson);
                 intent.putExtra("downloadStatus", downloadStatus);
+                intent.putExtra("downloadType", mDownloadType);
                 intent.putExtra("messageError", messageError);
                 LocalBroadcastManager.getInstance(mActivity).sendBroadcast(intent);
             }

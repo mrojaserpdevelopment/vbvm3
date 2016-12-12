@@ -21,13 +21,11 @@ import java.util.Map;
 
 public class DownloadService extends Service {
 
-    private int result = Activity.RESULT_CANCELED;
     public static final String URL = "urlPath";
     public static int countDownloads = 0;	  // number of current IS_SERVICE_RUNNING files
     public static boolean IS_SERVICE_RUNNING = false;
     public static DownloaderThread downloaderThread;
     public static final String NOTIFICATION_DOWNLOAD_PROGRESS = "notification_download_progress";
-    public static final String NOTIFICATION_DOWNLOAD_COMPLETE = "notification_download_complete";
     private static final String LOG_TAG = "DownloadService";
 
     public static Map<String,DownloaderThread> threadMap = new HashMap<>();
@@ -48,33 +46,12 @@ public class DownloadService extends Service {
         return null;
     }
 
-//    @Override
-//    public int onStartCommand(Intent intent, int flags, int startId) {
-//        downloaderThread.start();
-//        return super.onStartCommand(intent, flags, startId);
-//    }
-
     Handler handler = new Handler();
-//    private Runnable r = new Runnable() {
-//        public void run() {
-//            System.out.println("checking download service count... " + countDownloads);
-//            if (countDownloads==0) {
-//                Log.i(LOG_TAG, "Received Stop Foreground Intent");
-//                stopForeground(true);
-//                stopSelf();
-//                handler.removeCallbacks(this);
-//            }
-//            handler.postDelayed(this, 1000);
-//        }
-//    };
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
-//            System.out.println("checking download service count... " + countDownloads);
             if (countDownloads==0) {
-                Log.i(LOG_TAG, "Received Stop Foreground Intent");
                 stopForeground(true);
-//                stopSelf();
                 return;
             }
             handler.postDelayed(this, 1000);
@@ -88,7 +65,6 @@ public class DownloadService extends Service {
         if (intent.getAction().equals(Constants.ACTION.STARTFOREGROUND_ACTION)) {
             Log.i(LOG_TAG, "Received Start Foreground Intent ");
             showNotification();
-//            Toast.makeText(this, "Downloading lesson", Toast.LENGTH_SHORT).show();
             downloaderThread.start();
             countDownloads++;
             handler.postDelayed(runnable, 1000);
@@ -103,16 +79,13 @@ public class DownloadService extends Service {
             stopForeground(true);
             stopSelf();
         }
-//        downloaderThread.start();
         return START_REDELIVER_INTENT;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        System.out.println("DownloadService.onDestroy");
         handler.removeCallbacks(runnable);
-//        stopSelf();
     }
 
     private void showNotification() {
@@ -161,12 +134,6 @@ public class DownloadService extends Service {
         startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE,
                 notification);
     }
-
-//    public static int startDownload(Context ctx) {
-//        Intent intent = new Intent(ctx, DownloadService.class);
-//        ctx.startService(intent);
-//        return 0;
-//    }
 
     public static int startDownload(Activity ctx, Lesson l, String url,
                                     String downloadType, List<Lesson> lessons) {

@@ -130,10 +130,6 @@ public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMedi
         audioManager = (AudioManager) activity.getSystemService(Context.AUDIO_SERVICE);
         setVolumeControl();
 
-//        BitmapManager2.bitmapWidth = BitmapManager2.bitmapHeight = 600;
-//        ImageLoader2.useCache = false;
-//        imageLoader.DisplayImage(thumbnailSource,imgPlayerStudy);
-
         Picasso.with(activity)
                 .load(thumbnailSource)
                 .resize(600,600)
@@ -147,7 +143,6 @@ public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMedi
         btnSlideUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("AudioPlayerHelper.onClick");
                 slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
             }
         });
@@ -372,10 +367,8 @@ public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMedi
     }
 
     public void unregisterReceiverProgress(Activity a) {
-        if (mConnection!=null && mService!=null) {
-            System.out.println("AudioPlayerHelper.unbindService: ");
+        if (mConnection!=null && mService!=null)
             a.getApplicationContext().unbindService(mConnection);
-        }
         if ( progressReceiver != null )
             LocalBroadcastManager.getInstance(a).unregisterReceiver(progressReceiver);
     }

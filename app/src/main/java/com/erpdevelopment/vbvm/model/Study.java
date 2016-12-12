@@ -16,12 +16,12 @@ public class Study implements Parcelable {
 	private String thumbnailAltText;
 	private String studiesDescription;
 	private String type;
+	private String bibleIndex;
 	private List<Topic> topics;
 	private List<Lesson> lessons;
 
 	public Study() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getIdProperty() {
@@ -88,6 +88,14 @@ public class Study implements Parcelable {
 		this.type = type;
 	}
 
+	public String getBibleIndex() {
+		return bibleIndex;
+	}
+
+	public void setBibleIndex(String bibleIndex) {
+		this.bibleIndex = bibleIndex;
+	}
+
 	public List<Lesson> getLessons() {
 		return lessons;
 	}
@@ -106,7 +114,6 @@ public class Study implements Parcelable {
 
 	@Override
 	public int describeContents() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

@@ -3,7 +3,6 @@ package com.erpdevelopment.vbvm.utils;
 public class Constants {
 
 	public Constants() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public static String VBVM_PREFS = "com.erpdevelopment.vbvm";
@@ -60,21 +59,23 @@ public class Constants {
 	}
 
 	public interface URL_VBVMI {
-//		int FOREGROUND_SERVICE = 101;
 		String ABOUT = "http://www.versebyverseministry.org/about/";
 		String EVENTS = "http://www.versebyverseministry.org/events/";
 		String DONATE = "http://www.versebyverseministry.org/about/financial_support";
 		String CONTACT = "http://www.versebyverseministry.org/contact/";
 	}
 
+	public interface LESSON_FILE {
+		String AUDIO = "audio";
+		String TRANSCRIPT = "transcript";
+		String TEACHER = "teacher";
+	}
 
+	public interface LESSON_STATE {
+		String NEW = "new";
+		String PLAYING = "playing";
+		String PARTIAL = "partial";
+		String COMPLETE = "complete";
+	}
 
-	//LessonsListAdapter - DownloadThread
-//	// Used to communicate state changes in the DownloaderThreadTest
-//	public static final int MESSAGE_DOWNLOAD_STARTED = 1000;
-//	public static final int MESSAGE_DOWNLOAD_COMPLETE = 1001;
-//	public static final int MESSAGE_UPDATE_PROGRESS_BAR = 1002;
-//	public static final int MESSAGE_DOWNLOAD_CANCELED = 1003;
-//	public static final int MESSAGE_CONNECTING_STARTED = 1004;
-//	public static final int MESSAGE_ENCOUNTERED_ERROR = 1005;
 }
