@@ -294,8 +294,6 @@ public class AudioPlayerHelper implements SeekBar.OnSeekBarChangeListener, IMedi
      */
     public void bindToService() {
         Intent intent = new Intent(activity, AudioPlayerService.class);
-//        intent.putExtra("currentSongIndex", currentSongIndex);
-
         if (AudioPlayerServiceRunning()) {
             // Bind to LocalService
             activity.bindService(intent, mConnection, Context.BIND_AUTO_CREATE);

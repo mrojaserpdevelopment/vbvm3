@@ -35,16 +35,7 @@ public class LessonsAdapter extends BaseAdapter {
 	private List<Lesson> lessons;
 	private LayoutInflater inflater;
 	private View rootView;
-	private Intent intentDownloadAll;
 	public static Lesson mCurrentLesson;
-
-	// Used to communicate state changes in the DownloaderThreadTest
-	public static final int MESSAGE_DOWNLOAD_STARTED = 1000;
-	public static final int MESSAGE_DOWNLOAD_COMPLETE = 1001;
-	public static final int MESSAGE_UPDATE_PROGRESS_BAR = 1002;
-	public static final int MESSAGE_DOWNLOAD_CANCELED = 1003;
-	public static final int MESSAGE_CONNECTING_STARTED = 1004;
-	public static final int MESSAGE_ENCOUNTERED_ERROR = 1005;
 
 	private int sizeListComplete;
 	private int sizeListIncomplete;
@@ -207,9 +198,9 @@ public class LessonsAdapter extends BaseAdapter {
 	    notifyDataSetChanged();
 	}
 
-	public void setIntentServiceDownloadAll(Intent intent) {
-		intentDownloadAll = intent;
-	}
+//	public void setIntentServiceDownloadAll(Intent intent) {
+//		intentDownloadAll = intent;
+//	}
 
 	private void onClickItemLessons(View view, Lesson lesson, int position) {
 		int status = 0;

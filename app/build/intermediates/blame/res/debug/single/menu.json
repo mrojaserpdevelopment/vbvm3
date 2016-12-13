@@ -1,17 +1,5 @@
 [
     {
-        "merged": "C:\\android\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_fragment_lessons.xml",
-        "source": "C:\\android\\androidstudio\\vbvm3\\app\\src\\main\\res\\menu\\menu_fragment_lessons.xml"
-    },
-    {
-        "merged": "C:\\android\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_fragment_studies.xml",
-        "source": "C:\\android\\androidstudio\\vbvm3\\app\\src\\main\\res\\menu\\menu_fragment_studies.xml"
-    },
-    {
-        "merged": "C:\\android\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\menu\\mail_sender.xml",
-        "source": "C:\\android\\androidstudio\\vbvm3\\app\\src\\main\\res\\menu\\mail_sender.xml"
-    },
-    {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\menu\\bible_study_lessons.xml",
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\menu\\bible_study_lessons.xml"
     },
@@ -20,16 +8,8 @@
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\menu\\menu_fragment_lessons.xml"
     },
     {
-        "merged": "C:\\android\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_event_details.xml",
-        "source": "C:\\android\\androidstudio\\vbvm3\\app\\src\\main\\res\\menu\\menu_event_details.xml"
-    },
-    {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_library.xml",
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\menu\\menu_library.xml"
-    },
-    {
-        "merged": "C:\\android\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\menu\\bible_study_lessons.xml",
-        "source": "C:\\android\\androidstudio\\vbvm3\\app\\src\\main\\res\\menu\\bible_study_lessons.xml"
     },
     {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\menu\\mail_sender.xml",
@@ -38,10 +18,6 @@
     {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_fragment_studies.xml",
         "source": "C:\\androidstudio\\vbvm3\\app\\src\\main\\res\\menu\\menu_fragment_studies.xml"
-    },
-    {
-        "merged": "C:\\android\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_library.xml",
-        "source": "C:\\android\\androidstudio\\vbvm3\\app\\src\\main\\res\\menu\\menu_library.xml"
     },
     {
         "merged": "C:\\androidstudio\\vbvm3\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_event_details.xml",

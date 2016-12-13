@@ -30,18 +30,13 @@ public class DownloadAllService extends IntentService {
 	public static final String URL = "urlpath";
 	public static final String FILENAME = "filename";
 	public static final String RESULT = "result";
-	public static final String NOTIFICATION2 = "com.erpdevelopment.vbvm2.service.receiver2";
-	public static final String NOTIFICATION_START = "notification_start";
 	public static final String NOTIFICATION_DOWNLOAD_ALL_PROGRESS = "notification_download_all_progress";
 	public static final String NOTIFICATION_DOWNLOAD_ALL_COMPLETE = "notification_download_all_complete";
-	public static String downloadAllTitle = "";
+	private static final int DOWNLOAD_BUFFER_SIZE = 4096;
 	private FileCache fileCache;
 	public static int countDownloads = 0;	  // number of current IS_SERVICE_RUNNING files
 	public static boolean downloading = false;
-	//private static ByteArrayBuffer baf;
-	private static final int DOWNLOAD_BUFFER_SIZE = 4096;
 	public static boolean stopped = false;
-
 	private String mIdLesson;
 	private String mDownloadType;
 	private int mDownloadProgress;
@@ -71,26 +66,14 @@ public class DownloadAllService extends IntentService {
 		  System.out.println("DownloadAllService.onHandleIntent: " + intent.getExtras().getString("idLesson"));
 		  if ( !stopped ) {
 			  downloading = true;
-//		  lesson = (Lesson) intent.getExtras().getParcelable("lesson");
 			  String idLesson = intent.getExtras().getString("idLesson");
 			  String url = intent.getExtras().getString("url");
 			  String downloadType = intent.getExtras().getString("downloadType");
-
 			  mIdLesson = idLesson;
 			  mDownloadProgress = 0;
 			  mDownloadType = downloadType;
-
-//		  if ( !url.equals("") ) {
 			  DBHandleLessons.updateLessonDownloadStatus(idLesson, 2, downloadType);
-//			  Intent i = new Intent(NOTIFICATION2);
-//			  i.putExtra("updateDownloadingStatus", true);
-//			  sendBroadcast(i);
-//		  publishDownloadStart(idLesson);
 			  downloadFromUrl(idLesson, url, downloadType);
-//		  publishDownloadResults(idLesson, BitmapManager.getFileNameFromUrl(url), url);
-//		  }
-//		  IS_SERVICE_RUNNING = false;
-//		  }
 		  } else {
 			  downloading = false;
 		  }
@@ -98,7 +81,6 @@ public class DownloadAllService extends IntentService {
 	  
 	  public void downloadFromUrl(String idLesson, String urlPath, String downloadType) {
 		  File outputTemp = null;
-		  int downloadStatus = 0;
 		  try {
 			  outputTemp = fileCache.getFileTempFolder(urlPath);		    
 			  if (outputTemp.exists()) {
@@ -107,14 +89,8 @@ public class DownloadAllService extends IntentService {
 			  }
 	          URL url = new URL(urlPath);
 	          long startTime = System.currentTimeMillis();
-	          Log.d("DownloadManager", "download begining");
-	          Log.d("DownloadManager", "download url:" + url);
-
 		      URLConnection conn = url.openConnection();
-	          InputStream is = conn.getInputStream();
-			  // start download
 			  BufferedInputStream inStream = new BufferedInputStream(conn.getInputStream());
-//			  outFile = new File(Environment.getExternalStorageDirectory() + "/" + fileName);
 			  FileOutputStream fileStream = new FileOutputStream(outputTemp);
 			  BufferedOutputStream outStream = new BufferedOutputStream(fileStream, DOWNLOAD_BUFFER_SIZE);
 			  byte[] data = new byte[DOWNLOAD_BUFFER_SIZE];
@@ -126,12 +102,10 @@ public class DownloadAllService extends IntentService {
 				  outStream.write(data, 0, bytesRead);
 				  totalRead += bytesRead;
 				  if(stopped){
-//					  publishDownloadProgress(idLesson,0,downloadType);
 					  mDownloadProgress = 0;
 					  handler.removeCallbacks(runnable);
 					  break;
 				  }
-//				  publishDownloadProgress(idLesson,  (int)((totalRead*100)/lengthOfFile), downloadType);
 				  mDownloadProgress = (int)((totalRead*100)/lengthOfFile);
 			  }
 			  mDownloadProgress = 0;
@@ -147,14 +121,11 @@ public class DownloadAllService extends IntentService {
 				  DBHandleLessons.updateLessonDownloadStatus(idLesson, 0, downloadType);
 				  publishDownloadResults(idLesson, BitmapManager2.getFileNameFromUrl(urlPath), downloadType);
 				  downloading = false;
-//				  stopSelf();
 			  } else {
-				  // successfully finished
 				  result = Activity.RESULT_OK;
 				  //copy downloaded file from temp to audio folder
 				  File output = fileCache.getFileAudioFolder(urlPath);
 				  fileCache.copyFile(outputTemp, output);
-				  downloadStatus = 1;
 				  outputTemp.delete();
 				  DBHandleLessons.updateLessonDownloadStatus(idLesson, 1, downloadType);
 				  publishDownloadResults(idLesson, BitmapManager2.getFileNameFromUrl(urlPath), downloadType);
@@ -216,7 +187,6 @@ public class DownloadAllService extends IntentService {
 	@Override
 	public void onDestroy() {
 		stopped = false;
-		System.out.println("DownloadAllService.onDestroy");
 		super.onDestroy();
 	}
 

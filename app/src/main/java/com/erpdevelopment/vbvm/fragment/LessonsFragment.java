@@ -201,7 +201,7 @@ public class LessonsFragment extends Fragment {
         intentDownloadAll.putExtra("url", url);
         intentDownloadAll.putExtra("downloadType", downloadType);
         getActivity().startService(intentDownloadAll);
-        adapterLessons.setIntentServiceDownloadAll(intentDownloadAll);
+//        adapterLessons.setIntentServiceDownloadAll(intentDownloadAll);
         DownloadAllService.incrementCount();
     }
 
