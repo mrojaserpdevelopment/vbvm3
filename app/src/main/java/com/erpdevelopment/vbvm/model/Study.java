@@ -127,6 +127,7 @@ public class Study implements Parcelable {
 		dest.writeString(averageRating);
 		dest.writeString(studiesDescription);
 		dest.writeString(type);
+		dest.writeString(bibleIndex);
 		dest.writeList(lessons);
 		dest.writeList(topics);
 	}	
@@ -140,6 +141,7 @@ public class Study implements Parcelable {
 		thumbnailAltText = in.readString();
 		studiesDescription = in.readString();
 		type = in.readString();
+		bibleIndex = in.readString();
 		lessons = new ArrayList<Lesson>();
 		topics = new ArrayList<Topic>();
 		in.readList(lessons, getClass().getClassLoader());

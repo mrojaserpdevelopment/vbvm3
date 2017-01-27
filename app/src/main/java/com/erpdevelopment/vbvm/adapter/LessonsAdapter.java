@@ -10,21 +10,25 @@ import com.erpdevelopment.vbvm.model.Lesson;
 import com.erpdevelopment.vbvm.service.DownloadAllService;
 import com.erpdevelopment.vbvm.service.downloader.DownloadService;
 import com.erpdevelopment.vbvm.service.downloader.DownloaderThread;
+import com.erpdevelopment.vbvm.utils.CircleDisplay;
 import com.erpdevelopment.vbvm.utils.Constants;
 import com.erpdevelopment.vbvm.utils.FilesManager;
 import com.erpdevelopment.vbvm.utils.FontManager;
 import com.erpdevelopment.vbvm.utils.PDFTools;
+import com.erpdevelopment.vbvm.utils.Utilities;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -42,17 +46,15 @@ public class LessonsAdapter extends BaseAdapter {
 
 	private static final int TYPE_LESSON = 0;
 	private static final int TYPE_DIVIDER = 1;
-
-	public LessonsAdapter(Context context, List<Lesson> lessons) {
-		this.context = context;
-		this.lessons = lessons;
-	}
+	private int screenWidthInPix;
 
 	public LessonsAdapter(Context context, List<Lesson> lessons, View rootView) {
 		this.context = context;
 		this.lessons = lessons;
 		this.rootView = rootView;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+		screenWidthInPix = displayMetrics.widthPixels;
 	}
 
 	@Override
@@ -100,9 +102,11 @@ public class LessonsAdapter extends BaseAdapter {
 				convertView.setOnClickListener(null);
 				convertView.setOnLongClickListener(null);
 				convertView.setLongClickable(false);
-			} else
+			} else {
 				convertView = inflater.inflate(R.layout.item_listview_lesson, parent, false);
+			}
 		}
+
 		Lesson lesson = lessons.get(position);
 		if (type==TYPE_DIVIDER) {
 			TextView title = (TextView) convertView.findViewById(R.id.tv_lessons_completed_title);
@@ -115,6 +119,8 @@ public class LessonsAdapter extends BaseAdapter {
 				count.setText(sizeListIncomplete + "");
 			}
 		} else {
+			int progressInDip = ( lesson.getProgressPercentage() * screenWidthInPix ) / 100;
+			((RelativeLayout.LayoutParams) convertView.findViewById(R.id.progress_view).getLayoutParams()).width = progressInDip;
 			TextView itemTvLessonNo = (TextView) convertView.findViewById(R.id.tv_lesson_no);
 			TextView itemTvLessonLength = (TextView) convertView.findViewById(R.id.tv_lesson_length);
 			TextView itemTvLessonDescription = (TextView) convertView.findViewById(R.id.tv_lesson_description);
@@ -198,10 +204,6 @@ public class LessonsAdapter extends BaseAdapter {
 	    notifyDataSetChanged();
 	}
 
-//	public void setIntentServiceDownloadAll(Intent intent) {
-//		intentDownloadAll = intent;
-//	}
-
 	private void onClickItemLessons(View view, Lesson lesson, int position) {
 		int status = 0;
 		String downloadUrl = "";
@@ -265,8 +267,8 @@ public class LessonsAdapter extends BaseAdapter {
 			AudioPlayerService.created = false;
 			//save current/old position in track before updating to new position
 			if (!FilesManager.lastLessonId.equals("")) {
-				DBHandleLessons.saveCurrentPositionInTrack(FilesManager.lastLessonId, (int) AudioPlayerService.currentPositionInTrack);
 				Lesson oldLesson = DBHandleLessons.getLessonById(FilesManager.lastLessonId);
+				DBHandleLessons.saveCurrentPositionInTrack(FilesManager.lastLessonId, (int)AudioPlayerService.currentPositionInTrack, oldLesson.getProgressPercentage());
 				if (oldLesson.getState().equals("playing")) {
 					DBHandleLessons.updateLessonState(FilesManager.lastLessonId, AudioPlayerService.currentPositionInTrack, "partial");
 				}
@@ -284,15 +286,15 @@ public class LessonsAdapter extends BaseAdapter {
 
 	private void stopDownload(View view, String downloadType, Lesson lesson) {
 		if (downloadType.equals(Constants.LESSON_FILE.AUDIO)) {
-			TextView tvPlayMini = (TextView) view.findViewById(R.id.tv_icon_play_mini);
-			tvPlayMini.setText(context.getResources().getString(R.string.fa_icon_play_mini));
-			tvPlayMini.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+//			TextView tvPlayMini = (TextView) view.findViewById(R.id.tv_icon_play_mini);
+//			tvPlayMini.setText(context.getResources().getString(R.string.fa_icon_play_mini));
+//			tvPlayMini.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 			DownloaderThread t = DownloadService.threadMap.get(lesson.getIdProperty());
 			if (t != null) {
 				t.stopDownload();
-				lesson.setDownloadStatusAudio(0);
-				lesson.setDownloadProgressAudio(0);
-				setLessonListItems(lessons);
+//				lesson.setDownloadStatusAudio(0);
+//				lesson.setDownloadProgressAudio(0);
+//				setLessonListItems(lessons);
 			}
 		}
 	}

@@ -36,11 +36,13 @@ public class StudiesFragment extends Fragment {
     private ExpandableHeightGridview gvStudiesNew;
     private ExpandableHeightGridview gvStudiesOld;
     private ExpandableHeightGridview gvStudiesSingle;
+    private ExpandableHeightGridview gvStudiesTopical;
 //    private ImageLoader imageLoader;
     private ImageLoader2 imageLoader2;
     private StudiesAdapter adapterStudiesNew;
     private StudiesAdapter adapterStudiesOld;
     private StudiesAdapter adapterStudiesSingle;
+    private StudiesAdapter adapterStudiesTopical;
     private ActionBar actionBar;
     // Define the listener of the interface type
     // listener will the activity instance containing fragment
@@ -49,11 +51,6 @@ public class StudiesFragment extends Fragment {
     public StudiesFragment() {
     }
 
-    /**
-     * Static factory method that takes an int parameter,
-     * initializes the fragment's arguments, and returns the
-     * new fragment to the client.
-     */
     public static StudiesFragment newInstance(int index) {
         StudiesFragment f = new StudiesFragment();
         Bundle args = new Bundle();
@@ -104,17 +101,19 @@ public class StudiesFragment extends Fragment {
         gvStudiesNew = (ExpandableHeightGridview) rootView.findViewById(R.id.gvStudiesNew);
         gvStudiesOld = (ExpandableHeightGridview) rootView.findViewById(R.id.gvStudiesOld);
         gvStudiesSingle = (ExpandableHeightGridview) rootView.findViewById(R.id.gvStudiesSingle);
+        gvStudiesTopical = (ExpandableHeightGridview) rootView.findViewById(R.id.gvStudiesTopical);
         gvStudiesNew.setFocusable(false);
         gvStudiesOld.setFocusable(false);
         gvStudiesSingle.setFocusable(false);
+        gvStudiesTopical.setFocusable(false);
 //        imageLoader = new ImageLoader(getActivity());
         imageLoader2 = new ImageLoader2(getActivity());
         setAdapterStudiesFragment();
     }
 
     private void setAdapterStudiesFragment() {
-//        adapterStudiesNew = new StudiesAdapter(getActivity(), FilesManager.listStudiesTypeNew,imageLoader);
-        adapterStudiesNew = new StudiesAdapter(getActivity(), FilesManager.listStudiesTypeNew,imageLoader2);
+//        adapterStudiesNew = new StudiesAdapter(getActivity(), FilesManager.listStudiesNew,imageLoader);
+        adapterStudiesNew = new StudiesAdapter(getActivity(), FilesManager.listStudiesNew,imageLoader2);
         gvStudiesNew.setAdapter(adapterStudiesNew);
         gvStudiesNew.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -124,8 +123,8 @@ public class StudiesFragment extends Fragment {
                 listener.onStudyItemSelected(study);
             }
         });
-//        adapterStudiesOld = new StudiesAdapter(getActivity(), FilesManager.listStudiesTypeOld,imageLoader);
-        adapterStudiesOld = new StudiesAdapter(getActivity(), FilesManager.listStudiesTypeOld,imageLoader2);
+//        adapterStudiesOld = new StudiesAdapter(getActivity(), FilesManager.listStudiesOld,imageLoader);
+        adapterStudiesOld = new StudiesAdapter(getActivity(), FilesManager.listStudiesOld,imageLoader2);
         gvStudiesOld.setAdapter(adapterStudiesOld);
         gvStudiesOld.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -135,8 +134,8 @@ public class StudiesFragment extends Fragment {
                 listener.onStudyItemSelected(study);
             }
         });
-//        adapterStudiesSingle = new StudiesAdapter(getActivity(), FilesManager.listStudiesTypeSingle,imageLoader);
-        adapterStudiesSingle = new StudiesAdapter(getActivity(), FilesManager.listStudiesTypeSingle,imageLoader2);
+//        adapterStudiesSingle = new StudiesAdapter(getActivity(), FilesManager.listStudiesSingle,imageLoader);
+        adapterStudiesSingle = new StudiesAdapter(getActivity(), FilesManager.listStudiesSingle,imageLoader2);
         gvStudiesSingle.setAdapter(adapterStudiesSingle);
         gvStudiesSingle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -146,34 +145,51 @@ public class StudiesFragment extends Fragment {
                 listener.onStudyItemSelected(study);
             }
         });
+        adapterStudiesTopical = new StudiesAdapter(getActivity(), FilesManager.listStudiesTopical,imageLoader2);
+        gvStudiesTopical.setAdapter(adapterStudiesTopical);
+        gvStudiesTopical.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
+                Study study = (Study) parent.getItemAtPosition(position);
+                //fire the event when the user selects a study in the fragment
+                listener.onStudyItemSelected(study);
+            }
+        });
+
     }
 
     @Override
     public void onResume() {
+        System.out.println("StudiesFragment.onResume...");
         super.onResume();
         FilesManager.lastLessonId = MainActivity.settings.getString("currentLessonId", "");
-        if ( (FilesManager.listStudiesTypeNew == null) || (FilesManager.listStudiesTypeNew.size() == 0) ) {
+        if ( (FilesManager.listStudiesNew == null) || (FilesManager.listStudiesNew.size() == 0) ) {
             DownloadJsonData.getInstance().asyncJsonGetStudies(getActivity(),
-                    adapterStudiesNew, adapterStudiesOld, adapterStudiesSingle, rootView, scroll);
+                    adapterStudiesNew, adapterStudiesOld, adapterStudiesSingle, adapterStudiesTopical, rootView, scroll);
         } else {
             TextView tvCountStudiesNew = (TextView) rootView.findViewById(R.id.tvCountStudiesNew);
             TextView tvCountStudiesOld = (TextView) rootView.findViewById(R.id.tvCountStudiesOld);
             TextView tvCountStudiesSingle = (TextView) rootView.findViewById(R.id.tvCountStudiesSingle);
+            TextView tvCountStudiesTopical = (TextView) rootView.findViewById(R.id.tvCountStudiesTopical);
             TextView tvStudiesNew = (TextView) rootView.findViewById(R.id.tvStudiesNew);
             TextView tvStudiesOld = (TextView) rootView.findViewById(R.id.tvStudiesOld);
             TextView tvStudiesSingle = (TextView) rootView.findViewById(R.id.tvStudiesSingle);
+            TextView tvStudiesTopical = (TextView) rootView.findViewById(R.id.tvStudiesTopical);
 
             Resources res = getActivity().getResources();
-            String messageCountStudies = res.getString(R.string.message_count_studies, FilesManager.listStudiesTypeNew.size());
+            String messageCountStudies = res.getString(R.string.message_count_studies, FilesManager.listStudiesNew.size());
             tvCountStudiesNew.setText(messageCountStudies);
-            messageCountStudies = res.getString(R.string.message_count_studies, FilesManager.listStudiesTypeOld.size());
+            messageCountStudies = res.getString(R.string.message_count_studies, FilesManager.listStudiesOld.size());
             tvCountStudiesOld.setText(messageCountStudies);
-            messageCountStudies = res.getString(R.string.message_count_studies, FilesManager.listStudiesTypeSingle.size());
+            messageCountStudies = res.getString(R.string.message_count_studies, FilesManager.listStudiesSingle.size());
             tvCountStudiesSingle.setText(messageCountStudies);
+            messageCountStudies = res.getString(R.string.message_count_studies, FilesManager.listStudiesTopical.size());
+            tvCountStudiesTopical.setText(messageCountStudies);
 
             tvStudiesNew.setVisibility(View.VISIBLE);
             tvStudiesOld.setVisibility(View.VISIBLE);
             tvStudiesSingle.setVisibility(View.VISIBLE);
+            tvStudiesTopical.setVisibility(View.VISIBLE);
         }
     }
 

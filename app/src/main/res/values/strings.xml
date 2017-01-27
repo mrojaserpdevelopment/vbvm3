@@ -175,6 +175,7 @@ distribution media, documentation, registration cards, and insertions.</string>
     <string name="action_mark_all_incomplete">Mark all incomplete</string>
     <string name="action_download_all">Download all</string>
     <string name="action_delete_all_files">Delete all files</string>
+    <string name="action_close">Close</string>
 
     <!-- Formatted Messages -->
     <string name="message_count_studies">%1$d Studies</string>

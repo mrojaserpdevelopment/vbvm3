@@ -194,21 +194,6 @@ public class SplashActivity extends AppCompatActivity {
 		}).start();
 	}
 
-
-//	private Runnable runnable = new Runnable() {
-//		@Override
-//		public void run() {
-//			System.out.println("checking downloadCounter: " + downloadCounter);
-//			if (downloadCounter == 0) {
-//				Intent mainIntent = new Intent().setClass(SplashActivity.this, MainActivity.class);
-//				startActivity(mainIntent);
-//				finish(); //Destruimos esta activity para prevenir que el usuario retorne aqui presionando el boton Atras.
-//				return;
-//			}
-//			handler.postDelayed(this, 100);
-//		}
-//	};
-
 	public void asyncJsonArticles(){
 //		incrementCount();
 //		System.out.println("checking downloadCounter: " + downloadCounter);

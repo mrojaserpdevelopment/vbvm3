@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           package="com.erpdevelopment.vbvm"
-          android:versionCode="19"
+          android:versionCode="20"
           android:versionName="3.1">
 
     <uses-sdk
@@ -61,7 +61,8 @@
             android:exported="true">
         </service>
 
-        <activity android:name="com.erpdevelopment.vbvm.activity.SettingsActivity"
+        <activity
+            android:name="com.erpdevelopment.vbvm.activity.SettingsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
         </activity>

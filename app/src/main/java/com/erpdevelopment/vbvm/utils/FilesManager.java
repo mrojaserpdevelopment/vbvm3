@@ -34,9 +34,10 @@ public class FilesManager {
 	    public static List<Answer> listAnswers = new ArrayList<Answer>();
 	    public static List<Article> listArticles = new ArrayList<Article>();
 	    public static List<VideoChannel> listVideoChannels = new ArrayList<VideoChannel>();
-		public static List<Study> listStudiesTypeOld = new ArrayList<Study>(); // Old Testament books
-		public static List<Study> listStudiesTypeNew = new ArrayList<Study>(); // New Testament books
-		public static List<Study> listStudiesTypeSingle = new ArrayList<Study>(); // Single Teachings
+		public static List<Study> listStudiesOld = new ArrayList<Study>(); // Old Testament books
+		public static List<Study> listStudiesNew = new ArrayList<Study>(); // New Testament books
+		public static List<Study> listStudiesSingle = new ArrayList<Study>(); // Single Teachings
+		public static List<Study> listStudiesTopical = new ArrayList<Study>(); // Topical Series
 		private URL url;
 		private URLConnection conn;
 		private int lastSlash;

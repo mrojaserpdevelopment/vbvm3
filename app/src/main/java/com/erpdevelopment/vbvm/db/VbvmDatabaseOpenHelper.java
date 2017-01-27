@@ -33,7 +33,8 @@ public class VbvmDatabaseOpenHelper extends SQLiteOpenHelper {
     		" podcast_link TEXT," +
     		" average_rating TEXT," +
     		" description TEXT," +
-    		" type TEXT );";
+			" type TEXT," +
+			" bible_index TEXT );";
     
     private static final String CREATE_TABLE_LESSON = "CREATE TABLE IF NOT EXISTS lesson (" +
     		" id_lesson TEXT PRIMARY KEY," +

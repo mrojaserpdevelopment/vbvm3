@@ -27,8 +27,6 @@ import java.util.List;
 
 public class DownloaderThread extends Thread {
 
-    private int result = Activity.RESULT_CANCELED;
-    public static final String URL = "urlpath";
     private FileCache fileCache;
     public int downloadProgress = 0;
     private static final int DOWNLOAD_BUFFER_SIZE = 16*1024;
@@ -39,13 +37,11 @@ public class DownloaderThread extends Thread {
     private String mUrl;
     private String mDownloadType;
     private Activity mActivity;
-    private LessonsAdapter mAdapter;
     private int downloadStatus = 0;
     private String messageError = "";
 
     private int totalRead = 0;
     private int lengthOfFile = 0;
-    private List<Lesson> mListLessons;
     private Handler handler = new Handler();
 
     public DownloaderThread(Activity activity, Lesson lesson, String url,
@@ -55,15 +51,11 @@ public class DownloaderThread extends Thread {
         mUrl = url;
         mDownloadType = downloadType;
         mActivity = activity;
-        mListLessons = listLessons;
     }
 
     @Override
     public void run() {
-//        DownloadService.incrementCount();
-        System.out.println("Increment - Count downloads: " + DownloadService.countDownloads);
         String idLesson = mLesson.getIdProperty();
-        Log.d("DownloadManager", "IS_SERVICE_RUNNING url:" + mUrl);
         File outputTemp = null;
         File output = null;
         try {
@@ -74,7 +66,6 @@ public class DownloaderThread extends Thread {
                 outputTemp.delete();
                 outputTemp = fileCache.getFileTempFolder(mUrl);
             }
-            System.out.println("URL: " + mUrl);
             URL url = new URL(mUrl);
             URLConnection conn = url.openConnection();
             conn.setConnectTimeout(CONNECTION_TIMEOUT);
@@ -87,7 +78,6 @@ public class DownloaderThread extends Thread {
             int bytesRead = 0;
 
             handler.postDelayed(runnable, 100);
-//            while(!isInterrupted() && (bytesRead = inStream.read(data, 0, data.length)) >= 0)
             while(!stopDownload && (bytesRead = inStream.read(data, 0, data.length)) >= 0)
             {
                 outStream.write(data, 0, bytesRead);
@@ -95,7 +85,7 @@ public class DownloaderThread extends Thread {
                 downloadProgress = (int)((totalRead*100)/lengthOfFile);
             }
             downloadProgress = 0;
-//            handler.removeCallbacks(runnable);
+            downloadStatus = 0;
             outStream.close();
             fileStream.close();
             inStream.close();
@@ -106,7 +96,6 @@ public class DownloaderThread extends Thread {
                 downloadStatus = 0;
             } else {
                 downloadStatus = 1;
-                result = Activity.RESULT_OK;
                 output = fileCache.getFileAudioFolder(mUrl);//copy downloaded file from temp to audio folder
                 fileCache.copyFile(outputTemp, output);
                 outputTemp.delete();
@@ -135,15 +124,13 @@ public class DownloaderThread extends Thread {
             outputTemp.delete();
             e.printStackTrace();
         } finally {
-            System.out.println("finally block...");
-            updateUiDownloadProgress();
+//            updateUiDownloadProgress();
             DBHandleLessons.updateLessonDownloadStatus(idLesson, downloadStatus, mDownloadType);
             DownloadService.decrementCount();
-//            if (!messageError.equals(""))
-//                Toast.makeText(mActivity, messageError, Toast.LENGTH_SHORT).show();
             messageError = "";
             handler.removeCallbacks(runnable);
             stopDownload = false;
+            updateUiDownloadProgress();
         }
     }
 
@@ -151,7 +138,7 @@ public class DownloaderThread extends Thread {
         @Override
         public void run() {
             updateUiDownloadProgress();
-            handler.postDelayed(this, 1000);
+            handler.postDelayed(this, 200);
         }
     };
 

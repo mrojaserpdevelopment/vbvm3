@@ -16,8 +16,8 @@ public final class R {
 		public static final int coral_blue = 0x7f0c001f;
 		public static final int dark_blue = 0x7f0c0020;
 		public static final int light_gray = 0x7f0c0039;
-		public static final int text_gray = 0x7f0c005f;
-		public static final int white = 0x7f0c0060;
+		public static final int text_gray = 0x7f0c0060;
+		public static final int white = 0x7f0c0061;
 	}
 	public static final class dimen {
 		public static final int circleProgressRadius = 0x7f070053;
@@ -37,13 +37,13 @@ public final class R {
 		public static final int activity_main = 0x7f03001e;
 	}
 	public static final class string {
-		public static final int app_name = 0x7f06002d;
-		public static final int content_description = 0x7f060035;
-		public static final int curved_text_value = 0x7f060036;
-		public static final int home_screen_observations = 0x7f06004d;
-		public static final int home_screen_observed_compliance = 0x7f06004e;
-		public static final int percent_value = 0x7f06005a;
-		public static final int total_observations = 0x7f060082;
+		public static final int app_name = 0x7f06002e;
+		public static final int content_description = 0x7f060036;
+		public static final int curved_text_value = 0x7f060037;
+		public static final int home_screen_observations = 0x7f06004e;
+		public static final int home_screen_observed_compliance = 0x7f06004f;
+		public static final int percent_value = 0x7f06005b;
+		public static final int total_observations = 0x7f060083;
 	}
 	public static final class style {
 		public static final int AppTheme = 0x7f080092;

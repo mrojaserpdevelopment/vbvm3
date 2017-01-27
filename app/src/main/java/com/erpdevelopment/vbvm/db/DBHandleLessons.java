@@ -75,12 +75,17 @@ public class DBHandleLessons {
 	        	lesson.setPositionInList(c.getInt((c.getColumnIndex(COLUMN_POSITION_IN_LIST))));
 //	        	lesson.setDownloadStatus(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS))));
 				lesson.setDownloadStatusAudio(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_AUDIO))));
+//				if (lesson.getDownloadStatusAudio() == 2 ) {
+//					updateLessonDownloadStatusAudio(lesson.getIdProperty(), 0);
+//					lesson.setDownloadStatusAudio(0);
+//				}
 				lesson.setDownloadStatusTeacherAid(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_TEACHER))));
 				lesson.setDownloadStatusTranscript(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_TRANSCRIPT))));
 //				Study study = DBHandleStudies.getStudyById(id_study);
 //				lesson.setStudy(study);
 	        	lessons.add(lesson);
-	        } while (c.moveToNext());
+				System.out.println("DBHandleLessons.getLessons: " + lesson.getDownloadStatusAudio());
+			} while (c.moveToNext());
 	    }
 	    c.close();
 	    return lessons;
@@ -170,26 +175,17 @@ public class DBHandleLessons {
 		return lessons;
 	}
 
-	public static int saveCurrentPositionInTrack(String idLesson, long currentPositon){
-		 int updatedRows = 0;
-		 if( MainActivity.db != null ){
-		  ContentValues values = new ContentValues();
-		  values.put("current_position", currentPositon);
-		  updatedRows = (int) MainActivity.db.update("lesson", values, "id_lesson = ?", new String[]{idLesson});  
-		 }
+	public static int saveCurrentPositionInTrack(String idLesson, long currentPositon, int progressPercent){
+		int updatedRows = 0;
+		if( MainActivity.db != null ){
+		 	ContentValues values = new ContentValues();
+		  	values.put("current_position", currentPositon);
+		  	values.put("progress_percentage", progressPercent);
+		  	updatedRows = (int) MainActivity.db.update("lesson", values, "id_lesson = ?", new String[]{idLesson});
+		}
 		return updatedRows;
 	}
-	
-	/**
-	 * Remove all lessons.
-	 */
-	public static void removeAllLessons()
-	{
-	    // db.delete(String tableName, String whereClause, String[] whereArgs);
-	    // If whereClause is null, it will delete all rows.
-	    MainActivity.db.delete("lesson", null, null);
-	}
-	
+
 	public static int updateLessonState(String idLesson, long currentPositon, String state){
 		 int updatedRows = 0;
 		 if( MainActivity.db != null ){

@@ -20,7 +20,6 @@ public class VideoVbvm implements Parcelable {
 	
 	public VideoVbvm() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getIdProperty() {

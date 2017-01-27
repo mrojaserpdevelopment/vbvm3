@@ -1,8 +1,11 @@
 package com.erpdevelopment.vbvm.db;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.activity.MainActivity;
 import com.erpdevelopment.vbvm.model.Article;
 import com.erpdevelopment.vbvm.model.VideoChannel;
@@ -12,6 +15,7 @@ import com.erpdevelopment.vbvm.model.Answer;
 import com.erpdevelopment.vbvm.model.Study;
 import com.erpdevelopment.vbvm.model.Topic;
 import com.erpdevelopment.vbvm.model.VideoVbvm;
+import com.erpdevelopment.vbvm.utils.Utilities;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -32,6 +36,7 @@ public class DBHandleStudies {
     private static final String COLUMN_AVERAGE_RATING = "average_rating";
     private static final String COLUMN_DESCRIPTION = "description";
     private static final String COLUMN_TYPE = "type";
+	private static final String COLUMN_BIBLE_INDEX = "bible_index";
     
 	public static long createStudy(Study study) {
 	    ContentValues values = new ContentValues();
@@ -43,6 +48,7 @@ public class DBHandleStudies {
 	    values.put("average_rating", study.getAverageRating());
 	    values.put("description", study.getStudiesDescription());
 	    values.put("type", study.getType());
+		values.put("bible_index", study.getBibleIndex());
 	    long row_id = 0;
 	    try {
 		    row_id = MainActivity.db.insertOrThrow("study", null, values);
@@ -330,6 +336,7 @@ public class DBHandleStudies {
 	        	study.setAverageRating(c.getString((c.getColumnIndex(COLUMN_AVERAGE_RATING))));
 	        	study.setStudiesDescription(c.getString((c.getColumnIndex(COLUMN_DESCRIPTION))));
 	        	study.setType(c.getString((c.getColumnIndex(COLUMN_TYPE))));
+				study.setBibleIndex(c.getString((c.getColumnIndex(COLUMN_BIBLE_INDEX))));
 	            studies.add(study);
 	        } while (c.moveToNext());
 	    }
@@ -342,7 +349,8 @@ public class DBHandleStudies {
 		List<Study> studiesNew = new ArrayList<>();
 		List<Study> studiesOld = new ArrayList<>();
 		List<Study> studiesSingle = new ArrayList<>();
-		String selectQuery = "SELECT * FROM study ;";
+		List<Study> studiesTopical = new ArrayList<>();
+		String selectQuery = "SELECT * FROM study;";
 		Log.e(LOG, selectQuery);
 		Cursor c = MainActivity.db.rawQuery(selectQuery, null);
 		if (c.moveToFirst()) {
@@ -356,6 +364,7 @@ public class DBHandleStudies {
 				study.setAverageRating(c.getString((c.getColumnIndex(COLUMN_AVERAGE_RATING))));
 				study.setStudiesDescription(c.getString((c.getColumnIndex(COLUMN_DESCRIPTION))));
 				study.setType(c.getString((c.getColumnIndex(COLUMN_TYPE))));
+				study.setBibleIndex(c.getString((c.getColumnIndex(COLUMN_BIBLE_INDEX))));
 				if (study.getType().contains("New")) {
 					studiesNew.add(study);
 				}
@@ -365,10 +374,22 @@ public class DBHandleStudies {
 				if (study.getType().contains("Single")) {
 					studiesSingle.add(study);
 				}
+				if (study.getType().contains("Topical")) {
+					studiesTopical.add(study);
+				}
 			} while (c.moveToNext());
+
+			int selectedSort = MainActivity.settings.getInt("selectedSort", -1);
+			if (selectedSort == R.id.radio_bible_book) {
+				Utilities.sortListStudies(studiesNew);
+				Utilities.sortListStudies(studiesOld);
+				Utilities.sortListStudies(studiesSingle);
+				Utilities.sortListStudies(studiesTopical);
+			}
 			studies.add(studiesNew);
 			studies.add(studiesOld);
 			studies.add(studiesSingle);
+			studies.add(studiesTopical);
 		}
 		c.close();
 		return studies;

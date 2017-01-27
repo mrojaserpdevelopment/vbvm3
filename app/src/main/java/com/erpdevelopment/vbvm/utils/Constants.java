@@ -49,4 +49,11 @@ public class Constants {
 		String COMPLETE = "complete";
 	}
 
+	public interface STUDY_TYPE {
+		String OLD = "Old Testament Books";
+		String NEW = "New Testament Books";
+		String SINGLE = "Single Teachings";
+		String TOPICAL = "Topical Series";
+	}
+
 }

@@ -11,7 +11,33 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.erpdevelopment.vbvm.activity.SettingsActivity">
 
-    <RelativeLayout
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/ll_switch_auto"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:background="@android:color/background_light"-->
+        <!--android:paddingLeft="10dp"-->
+        <!--android:paddingRight="10dp"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_marginBottom="10dp">-->
+        <!--<Switch-->
+            <!--android:id="@+id/switch_auto"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:checked="true"/>-->
+        <!--<TextView-->
+            <!--android:id="@+id/tv_switch_auto"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Auto mark lessons as complete"-->
+            <!--android:textSize="16sp"-->
+            <!--android:textColor="@color/black"-->
+            <!--android:layout_centerVertical="true"/>-->
+    <!--</RelativeLayout>-->
+
+    <LinearLayout
         android:id="@+id/ll_switch_auto"
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -19,25 +45,27 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp">
-        <Switch
-            android:id="@+id/switch_auto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:checked="true"/>
+        android:layout_marginBottom="10dp"
+        android:gravity="center_vertical">
         <TextView
             android:id="@+id/tv_switch_auto"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.7"
             android:layout_height="wrap_content"
             android:text="Auto mark lessons as complete"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:layout_centerVertical="true"/>
-    </RelativeLayout>
+            android:textSize="16sp"
+            android:textColor="@color/black" />
+        <Switch
+            android:id="@+id/switch_auto"
+            android:layout_width="0dp"
+            android:layout_weight="0.3"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:checked="true" />
+    </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_ll_switch_auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Automatically mark a lesson as complete when the audio finishes"
@@ -47,5 +75,45 @@
         android:layout_below="@+id/ll_switch_auto"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_sort"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/background_light"
+        android:padding="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/tv_ll_switch_auto"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <TextView
+            android:id="@+id/tv_sort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sort by"
+            android:textSize="16sp"
+            android:textColor="@color/black"/>
+        <RadioGroup
+            android:id="@+id/radio_group_sort"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checkedButton="@+id/radio_bible_book"
+            android:layout_below="@id/tv_sort"
+            android:paddingTop="10dp">
+            <RadioButton
+                android:id="@+id/radio_bible_book"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Bible book order" />
+            <RadioButton
+                android:id="@+id/radio_release_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="Release date" />
+        </RadioGroup>
+
+    </RelativeLayout>
 
 </RelativeLayout>

@@ -92,6 +92,31 @@
                 android:stretchMode="columnWidth"
                 android:layout_marginBottom="20dp"/>
 
+            <TextView
+                android:id="@+id/tvStudiesTopical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Topical Series"
+                android:textColor="@android:color/black"
+                android:textSize="24sp"
+                android:visibility="gone"/>
+            <TextView
+                android:id="@+id/tvCountStudiesTopical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@android:color/black"
+                android:textSize="10dp"
+                android:layout_gravity="right" />
+            <com.erpdevelopment.vbvm.view.ExpandableHeightGridview
+                android:id="@+id/gvStudiesTopical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:numColumns="auto_fit"
+                android:columnWidth="100dp"
+                android:stretchMode="columnWidth"
+                android:layout_marginBottom="20dp"/>
+
         </LinearLayout>
 
 </ScrollView>

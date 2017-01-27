@@ -289,22 +289,20 @@ public class LessonsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         LocalBroadcastManager.getInstance(activity).registerReceiver(receiverDownloadProgress, new IntentFilter(DownloadService.NOTIFICATION_DOWNLOAD_PROGRESS));
-//        activity.registerReceiver(receiverDownloadAllProgress, new IntentFilter(DownloadAllService.NOTIFICATION_DOWNLOAD_ALL_PROGRESS));
-//        activity.registerReceiver(receiverDownloadAllComplete, new IntentFilter(DownloadAllService.NOTIFICATION_DOWNLOAD_ALL_COMPLETE));
         LocalBroadcastManager.getInstance(activity).registerReceiver(receiverDownloadAllProgress, new IntentFilter(DownloadAllService.NOTIFICATION_DOWNLOAD_ALL_PROGRESS));
         LocalBroadcastManager.getInstance(activity).registerReceiver(receiverDownloadAllComplete, new IntentFilter(DownloadAllService.NOTIFICATION_DOWNLOAD_ALL_COMPLETE));
         LocalBroadcastManager.getInstance(activity).registerReceiver(receiverAudioComplete, new IntentFilter(AudioPlayerService.NOTIFICATION_AUDIO_COMPLETE));
+        LocalBroadcastManager.getInstance(activity).registerReceiver(receiverAudioProgress, new IntentFilter(AudioPlayerService.NOTIFICATION_AUDIO_PROGRESS));
     }
 
     @Override
     public void onPause() {
         super.onPause();
         LocalBroadcastManager.getInstance(activity).unregisterReceiver(receiverDownloadProgress);
-//        activity.unregisterReceiver(receiverDownloadAllProgress);
-//        activity.unregisterReceiver(receiverDownloadAllComplete);
         LocalBroadcastManager.getInstance(activity).unregisterReceiver(receiverDownloadAllProgress);
         LocalBroadcastManager.getInstance(activity).unregisterReceiver(receiverDownloadAllComplete);
         LocalBroadcastManager.getInstance(activity).unregisterReceiver(receiverAudioComplete);
+        LocalBroadcastManager.getInstance(activity).unregisterReceiver(receiverAudioProgress);
     }
     private BroadcastReceiver receiverDownloadProgress = new BroadcastReceiver() {
         @Override
@@ -312,7 +310,6 @@ public class LessonsFragment extends Fragment {
             int downloadStatus = intent.getIntExtra("downloadStatus", 0);
             String messageError = intent.getStringExtra("messageError");
             Lesson lesson = intent.getParcelableExtra("lesson");
-//            System.out.println("status - progress: " + lesson.getDownloadStatusAudio() + " - " + lesson.getDownloadProgressAudio());
             for (int i = 0; i < listLessons.size(); i++) {
                 if (lesson.getIdProperty().equals(listLessons.get(i).getIdProperty())) {
                     listLessons.set(i, lesson);
@@ -320,7 +317,7 @@ public class LessonsFragment extends Fragment {
                     break;
                 }
             }
-            if ( downloadStatus == 1 && !AudioPlayerService.created )
+            if ( downloadStatus == 1 && !DownloadAllService.downloading && DownloadService.countDownloads == 0 )
                 adapterLessons.startAudio(lesson);
             if (!messageError.equals(""))
                 Toast.makeText(activity, messageError, Toast.LENGTH_SHORT).show();
@@ -416,6 +413,20 @@ public class LessonsFragment extends Fragment {
                 new asyncGetStudyLessons().execute(mStudy);
             }
             FilesManager.lastLessonId = "";
+        }
+    };
+
+    private BroadcastReceiver receiverAudioProgress = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Lesson lesson = intent.getParcelableExtra("lessonPlaying");
+            for (int i = 0; i < listLessons.size(); i++) {
+                if (lesson.getIdProperty().equals(listLessons.get(i).getIdProperty())) {
+                    listLessons.set(i, lesson);
+                    adapterLessons.notifyDataSetChanged();
+                    break;
+                }
+            }
         }
     };
 

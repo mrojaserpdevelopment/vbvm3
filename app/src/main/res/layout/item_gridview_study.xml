@@ -12,10 +12,16 @@
     <ImageView
         android:id="@+id/img"
         android:layout_width="70dp"
-        android:src="@drawable/youtube"
+        android:src="@drawable/adele"
         android:layout_height="70dp"
         android:background="#FFFFFF"
         android:layout_marginTop="10dp"/>
+
+    <!--<ProgressBar-->
+        <!--android:id="@+id/pb"-->
+        <!--android:layout_width="70dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal" />-->
 
     <TextView
         android:id="@+id/txt"

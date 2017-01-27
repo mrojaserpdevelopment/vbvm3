@@ -19,7 +19,6 @@ public class VideoChannel implements Parcelable, Comparable<VideoChannel> {
 
 	public VideoChannel() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getIdProperty() {

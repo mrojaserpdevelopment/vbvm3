@@ -3,8 +3,10 @@ package com.erpdevelopment.vbvm.utils;
 
 import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.helper.LeadingMarginSpanHelper;
+import com.erpdevelopment.vbvm.model.Study;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
@@ -13,13 +15,17 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 
 public class Utilities {
@@ -136,5 +142,22 @@ public class Utilities {
 		return ss;
 	}
 
+	public static void sortListStudies(List list){
+		Collections.sort(list, new Comparator<Study>() {
+			@Override
+			public int compare(Study o1, Study o2) {
+				int bibleIndex1 = Integer.parseInt(o1.getBibleIndex());
+				int bibleIndex2 = Integer.parseInt(o2.getBibleIndex());
+				return bibleIndex1 < bibleIndex2 ? -1
+						: bibleIndex1 > bibleIndex2 ? 1
+						: 0;
+
+			}
+		});
+	}
+
+	public static float convertDpToPixel(Resources resources, float dip) {
+		return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, resources.getDisplayMetrics());
+	}
 
 }

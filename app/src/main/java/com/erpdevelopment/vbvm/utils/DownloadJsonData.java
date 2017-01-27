@@ -55,9 +55,11 @@ public class DownloadJsonData {
     private TextView tvCountStudiesNew;
     private TextView tvCountStudiesOld;
     private TextView tvCountStudiesSingle;
+    private TextView tvCountStudiesTopical;
     private TextView tvStudiesNew;
     private TextView tvStudiesOld;
     private TextView tvStudiesSingle;
+    private TextView tvStudiesTopical;
     public static final int COUNT_PARALLEL_DOWNLOADS = 3;
 
     private static final int EXPIRATION_CACHE = 60 * 60 * 1000;
@@ -69,8 +71,11 @@ public class DownloadJsonData {
         return sInstance;
     }
 
-    public void asyncJsonGetStudies(Activity activity, StudiesAdapter studiesAdapterNew,
-                                    StudiesAdapter studiesAdapterOld, StudiesAdapter studiesAdapterSingle,
+    public void asyncJsonGetStudies(Activity activity,
+                                    StudiesAdapter studiesAdapterNew,
+                                    StudiesAdapter studiesAdapterOld,
+                                    StudiesAdapter studiesAdapterSingle,
+                                    StudiesAdapter studiesAdapterTopical,
                                     View rootView, ScrollView scroll){
         mActivity = activity;
         mAQuery = new AQuery(activity);
@@ -83,20 +88,24 @@ public class DownloadJsonData {
         tvCountStudiesNew = (TextView) rootView.findViewById(R.id.tvCountStudiesNew);
         tvCountStudiesOld = (TextView) rootView.findViewById(R.id.tvCountStudiesOld);
         tvCountStudiesSingle = (TextView) rootView.findViewById(R.id.tvCountStudiesSingle);
+        tvCountStudiesTopical = (TextView) rootView.findViewById(R.id.tvCountStudiesTopical);
         tvStudiesNew = (TextView) rootView.findViewById(R.id.tvStudiesNew);
         tvStudiesOld = (TextView) rootView.findViewById(R.id.tvStudiesOld);
         tvStudiesSingle = (TextView) rootView.findViewById(R.id.tvStudiesSingle);
+        tvStudiesTopical = (TextView) rootView.findViewById(R.id.tvStudiesTopical);
 
         WebServiceCall.studiesInDB = MainActivity.settings.getBoolean("studiesInDB", false);
         if ( WebServiceCall.studiesInDB ){
             Log.d("Database", "Studies - working offline on DB...");
             List<List<Study>> dbListStudiesByType = DBHandleStudies.getAllStudiesByType();
-            FilesManager.listStudiesTypeNew = dbListStudiesByType.get(0);
-            FilesManager.listStudiesTypeOld = dbListStudiesByType.get(1);
-            FilesManager.listStudiesTypeSingle = dbListStudiesByType.get(2);
+            FilesManager.listStudiesNew = dbListStudiesByType.get(0);
+            FilesManager.listStudiesOld = dbListStudiesByType.get(1);
+            FilesManager.listStudiesSingle = dbListStudiesByType.get(2);
+            FilesManager.listStudiesTopical = dbListStudiesByType.get(3);
             studiesAdapterNew.setStudyListItems(dbListStudiesByType.get(0));
             studiesAdapterOld.setStudyListItems(dbListStudiesByType.get(1));
             studiesAdapterSingle.setStudyListItems(dbListStudiesByType.get(2));
+            studiesAdapterTopical.setStudyListItems(dbListStudiesByType.get(3));
 
             Resources res = mActivity.getResources();
             String messageCountStudies = res.getString(R.string.message_count_studies, dbListStudiesByType.get(0).size());
@@ -105,12 +114,15 @@ public class DownloadJsonData {
             tvCountStudiesOld.setText(messageCountStudies);
             messageCountStudies = res.getString(R.string.message_count_studies, dbListStudiesByType.get(2).size());
             tvCountStudiesSingle.setText(messageCountStudies);
+            messageCountStudies = res.getString(R.string.message_count_studies, dbListStudiesByType.get(3).size());
+            tvCountStudiesTopical.setText(messageCountStudies);
 
             tvStudiesNew.setVisibility(View.VISIBLE);
             tvStudiesOld.setVisibility(View.VISIBLE);
             tvStudiesSingle.setVisibility(View.VISIBLE);
+            tvStudiesTopical.setVisibility(View.VISIBLE);
 
-            mScroll.scrollTo(0, 0);
+            mScroll.scrollTo(0,0);
             pDialog.dismiss();
         } else {
             if ( !CheckConnectivity.isOnline(activity)) {
@@ -131,6 +143,7 @@ public class DownloadJsonData {
                             List<Study> listStudiesNew = new ArrayList<>();
                             List<Study> listStudiesOld = new ArrayList<>();
                             List<Study> listStudiesSingle = new ArrayList<>();
+                            List<Study> listStudiesTopical = new ArrayList<>();
                             try {
                                 JSONObject jsonResponse = new JSONObject(responseString);
                                 JSONObject vbv = jsonResponse.getJSONObject(WebServiceCall.TAG_VERSE_BY_VERSE);
@@ -139,6 +152,7 @@ public class DownloadJsonData {
                                 System.out.println("IS_SERVICE_RUNNING studies...");
                                 for ( int i=0; i < studies.length(); i++ ) {
                                     final Study study = new Study();
+                                    study.setIdProperty(StringEscapeUtils.unescapeJava(studies.getJSONObject(i).getString("ID")));
                                     study.setThumbnailSource(StringEscapeUtils.unescapeJava(studies.getJSONObject(i).getString("thumbnailSource")));
                                     study.setTitle(StringEscapeUtils.unescapeJava(studies.getJSONObject(i).getString("title")));
                                     study.setThumbnailAltText(StringEscapeUtils.unescapeJava(studies.getJSONObject(i).getString("thumbnailAltText")));
@@ -146,7 +160,7 @@ public class DownloadJsonData {
                                     study.setAverageRating(StringEscapeUtils.unescapeJava(studies.getJSONObject(i).getString("averageRating")));
                                     study.setStudiesDescription(StringEscapeUtils.unescapeJava(studies.getJSONObject(i).getString("description")));
                                     study.setType(StringEscapeUtils.unescapeJava(studies.getJSONObject(i).getString("type")));
-                                    study.setIdProperty(StringEscapeUtils.unescapeJava(studies.getJSONObject(i).getString("ID")));
+                                    study.setBibleIndex(StringEscapeUtils.unescapeJava(studies.getJSONObject(i).getString("bibleIndex")));
                                     newListStudies.add(study);
                                     if ( study.getType().contains("New") ) {
                                         listStudiesNew.add(study);
@@ -157,19 +171,32 @@ public class DownloadJsonData {
                                     if ( study.getType().contains("Single") ) {
                                         listStudiesSingle.add(study);
                                     }
+                                    if ( study.getType().contains("Topical") ) {
+                                        listStudiesTopical.add(study);
+                                    }
                                     DBHandleStudies.createStudy(study);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                             FilesManager.listStudies = newListStudies;
-                            FilesManager.listStudiesTypeNew = listStudiesNew;
-                            FilesManager.listStudiesTypeOld = listStudiesOld;
-                            FilesManager.listStudiesTypeSingle = listStudiesSingle;
+                            FilesManager.listStudiesNew = listStudiesNew;
+                            FilesManager.listStudiesOld = listStudiesOld;
+                            FilesManager.listStudiesSingle = listStudiesSingle;
+                            FilesManager.listStudiesTopical = listStudiesTopical;
 
-                            studiesAdapterNew.setStudyListItems(FilesManager.listStudiesTypeNew);
-                            studiesAdapterOld.setStudyListItems(FilesManager.listStudiesTypeOld);
-                            studiesAdapterSingle.setStudyListItems(FilesManager.listStudiesTypeSingle);
+                            int selectedSort = MainActivity.settings.getInt("selectedSort", -1);
+                            if (selectedSort == R.id.radio_bible_book) {
+                                Utilities.sortListStudies(FilesManager.listStudiesNew);
+                                Utilities.sortListStudies(FilesManager.listStudiesOld);
+                                Utilities.sortListStudies(FilesManager.listStudiesSingle);
+                                Utilities.sortListStudies(FilesManager.listStudiesTopical);
+                            }
+
+                            studiesAdapterNew.setStudyListItems(FilesManager.listStudiesNew);
+                            studiesAdapterOld.setStudyListItems(FilesManager.listStudiesOld);
+                            studiesAdapterSingle.setStudyListItems(FilesManager.listStudiesSingle);
+                            studiesAdapterTopical.setStudyListItems(FilesManager.listStudiesTopical);
 
                             //Save state flag for sync Webservice/DB
                             SharedPreferences.Editor e = MainActivity.settings.edit();
@@ -177,16 +204,19 @@ public class DownloadJsonData {
                             e.commit();
 
                             Resources res = mActivity.getResources();
-                            String messageCountStudies = res.getString(R.string.message_count_studies, (FilesManager.listStudiesTypeNew).size());
+                            String messageCountStudies = res.getString(R.string.message_count_studies, (FilesManager.listStudiesNew).size());
                             tvCountStudiesNew.setText(messageCountStudies);
-                            messageCountStudies = res.getString(R.string.message_count_studies, (FilesManager.listStudiesTypeOld).size());
+                            messageCountStudies = res.getString(R.string.message_count_studies, (FilesManager.listStudiesOld).size());
                             tvCountStudiesOld.setText(messageCountStudies);
-                            messageCountStudies = res.getString(R.string.message_count_studies, (FilesManager.listStudiesTypeSingle).size());
+                            messageCountStudies = res.getString(R.string.message_count_studies, (FilesManager.listStudiesSingle).size());
                             tvCountStudiesSingle.setText(messageCountStudies);
+                            messageCountStudies = res.getString(R.string.message_count_studies, (FilesManager.listStudiesTopical).size());
+                            tvCountStudiesTopical.setText(messageCountStudies);
 
                             tvStudiesNew.setVisibility(View.VISIBLE);
                             tvStudiesOld.setVisibility(View.VISIBLE);
                             tvStudiesSingle.setVisibility(View.VISIBLE);
+                            tvStudiesTopical.setVisibility(View.VISIBLE);
 
                         }else{
                             Toast.makeText(mAQuery.getContext(), mActivity.getResources().getString(R.string.error_message_connecting), Toast.LENGTH_SHORT).show();

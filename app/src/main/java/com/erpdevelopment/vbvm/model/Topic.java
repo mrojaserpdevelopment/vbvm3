@@ -11,7 +11,6 @@ public class Topic implements Parcelable{
 	
 	public Topic() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getIdProperty() {
@@ -40,7 +39,6 @@ public class Topic implements Parcelable{
 
 	@Override
 	public int describeContents() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
