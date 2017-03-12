@@ -51,6 +51,7 @@ public class DownloadService extends Service {
         @Override
         public void run() {
             if (countDownloads==0) {
+                Log.i("DownloadService", "stoping foreground...");
                 stopForeground(true);
                 return;
             }
@@ -79,7 +80,8 @@ public class DownloadService extends Service {
             stopForeground(true);
             stopSelf();
         }
-        return START_REDELIVER_INTENT;
+//        return START_REDELIVER_INTENT;
+        return START_NOT_STICKY;
     }
 
     @Override
@@ -116,9 +118,9 @@ public class DownloadService extends Service {
 //                    R.drawable.app_logo_24);
 
         Notification notification = new NotificationCompat.Builder(this)
-                .setContentTitle("Verse By verse Ministry")
-                .setTicker("VBVMI downloading")
-                .setContentText("Downloading lesson")
+                .setContentTitle(getResources().getString(R.string.label_notification_title))
+                .setTicker(getResources().getString(R.string.progress_dialog_message_prefix_downloading))
+                .setContentText(getResources().getString(R.string.progress_dialog_message_prefix_downloading))
                 .setSmallIcon(R.drawable.app_logo_24)
 //                    .setLargeIcon(
 //                            Bitmap.createScaledBitmap(icon, 128, 128, false))

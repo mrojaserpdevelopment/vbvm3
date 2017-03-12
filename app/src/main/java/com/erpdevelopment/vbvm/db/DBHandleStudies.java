@@ -1,5 +1,6 @@
 package com.erpdevelopment.vbvm.db;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -15,6 +16,7 @@ import com.erpdevelopment.vbvm.model.Answer;
 import com.erpdevelopment.vbvm.model.Study;
 import com.erpdevelopment.vbvm.model.Topic;
 import com.erpdevelopment.vbvm.model.VideoVbvm;
+import com.erpdevelopment.vbvm.utils.Constants;
 import com.erpdevelopment.vbvm.utils.Utilities;
 
 import android.content.ContentValues;
@@ -25,8 +27,7 @@ import android.util.Log;
 
 public class DBHandleStudies {
 
-	// Logcat tag
-    private static final String LOG = "DatabaseHelper Study";
+    private static final String LOG = "DbHelper Study";
     
     private static final String COLUMN_ID_STUDY = "id_study";
     private static final String COLUMN_THUMBNAIL_SOURCE = "thumbnail_source";
@@ -37,7 +38,7 @@ public class DBHandleStudies {
     private static final String COLUMN_DESCRIPTION = "description";
     private static final String COLUMN_TYPE = "type";
 	private static final String COLUMN_BIBLE_INDEX = "bible_index";
-    
+
 	public static long createStudy(Study study) {
 	    ContentValues values = new ContentValues();
 	    values.put("id_study", study.getIdProperty());
@@ -49,16 +50,18 @@ public class DBHandleStudies {
 	    values.put("description", study.getStudiesDescription());
 	    values.put("type", study.getType());
 		values.put("bible_index", study.getBibleIndex());
+
 	    long row_id = 0;
 	    try {
 		    row_id = MainActivity.db.insertOrThrow("study", null, values);
     	}catch(SQLiteConstraintException e){
-    		Log.i("SQLiteConstraintEx", e.getMessage());
+    		Log.d("SQLiteConstraintEx", e.getMessage());
+			row_id = MainActivity.db.replaceOrThrow("study", null, values);
     	}catch(SQLiteException exception) {
-    		Log.i("SQLiteException", "exception insert on the next line");
+    		Log.d("SQLiteException", "exception insert on the next line");
     	}
     	catch(Exception exception) {
-      	  	Log.i("Exception", "exception insert on the next line");
+      	  	Log.d("Exception", "exception insert on the next line");
     	}
 	    return row_id;
 	}
@@ -94,11 +97,12 @@ public class DBHandleStudies {
 	    	row_id = MainActivity.db.insertOrThrow("lesson", null, values);
     	}catch(SQLiteConstraintException e){
     		Log.i("SQLiteConstraintEx", e.getMessage());
+//			row_id = MainActivity.db.replaceOrThrow("lesson", null, values);
     	}catch(SQLiteException exception) {
-    	  Log.i("SQLiteException lesson", "exception insert on the next line");
+			Log.i("SQLiteException lesson", "exception insert on the next line");
     	}
     	catch(Exception exception) {
-      	  Log.i("Exception lesson", "exception insert on the next line");
+			Log.i("Exception lesson", "exception insert on the next line");
     	}
 	    return row_id;
 	}
@@ -108,7 +112,6 @@ public class DBHandleStudies {
 	    values.put("id_topic", topic.getIdProperty());
 	    values.put("topic", topic.getTopic());
 	    values.put("id_lesson", topic.getIdParent());
-
 	    long row_id = 0;
 	    try {
 	    	row_id = MainActivity.db.insertOrThrow("topic_lesson", null, values);
@@ -126,13 +129,7 @@ public class DBHandleStudies {
 	public static long createArticle(Article article) {
 		ContentValues values = new ContentValues();
 	    values.put("id_article", article.getIdProperty());
-//		long timeMills = Long.parseLong(article.getPostedDate()+"000");
-//		Date d = new Date(timeMills);
-//		DateFormat df = DateFormat.getDateInstance();
-//		String postedDate = df.format(d);
-////		article.setPostedDate(date);
 	    values.put("posted_date", article.getPostedDate());
-//		values.put("posted_date", postedDate);
 	    values.put("category", article.getCategory());
 	    values.put("average_rating", article.getAverageRating());
 	    values.put("article_description", article.getArticlesDescription());
@@ -378,7 +375,6 @@ public class DBHandleStudies {
 					studiesTopical.add(study);
 				}
 			} while (c.moveToNext());
-
 			int selectedSort = MainActivity.settings.getInt("selectedSort", -1);
 			if (selectedSort == R.id.radio_bible_book) {
 				Utilities.sortListStudies(studiesNew);

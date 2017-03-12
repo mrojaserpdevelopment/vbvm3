@@ -126,8 +126,6 @@ public class JSONParser {
 			e.printStackTrace();
 		} catch (JSONException e) {
 			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		return jsonObject;
 	}

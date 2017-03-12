@@ -201,20 +201,19 @@ public class StudiesFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        System.out.println("StudiesFragment.onOptionsItemSelected");
         String url = "";
         switch (item.getItemId()) {
             case R.id.action_about:
-                url = Constants.URL_VBVMI.ABOUT;
+                url = Constants.VBVMI_URL.ABOUT;
                 break;
             case R.id.action_events:
-                url = Constants.URL_VBVMI.EVENTS;
+                url = Constants.VBVMI_URL.EVENTS;
                 break;
             case R.id.action_contact:
-                url = Constants.URL_VBVMI.CONTACT;
+                url = Constants.VBVMI_URL.CONTACT;
                 break;
             case R.id.action_donate:
-                url = Constants.URL_VBVMI.DONATE;
+                url = Constants.VBVMI_URL.DONATE;
                 break;
             case R.id.action_config:
                 Intent i = new Intent(getActivity(), SettingsActivity.class);

@@ -112,11 +112,11 @@ public class LessonsAdapter extends BaseAdapter {
 			TextView title = (TextView) convertView.findViewById(R.id.tv_lessons_completed_title);
 			TextView count = (TextView) convertView.findViewById(R.id.tv_lessons_completed_count);
 			if (lesson.isSectionCompleted()) {
-				title.setText("Completed lessons");
-				count.setText(sizeListComplete + "");
+				title.setText(context.getResources().getString(R.string.label_title_completed_lessons));
+				count.setText(String.valueOf(sizeListComplete));
 			} else {
-				title.setText("Lessons");
-				count.setText(sizeListIncomplete + "");
+				title.setText(context.getResources().getString(R.string.label_title_lessons));
+				count.setText(String.valueOf(sizeListIncomplete));
 			}
 		} else {
 			int progressInDip = ( lesson.getProgressPercentage() * screenWidthInPix ) / 100;
@@ -193,10 +193,6 @@ public class LessonsAdapter extends BaseAdapter {
 			rlTranscript.setOnClickListener(view -> onClickItemLessons(view, lesson, position));
 		}
 		return convertView;
-	}
-
-	public void setSelectedPosition(int pos){
-		notifyDataSetChanged();
 	}
 
 	public void setLessonListItems(List<Lesson> newList) {
@@ -282,20 +278,14 @@ public class LessonsAdapter extends BaseAdapter {
 		AudioPlayerHelper helper = new AudioPlayerHelper();
 		helper.setLessonToPlay(lesson);
 		helper.initContext((Activity) context, rootView);
+		AudioPlayerHelper.playerInstance = helper;
 	}
 
 	private void stopDownload(View view, String downloadType, Lesson lesson) {
 		if (downloadType.equals(Constants.LESSON_FILE.AUDIO)) {
-//			TextView tvPlayMini = (TextView) view.findViewById(R.id.tv_icon_play_mini);
-//			tvPlayMini.setText(context.getResources().getString(R.string.fa_icon_play_mini));
-//			tvPlayMini.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 			DownloaderThread t = DownloadService.threadMap.get(lesson.getIdProperty());
-			if (t != null) {
+			if (t != null)
 				t.stopDownload();
-//				lesson.setDownloadStatusAudio(0);
-//				lesson.setDownloadProgressAudio(0);
-//				setLessonListItems(lessons);
-			}
 		}
 	}
 

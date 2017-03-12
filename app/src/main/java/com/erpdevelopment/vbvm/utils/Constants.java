@@ -9,6 +9,7 @@ public class Constants {
 	public static final String TABLE_LESSON = "lesson";
 	public static final String TABLE_TOPIC_LESSON = "topic_lesson";
 	public static final String TABLE_ARTICLE = "article";
+	public static final String TABLE_TOPIC_ARTICLE = "topic_article";
 	public static final String TABLE_EVENT = "event";
 	public static final String TABLE_POST = "post";
 	public static final String TABLE_TOPIC_POST = "topic_post";
@@ -29,7 +30,7 @@ public class Constants {
 		int FOREGROUND_SERVICE = 101;
 	}
 
-	public interface URL_VBVMI {
+	public interface VBVMI_URL {
 		String ABOUT = "http://www.versebyverseministry.org/about/";
 		String EVENTS = "http://www.versebyverseministry.org/events/";
 		String DONATE = "http://www.versebyverseministry.org/about/financial_support";
@@ -54,6 +55,18 @@ public class Constants {
 		String NEW = "New Testament Books";
 		String SINGLE = "Single Teachings";
 		String TOPICAL = "Topical Series";
+	}
+
+	public interface VBVMI_SECTIONS {
+		String STUDIES = "Studies";
+		String ARTICLES = "Articles";
+		String ANSWERS = "Answers";
+		String VIDEOS = "Videos";
+		String VIDEO_CHANNELS = "VideoChannels";
+		String LESSONS = "Lessons";
+		String ARTICLE_DETAILS = "ArticleDetails";
+		String ANSWER_DETAILS = "AnswerDetails";
+
 	}
 
 }

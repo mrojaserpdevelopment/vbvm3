@@ -52,18 +52,32 @@ public class AudioPlayerService extends Service implements OnPreparedListener{
     private static int classID = 579; // just a number for startForeground notification
     private static boolean isLessonComplete = false;
     public static boolean playAfterStop = false;
-	private boolean paused = false;
-	private Lesson lessonPlaying;
+	public static Lesson lessonPlaying;
 
 	public static final String NOTIFICATION_AUDIO_PROGRESS = "notification_audio_progress";
 	public static final String NOTIFICATION_AUDIO_COMPLETE = "notification_audio_complete";
+
+	public static boolean mBoundService = false;
     
 	@Override
     public IBinder onBind(Intent intent) {
+		mBoundService = true;
         return localBinder;
     }
- 
-    @Override
+
+	@Override
+	public boolean onUnbind(Intent intent) {
+		mBoundService = false;
+		return true;
+	}
+
+	@Override
+	public void onRebind(Intent intent) {
+		mBoundService = true;
+		super.onRebind(intent);
+	}
+
+	@Override
     public void onCreate() {
 		LocalBroadcastManager.getInstance(this).registerReceiver(startTrackingTouchReceiver,
 	            new IntentFilter("StartTrackingTouch"));
@@ -103,7 +117,16 @@ public class AudioPlayerService extends Service implements OnPreparedListener{
 		Intent intent = new Intent(NOTIFICATION_AUDIO_COMPLETE);
 		LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 	}
-		 
+
+	private void sendMessageEmptyLesson() {
+		totalDurationLabel = getResources().getString(R.string.label_empty_total_duration);
+		currentDurationLabel = getResources().getString(R.string.label_empty_current_duration);
+		progress = (int)(utils.getProgressPercentage(0, 0));
+		FilesManager.totalDuration = 0;
+		currentPositionInTrack = 0; //To access from Bible Study state of old lesson playing
+		sendMessage();
+	}
+
 	private BroadcastReceiver startTrackingTouchReceiver = new BroadcastReceiver() {
 	   @Override
 	   public void onReceive(Context context, Intent intent) {
@@ -117,7 +140,6 @@ public class AudioPlayerService extends Service implements OnPreparedListener{
 		   handlerUI.removeCallbacks(mUpdateTimeTask);
 		   int currentPosition = intent.getIntExtra("currentPosition", -1);
 		   mp.seekTo(currentPosition);
-		   // update timer progress again
 		   updateProgressBar();
 	   }
 	};
@@ -128,10 +150,8 @@ public class AudioPlayerService extends Service implements OnPreparedListener{
 
 	public void playAudio(Lesson lesson){
 		stopped = false;
-		paused = false;
 		lessonPlaying = lesson;
 		String filename = BitmapManager2.getFileNameFromUrl(lesson.getAudioSource());
-		// Play lesson
 		try {
 			currentLesson = lesson.getAudioSource();
 			currentDescription = lesson.getLessonsDescription();
@@ -140,7 +160,7 @@ public class AudioPlayerService extends Service implements OnPreparedListener{
 			MainActivity.settings.edit().putString("currentLessonId", FilesManager.lastLessonId).commit();
 			if(!created){
 				created = true;
-				mClient.onInitializePlayerStart("Connecting...");
+				mClient.onInitializePlayerStart(getResources().getString(R.string.progress_dialog_title_connecting));
 				handlerUI.removeCallbacks(mUpdateTimeTask);
 				resetMediaPlayer();
 				int downloadStatus = DBHandleLessons.getLessonById(lesson.getIdProperty()).getDownloadStatusAudio();
@@ -150,13 +170,9 @@ public class AudioPlayerService extends Service implements OnPreparedListener{
 					mp.setOnPreparedListener(this);
 					mp.prepareAsync();
 					isLessonComplete = false;
-//					FilesManager.lastLessonId = "";
 					mp.setOnCompletionListener(new OnCompletionListener() {
 						@Override
 						public void onCompletion(MediaPlayer arg0) {
-							System.out.println("AudioPlayerService.onCompletion");
-//							DBHandleLessons.updateLessonState(FilesManager.lastLessonId, 0, "complete");
-//							FilesManager.lastLessonId = "";
 							isLessonComplete = true;
 							stopLesson();
 							sendMessageComplete();
@@ -177,16 +193,7 @@ public class AudioPlayerService extends Service implements OnPreparedListener{
 			}
 		}
 	}
-	
-	private void sendMessageEmptyLesson() {
-		totalDurationLabel = "TBD";
-	    currentDurationLabel = "0:00";
-	    progress = (int)(utils.getProgressPercentage(0, 0));
-	    FilesManager.totalDuration = 0;
-	    currentPositionInTrack = 0; //To access from Bible Study state of old lesson playing
-	    sendMessage();
-	}
-	
+
 	public void playAudio(){
 		stopped = false;
 		startMediaPlayer();
@@ -194,13 +201,8 @@ public class AudioPlayerService extends Service implements OnPreparedListener{
 	
 	public void pauseLesson() {
 		pauseMediaPlayer();
-		paused = true;
     }
 
-	public boolean isPaused() {
-		return paused;
-	}
-	
 	public void stopLesson() {
 		stopped = true;
 		stopMediaPlayer();
@@ -216,10 +218,6 @@ public class AudioPlayerService extends Service implements OnPreparedListener{
 
 	public boolean isCreated(){
 		return created;  
-	}
-	
-	public void setCreated(boolean c){
-		created = c;
 	}
 	
 	public int getDuration() {
@@ -238,9 +236,6 @@ public class AudioPlayerService extends Service implements OnPreparedListener{
         handlerUI.postDelayed(mUpdateTimeTask, 100);        
     }	
 	
-	/**
-	 * Background Runnable thread
-	 * */
 	private Runnable mUpdateTimeTask = new Runnable() {
 	   public void run() {
 		   long totalDuration = mp.getDuration();
@@ -257,17 +252,14 @@ public class AudioPlayerService extends Service implements OnPreparedListener{
 		   Editor e = MainActivity.settings.edit();
 		   e.putLong("currentPositionInTrack", currentPositionInTrack);
 		   e.commit();
-		   // Running this thread after 100 milliseconds
 	       handlerUI.postDelayed(this, 1000);
 	   }
 	};	
 	
 	public void onPrepared(MediaPlayer mp) {
 		mClient.onInitializePlayerSuccess();
-//		if ( playAfterStop ) {
-			startMediaPlayer();
-			playAfterStop = false;
-//		}
+		startMediaPlayer();
+		playAfterStop = false;
 		setSeekToPosition(savedOldPositionInTrack);
 		updateProgressBar();
 	};
@@ -282,8 +274,11 @@ public class AudioPlayerService extends Service implements OnPreparedListener{
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pi = PendingIntent.getActivity(this, 0, intent, 0);
         final NotificationCompat.Builder builder = new Builder(this);
-        builder.setContentTitle("Verse By Verse Ministry");
-        builder.setContentText("Now Playing...");
+        builder.setContentTitle(getResources().getString(R.string.label_notification_title));
+        builder.setContentText(
+				Utilities.getFormatString( getResources(),
+				R.string.label_notification_text,
+				lessonPlaying.getTitle() ) );
         builder.setSmallIcon(R.drawable.app_logo_24);
         builder.setContentIntent(pi);
         Notification notification = builder.build();
@@ -291,9 +286,6 @@ public class AudioPlayerService extends Service implements OnPreparedListener{
         startForeground(classID, notification);
     }
     
-    /**
-     * Stops the contained StatefulMediaPlayer.
-     */
     public void stopMediaPlayer() {
     	created = false;
     	handlerUI.removeCallbacks(mUpdateTimeTask);
@@ -332,9 +324,9 @@ public class AudioPlayerService extends Service implements OnPreparedListener{
 	        } else if(state == TelephonyManager.CALL_STATE_IDLE) {
 	            //Not in call: Play audio
 	        }
-//			else if(state == TelephonyManager.CALL_STATE_OFFHOOK) {
-//	            //A call is dialing, active or on hold
-//	        }
+			else if(state == TelephonyManager.CALL_STATE_OFFHOOK) {
+	            //A call is dialing, active or on hold
+	        }
 	        super.onCallStateChanged(state, incomingNumber);
 	    }
 	};

@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.erpdevelopment.vbvm"
-    android:versionCode="20"
-    android:versionName="3.1" >
+    android:versionCode="27"
+    android:versionName="3.6" >
 
     <uses-sdk
-        android:minSdkVersion="14"
-        android:targetSdkVersion="24" />
+        android:minSdkVersion="15"
+        android:targetSdkVersion="25" />
 
     <supports-screens
-        android:largeScreens="false"
+        android:anyDensity="true"
+        android:largeScreens="true"
         android:normalScreens="true"
         android:smallScreens="true"
-        android:xlargeScreens="false" />
+        android:xlargeScreens="true" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -34,8 +35,6 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
-
-            <!-- android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"> -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -49,10 +48,8 @@
             android:screenOrientation="portrait" >
         </activity>
 
-        <service android:name="com.erpdevelopment.vbvm.activity.AudioPlayerService" >
-        </service>
-        <service android:name="com.erpdevelopment.vbvm.service.DownloadAllService" >
-        </service>
+        <service android:name="com.erpdevelopment.vbvm.activity.AudioPlayerService" />
+        <service android:name="com.erpdevelopment.vbvm.service.DownloadAllService" />
         <service
             android:name="com.erpdevelopment.vbvm.service.downloader.DownloadService"
             android:enabled="true"

@@ -35,6 +35,7 @@ import com.erpdevelopment.vbvm.utils.BitmapManager2;
 import com.erpdevelopment.vbvm.utils.CheckConnectivity;
 import com.erpdevelopment.vbvm.utils.Constants;
 import com.erpdevelopment.vbvm.utils.FilesManager;
+import com.erpdevelopment.vbvm.utils.Utilities;
 import com.erpdevelopment.vbvm.utils.imageloading.FileCache;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.squareup.picasso.Picasso;
@@ -102,17 +103,8 @@ public class LessonsFragment extends Fragment {
         imgStudy = (ImageView) rootView.findViewById(R.id.img_study);
         imgStudyBg = (ImageView) rootView.findViewById(R.id.img_study_bg);
 
-        Picasso.with(activity)
-                .load(mStudy.getThumbnailSource())
-                .resize(300,300)
-                .centerCrop()
-                .into(imgStudy);
-
-        Picasso.with(activity)
-                .load(mStudy.getThumbnailSource())
-                .resize(600,600)
-                .centerCrop()
-                .into(imgStudyBg);
+        Utilities.loadStudyImages(activity, mStudy.getThumbnailSource(), 300, imgStudy);
+        Utilities.loadStudyImages(activity, mStudy.getThumbnailSource(), 600, imgStudyBg);
 
         //Show description of study
         ExpandableTextView expTv1 = (ExpandableTextView) activity.findViewById(R.id.expand_text_view);
@@ -201,7 +193,6 @@ public class LessonsFragment extends Fragment {
         intentDownloadAll.putExtra("url", url);
         intentDownloadAll.putExtra("downloadType", downloadType);
         getActivity().startService(intentDownloadAll);
-//        adapterLessons.setIntentServiceDownloadAll(intentDownloadAll);
         DownloadAllService.incrementCount();
     }
 
@@ -287,6 +278,7 @@ public class LessonsFragment extends Fragment {
 
     @Override
     public void onResume() {
+        System.out.println("LessonsFragment.onResume");
         super.onResume();
         LocalBroadcastManager.getInstance(activity).registerReceiver(receiverDownloadProgress, new IntentFilter(DownloadService.NOTIFICATION_DOWNLOAD_PROGRESS));
         LocalBroadcastManager.getInstance(activity).registerReceiver(receiverDownloadAllProgress, new IntentFilter(DownloadAllService.NOTIFICATION_DOWNLOAD_ALL_PROGRESS));
@@ -297,6 +289,7 @@ public class LessonsFragment extends Fragment {
 
     @Override
     public void onPause() {
+        System.out.println("LessonsFragment.onPause");
         super.onPause();
         LocalBroadcastManager.getInstance(activity).unregisterReceiver(receiverDownloadProgress);
         LocalBroadcastManager.getInstance(activity).unregisterReceiver(receiverDownloadAllProgress);
@@ -422,6 +415,7 @@ public class LessonsFragment extends Fragment {
             Lesson lesson = intent.getParcelableExtra("lessonPlaying");
             for (int i = 0; i < listLessons.size(); i++) {
                 if (lesson.getIdProperty().equals(listLessons.get(i).getIdProperty())) {
+//                    System.out.println("LessonsFragment.onReceive 1");
                     listLessons.set(i, lesson);
                     adapterLessons.notifyDataSetChanged();
                     break;

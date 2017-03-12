@@ -1,8 +1,6 @@
 package com.erpdevelopment.vbvm.activity;
 
 import com.erpdevelopment.vbvm.R;
-import com.erpdevelopment.vbvm.db.DatabaseManager;
-import com.erpdevelopment.vbvm.db.VbvmDatabaseOpenHelper;
 import com.erpdevelopment.vbvm.fragment.AnswerDetailsFragment;
 import com.erpdevelopment.vbvm.fragment.AnswersFragment;
 import com.erpdevelopment.vbvm.fragment.ArticleDetailsFragment;
@@ -16,35 +14,39 @@ import com.erpdevelopment.vbvm.model.Article;
 import com.erpdevelopment.vbvm.model.VideoChannel;
 import com.erpdevelopment.vbvm.model.Answer;
 import com.erpdevelopment.vbvm.model.Study;
+import com.erpdevelopment.vbvm.utils.Constants;
 import com.erpdevelopment.vbvm.utils.Utilities;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.IdRes;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.content.pm.ActivityInfoCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import java.util.Locale;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements StudiesFragment.OnStudyItemSelectedListener,
 		ArticlesFragment.OnArticleSelectedListener,
@@ -52,9 +54,9 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		VideoChannelsFragment.OnVideoChannelSelectedListener {
 
 	public static final String DIRECTORY_IMAGES = "vbvm";
-	public static String SD_CARD_PATH = Environment.getExternalStorageDirectory().toString();
 	public static final String SETTING_IMAGES_DIRECTORY_NAME = "vbvmi";
 	public static final String SETTING_DATABASE_FILE_PATH = "db-path";
+    public static String SD_CARD_PATH = Environment.getExternalStorageDirectory().toString();
 
 	public static SQLiteDatabase db;
 	public static Context mainCtx;
@@ -73,24 +75,19 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 
 	private RelativeLayout viewMiniPlayer;
 	private SlidingUpPanelLayout slidingLayout;
-	private ImageButton btnPlayMini;
-
-	private TextView tvPlayerLessonTitleMini;
-	private TextView tvPlayerLessonDescriptionMini;
 
 	private Study mStudy;
 	private Article mArticle;
 	private Answer mAnswer;
 	private VideoChannel mVideoChannel;
 
-	public static String lastFragSelected = "Studies";
-	public static String lastFragInStudies = "Studies";
-	public static String lastFragInArticles = "Articles";
-	public static String lastFragInAnswers = "Answers";
-	public static String lastFragInVideoChannels = "VideoChannels";
+	public static String lastFragSelected = Constants.VBVMI_SECTIONS.STUDIES;
+	public static String lastFragInStudies = Constants.VBVMI_SECTIONS.STUDIES;
+	public static String lastFragInArticles = Constants.VBVMI_SECTIONS.ARTICLES;
+	public static String lastFragInAnswers = Constants.VBVMI_SECTIONS.ANSWERS;
+	public static String lastFragInVideoChannels = Constants.VBVMI_SECTIONS.VIDEO_CHANNELS;
 
 	public static String locale;
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -98,37 +95,18 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		mainCtx = this;
-        settings = getPreferences(Activity.MODE_PRIVATE);
-        VbvmDatabaseOpenHelper mDbHelper = VbvmDatabaseOpenHelper.getInstance(mainCtx);
-        DatabaseManager.initializeInstance(mDbHelper);
-        db = DatabaseManager.getInstance().openDatabase();
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-			locale = getResources().getConfiguration().getLocales().get(0).getDisplayName();
-		} else {
-			locale = getResources().getConfiguration().locale.getDisplayName();
-		}
+		locale = Utilities.getLocale(this);
 
 		viewMiniPlayer = (RelativeLayout) findViewById(R.id.view_mini_player);
 		slidingLayout = (SlidingUpPanelLayout)findViewById(R.id.sliding_layout);
 		slidingLayout.setDragView(viewMiniPlayer.findViewById(R.id.ll_player_mini_title));
-		tvPlayerLessonTitleMini = (TextView) viewMiniPlayer.findViewById(R.id.tv_player_lesson_title_mini);
-		tvPlayerLessonDescriptionMini = (TextView) viewMiniPlayer.findViewById(R.id.tv_player_lesson_description_mini);
 
-		lastFragSelected = "Studies";
-		lastFragInStudies = "Studies";
-		lastFragInArticles = "Articles";
-		lastFragInAnswers = "Answers";
-		lastFragInVideoChannels = "VideoChannels";
-
-		actionBar = getSupportActionBar();
-		if (actionBar != null) {
-			actionBar.setHomeButtonEnabled(false); // disable the button
-			actionBar.setDisplayHomeAsUpEnabled(false); // remove the left caret
-			actionBar.setDisplayShowHomeEnabled(false); // remove the icon
-			actionBar.setDisplayShowTitleEnabled(false);
-			actionBar.show();
-		}
+		lastFragSelected = Constants.VBVMI_SECTIONS.STUDIES;
+		lastFragInStudies = Constants.VBVMI_SECTIONS.STUDIES;
+		lastFragInArticles = Constants.VBVMI_SECTIONS.ARTICLES;
+		lastFragInAnswers = Constants.VBVMI_SECTIONS.ANSWERS;
+		lastFragInVideoChannels = Constants.VBVMI_SECTIONS.VIDEO_CHANNELS;
 
 		fragmentStudies = StudiesFragment.newInstance(0);
 		fragmentArticles = ArticlesFragment.newInstance(0);
@@ -144,78 +122,43 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 			@Override
 			public void onTabSelected(@IdRes int tabId) {
 				if (tabId == R.id.tab_studies) {
-					System.out.println("MainActivity.onTabSelected " + lastFragInStudies);
-					if (lastFragInStudies.equals("Studies"))
+					if (lastFragInStudies.equals(Constants.VBVMI_SECTIONS.STUDIES))
 						displayFragmentStudies();
 					else
 						displayFragmentLessons();
 				}
 				if (tabId == R.id.tab_articles) {
-					if (lastFragInArticles.equals("Articles"))
+					if (lastFragInArticles.equals(Constants.VBVMI_SECTIONS.ARTICLES))
 						displayFragmentArticles();
 					else
 						displayFragmentArticleDetails();
 				}
 				if (tabId == R.id.tab_answers) {
-					if (lastFragInAnswers.equals("Answers"))
+					if (lastFragInAnswers.equals(Constants.VBVMI_SECTIONS.ANSWERS))
 						displayFragmentAnswers();
 					else
 						displayFragmentAnswerDetails();
 				}
 				if (tabId == R.id.tab_videos) {
-					if (lastFragInVideoChannels.equals("VideoChannels"))
+					if (lastFragInVideoChannels.equals(Constants.VBVMI_SECTIONS.VIDEO_CHANNELS))
 						displayFragmentVideoChannels();
 					else
 						displayFragmentVideos();
 				}
 			}
 		});
-
-//		if (AudioPlayerService.created) {
-//			if (AudioPlayerService.stopped)
-//				btnPlayMini.setImageResource(R.drawable.icon_mini_play);
-//			else
-//				btnPlayMini.setImageResource(R.drawable.icon_media_pause_16);
-//		}
 	}
 
-	// Replace the switch method
 	protected void displayFragmentStudies() {
-		lastFragSelected = "Studies";
-		lastFragInStudies = "Studies";
+		lastFragSelected = Constants.VBVMI_SECTIONS.STUDIES;
+		lastFragInStudies = Constants.VBVMI_SECTIONS.STUDIES;
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (fragmentStudies.isAdded()) { // if the fragment is already in container
 			ft.show(fragmentStudies);
 		} else { // fragment needs to be added to frame container
-			ft.add(R.id.frame_container, fragmentStudies, "Studies");
+			ft.add(R.id.frame_container, fragmentStudies, Constants.VBVMI_SECTIONS.STUDIES);
 		}
 		if (fragmentArticles.isAdded()) { ft.hide(fragmentArticles); }
-		if (fragmentAnswers.isAdded()) { ft.hide(fragmentAnswers); }
-		if (fragmentVideos.isAdded()) { ft.hide(fragmentVideos); }
-		if (fragmentLessons.isAdded()) { ft.hide(fragmentLessons); }
-		if (fragmentArticleDetails.isAdded()) { ft.hide(fragmentArticleDetails); }
-		if (fragmentAnswerDetails.isAdded()) { ft.hide(fragmentAnswerDetails); }
-		if (fragmentVideoChannels.isAdded()) { ft.hide(fragmentVideoChannels); }
-
-		actionBar.setDisplayHomeAsUpEnabled(false);
-		actionBar.setDisplayShowTitleEnabled(true);
-		actionBar.setTitle("Studies");
-
-		// Commit changes
-		ft.commit();
-	}
-
-	protected void displayFragmentArticles() {
-		lastFragSelected = "Articles";
-		lastFragInArticles = "Articles";
-		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		if (fragmentArticles.isAdded()) { // if the fragment is already in container
-			ft.show(fragmentArticles);
-		} else { // fragment needs to be added to frame container
-			ft.add(R.id.frame_container, fragmentArticles, "Articles");
-//			ft.addToBackStack(null);
-		}
-		if (fragmentStudies.isAdded()) { ft.hide(fragmentStudies); }
 		if (fragmentAnswers.isAdded()) { ft.hide(fragmentAnswers); }
 		if (fragmentVideos.isAdded()) { ft.hide(fragmentVideos); }
 		if (fragmentLessons.isAdded()) { ft.hide(fragmentLessons); }
@@ -226,21 +169,42 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(false);
 		actionBar.setDisplayShowTitleEnabled(true);
-		actionBar.setLogo(Utilities.getTextViewAsDrawable(this,"Articles"));
-		actionBar.setTitle("Articles");
+		actionBar.setTitle(Constants.VBVMI_SECTIONS.STUDIES);
 		actionBar.show();
+
+		ft.commit();
+	}
+
+	protected void displayFragmentArticles() {
+		lastFragSelected = Constants.VBVMI_SECTIONS.ARTICLES;
+		lastFragInArticles = Constants.VBVMI_SECTIONS.ARTICLES;
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		if (fragmentArticles.isAdded()) { // if the fragment is already in container
+			ft.show(fragmentArticles);
+		} else { // fragment needs to be added to frame container
+			ft.add(R.id.frame_container, fragmentArticles, Constants.VBVMI_SECTIONS.ARTICLES);
+		}
+		if (fragmentStudies.isAdded()) { ft.hide(fragmentStudies); }
+		if (fragmentAnswers.isAdded()) { ft.hide(fragmentAnswers); }
+		if (fragmentVideos.isAdded()) { ft.hide(fragmentVideos); }
+		if (fragmentLessons.isAdded()) { ft.hide(fragmentLessons); }
+		if (fragmentArticleDetails.isAdded()) { ft.hide(fragmentArticleDetails); }
+		if (fragmentAnswerDetails.isAdded()) { ft.hide(fragmentAnswerDetails); }
+		if (fragmentVideoChannels.isAdded()) { ft.hide(fragmentVideoChannels); }
+
+		Utilities.setActionBar(this, Constants.VBVMI_SECTIONS.ARTICLES, false);
 
 		ft.commit();
 	}
 
 	protected void displayFragmentAnswers() {
-		lastFragSelected = "Answers";
-		lastFragInAnswers = "Answers";
+		lastFragSelected = Constants.VBVMI_SECTIONS.ANSWERS;
+		lastFragInAnswers = Constants.VBVMI_SECTIONS.ANSWERS;
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		if (fragmentAnswers.isAdded()) { // if the fragment is already in container
+		if (fragmentAnswers.isAdded()) { // check the fragment is already in container
 			ft.show(fragmentAnswers);
 		} else { // fragment needs to be added to frame container
-			ft.add(R.id.frame_container, fragmentAnswers, "Answers");
+			ft.add(R.id.frame_container, fragmentAnswers, Constants.VBVMI_SECTIONS.ANSWERS);
 		}
 		if (fragmentStudies.isAdded()) { ft.hide(fragmentStudies); }
 		if (fragmentArticles.isAdded()) { ft.hide(fragmentArticles); }
@@ -250,23 +214,19 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		if (fragmentAnswerDetails.isAdded()) { ft.hide(fragmentAnswerDetails); }
 		if (fragmentVideoChannels.isAdded()) { ft.hide(fragmentVideoChannels); }
 
-		actionBar = getSupportActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(false);
-		actionBar.setDisplayShowTitleEnabled(true);
-		actionBar.setTitle("Answers");
-		actionBar.show();
+		Utilities.setActionBar(this, Constants.VBVMI_SECTIONS.ANSWERS, false);
 
 		ft.commit();
 	}
 
 	protected void displayFragmentVideoChannels() {
-		lastFragSelected = "VideoChannels";
-		lastFragInVideoChannels = "VideoChannels";
+		lastFragSelected = Constants.VBVMI_SECTIONS.VIDEO_CHANNELS;
+		lastFragInVideoChannels = Constants.VBVMI_SECTIONS.VIDEO_CHANNELS;
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (fragmentVideoChannels.isAdded()) { // if the fragment is already in container
 			ft.show(fragmentVideoChannels);
 		} else { // fragment needs to be added to frame container
-			ft.add(R.id.frame_container, fragmentVideoChannels, "Videos");
+			ft.add(R.id.frame_container, fragmentVideoChannels, Constants.VBVMI_SECTIONS.VIDEOS);
 		}
 		if (fragmentStudies.isAdded()) { ft.hide(fragmentStudies); }
 		if (fragmentArticles.isAdded()) { ft.hide(fragmentArticles); }
@@ -279,20 +239,20 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(false);
 		actionBar.setDisplayShowTitleEnabled(true);
-		actionBar.setTitle("Videos");
+		actionBar.setTitle(Constants.VBVMI_SECTIONS.VIDEOS);
 		actionBar.show();
 
 		ft.commit();
 	}
 
 	protected void displayFragmentLessons() {
-		lastFragSelected = "Lessons";
-		lastFragInStudies = "Lessons";
+		lastFragSelected = Constants.VBVMI_SECTIONS.LESSONS;
+		lastFragInStudies = Constants.VBVMI_SECTIONS.LESSONS;
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (fragmentLessons.isAdded()) { // if the fragment is already in container
 			ft.show(fragmentLessons);
 		} else { // fragment needs to be added to frame container
-			ft.add(R.id.frame_container, fragmentLessons, "Lessons");
+			ft.add(R.id.frame_container, fragmentLessons, Constants.VBVMI_SECTIONS.LESSONS);
 		}
 		if (fragmentStudies.isAdded()) { ft.hide(fragmentStudies); }
 		if (fragmentArticles.isAdded()) { ft.hide(fragmentArticles); }
@@ -302,12 +262,7 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		if (fragmentAnswerDetails.isAdded()) { ft.hide(fragmentAnswerDetails); }
 		if (fragmentVideoChannels.isAdded()) { ft.hide(fragmentVideoChannels); }
 
-		actionBar = getSupportActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setDisplayShowTitleEnabled(true);
-		Drawable textHomeUp = Utilities.getTextViewAsDrawable(this, "Studies");
-		actionBar.setLogo(textHomeUp);
-		actionBar.show();
+		Utilities.setActionBar(this, mStudy.getTitle(), true);
 
 		Bundle bundle = new Bundle();
 		bundle.putParcelable("study", mStudy);
@@ -319,13 +274,13 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 	}
 
 	protected void displayFragmentArticleDetails() {
-		lastFragSelected = "ArticleDetails";
-		lastFragInArticles = "ArticleDetails";
+		lastFragSelected = Constants.VBVMI_SECTIONS.ARTICLE_DETAILS;
+		lastFragInArticles = Constants.VBVMI_SECTIONS.ARTICLE_DETAILS;
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (fragmentArticleDetails.isAdded()) { // if the fragment is already in container
 			ft.show(fragmentArticleDetails);
 		} else { // fragment needs to be added to frame container
-			ft.add(R.id.frame_container, fragmentArticleDetails, "ArticleDetails");
+			ft.add(R.id.frame_container, fragmentArticleDetails, Constants.VBVMI_SECTIONS.ARTICLE_DETAILS);
 		}
 		if (fragmentStudies.isAdded()) { ft.hide(fragmentStudies); }
 		if (fragmentArticles.isAdded()) { ft.hide(fragmentArticles); }
@@ -336,7 +291,7 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		if (fragmentVideoChannels.isAdded()) { ft.hide(fragmentVideoChannels); }
 		if (fragmentVideos.isAdded()) { ft.hide(fragmentVideos); }
 
-		Utilities.setActionBar(this, mArticle.getTitle());
+		Utilities.setActionBar(this, mArticle.getTitle(), true);
 
 		Bundle bundle = new Bundle();
 		bundle.putParcelable("article", mArticle);
@@ -349,13 +304,13 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 	}
 
 	protected void displayFragmentAnswerDetails() {
-		lastFragSelected = "AnswerDetails";
-		lastFragInAnswers = "AnswerDetails";
+		lastFragSelected = Constants.VBVMI_SECTIONS.ANSWER_DETAILS;
+		lastFragInAnswers = Constants.VBVMI_SECTIONS.ANSWER_DETAILS;
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (fragmentAnswerDetails.isAdded()) { // if the fragment is already in container
 			ft.show(fragmentAnswerDetails);
 		} else { // fragment needs to be added to frame container
-			ft.add(R.id.frame_container, fragmentAnswerDetails, "AnswerDetails");
+			ft.add(R.id.frame_container, fragmentAnswerDetails, Constants.VBVMI_SECTIONS.ANSWER_DETAILS);
 		}
 		if (fragmentStudies.isAdded()) { ft.hide(fragmentStudies); }
 		if (fragmentArticles.isAdded()) { ft.hide(fragmentArticles); }
@@ -366,7 +321,7 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		if (fragmentVideoChannels.isAdded()) { ft.hide(fragmentVideoChannels); }
 		if (fragmentVideos.isAdded()) { ft.hide(fragmentVideos); }
 
-		Utilities.setActionBar(this, mAnswer.getTitle());
+		Utilities.setActionBar(this, mAnswer.getTitle(), true);
 
 		Bundle bundle = new Bundle();
 		bundle.putParcelable("answer", mAnswer);
@@ -379,13 +334,13 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 	}
 
 	protected void displayFragmentVideos() {
-		lastFragSelected = "Videos";
-		lastFragInVideoChannels = "Videos";
+		lastFragSelected = Constants.VBVMI_SECTIONS.VIDEOS;
+		lastFragInVideoChannels = Constants.VBVMI_SECTIONS.VIDEOS;
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (fragmentVideos.isAdded()) { // if the fragment is already in container
 			ft.show(fragmentVideos);
 		} else { // fragment needs to be added to frame container
-			ft.add(R.id.frame_container, fragmentVideos, "Videos");
+			ft.add(R.id.frame_container, fragmentVideos, Constants.VBVMI_SECTIONS.VIDEOS);
 		}
 		if (fragmentStudies.isAdded()) { ft.hide(fragmentStudies); }
 		if (fragmentArticles.isAdded()) { ft.hide(fragmentArticles); }
@@ -395,7 +350,7 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		if (fragmentArticleDetails.isAdded()) { ft.hide(fragmentArticleDetails); }
 		if (fragmentAnswerDetails.isAdded()) { ft.hide(fragmentAnswerDetails); }
 
-		Utilities.setActionBar(this, mVideoChannel.getTitle());
+		Utilities.setActionBar(this, mVideoChannel.getTitle(), true);
 
 		Bundle bundle = new Bundle();
 		bundle.putParcelable("videoChannel", mVideoChannel);
@@ -432,52 +387,6 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 	}
 
 	@Override
-	protected void onStart() {
-		super.onStart();
-//		if (AudioPlayerService.created) {
-//			viewMiniPlayer.setVisibility(View.VISIBLE);
-//			slidingLayout.setShadowHeight(4);
-//			slidingLayout.setPanelHeight(getResources().getDimensionPixelSize(R.dimen.sliding_panel_height));
-//			tvPlayerLessonTitleMini.setText(settings.getString("lessonTitle",""));
-//			tvPlayerLessonDescriptionMini.setText(settings.getString("lessonDescription",""));
-//			System.out.println("MainActivity.onStart 1");
-//		} else {
-//			viewMiniPlayer.setVisibility(View.GONE);
-//			slidingLayout.setShadowHeight(0);
-//			slidingLayout.setPanelHeight(0);
-//			System.out.println("MainActivity.onStart 2");
-//		}
-//		checkUserFirstVisit();
-	}
-
-
-
-	//    /**
-//     * CHECK LAST UPDATE TIME
-//     */
-    private boolean checkUserFirstVisit(){
-        long lastUpdateTime = MainActivity.settings.getLong("lastUpdateKey", 0L);
-        long timeElapsed = System.currentTimeMillis() - lastUpdateTime;
-        // YOUR UPDATE FREQUENCY HERE
-//			final long UPDATE_FREQ = 1000 * 60 * 60 * 12;
-        final long UPDATE_FREQ = 1000 * 60 * 60 * 1; //Every 1 hour
-        SharedPreferences.Editor e = MainActivity.settings.edit();
-        if (timeElapsed > UPDATE_FREQ) {
-            e.putBoolean("studiesInDB", false);
-            e.putBoolean("lessonsInDB", false);
-            e.putBoolean("articlesInDB", false);
-            e.putBoolean("postsInDB", false);
-            e.putBoolean("eventsInDB", false);
-            e.putBoolean("videosInDB", false);
-            Log.i("MainActivity info", "Update DB with data from Webservice");
-        }
-        // STORE LATEST UPDATE TIME
-        e.putLong("lastUpdateKey", System.currentTimeMillis());
-        e.commit();
-        return false;
-    }
-
-	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 //		getMenuInflater().inflate(R.menu.menu_fragment_studies, menu);
 		return true;
@@ -489,15 +398,14 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 			case R.id.action_settings:
 				return true;
 			case android.R.id.home:
-				System.out.println("MainActivity.onOptionsItemSelected...");
 				switch (lastFragSelected) {
-					case "Lessons": displayFragmentStudies();
+					case Constants.VBVMI_SECTIONS.LESSONS: displayFragmentStudies();
 						break;
-					case "ArticleDetails": displayFragmentArticles();
+					case Constants.VBVMI_SECTIONS.ARTICLE_DETAILS: displayFragmentArticles();
 						break;
-					case "AnswerDetails": displayFragmentAnswers();
+					case Constants.VBVMI_SECTIONS.ANSWER_DETAILS: displayFragmentAnswers();
 						break;
-					case "Videos": displayFragmentVideoChannels();
+					case Constants.VBVMI_SECTIONS.VIDEOS: displayFragmentVideoChannels();
 						break;
 					default:
 						break;
@@ -507,49 +415,35 @@ public class MainActivity extends AppCompatActivity implements StudiesFragment.O
 		}
 	}
 
-//	private void handleBackEvent() {
-//		switch (lastFragSelected) {
-//			case "Studies": displayFragmentStudies();
-//				break;
-//			case "Articles": displayFragmentArticles();
-//				break;
-//			case "Answers": displayFragmentAnswers();
-//				break;
-//			case "VideoChannels": displayFragmentVideoChannels();
-//				break;
-//			case "Lessons": displayFragmentStudies();
-//				break;
-//			case "ArticleDetails": displayFragmentArticles();
-//				break;
-//			case "AnswerDetails": displayFragmentAnswers();
-//				break;
-//			case "Videos": displayFragmentVideoChannels();
-//				break;
-//			default:
-//				break;
-//		}
-//	}
-
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		System.out.println("MainActivity.onConfigurationChanged");
+	}
+
+	@Override
+	protected void onStart() {
+		if (AudioPlayerHelper.playerInstance != null)
+			AudioPlayerHelper.playerInstance.registerProgressReceiver();
+		super.onStart();
 	}
 
 	@Override
 	protected void onStop() {
-		System.out.println("MainActivity.onStop");
-		AudioPlayerHelper helper = new AudioPlayerHelper();
-		helper.unregisterReceiverProgress(this);
+		if (AudioPlayerHelper.playerInstance != null)
+			AudioPlayerHelper.playerInstance.unregisterProgressReceiver();
 		super.onStop();
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-//		AudioPlayerHelper helper = new AudioPlayerHelper();
-//		helper.unregisterReceiverProgress(this);
-//		System.out.println("MainActivity.onDestroy");
 	}
 
+	@Override
+	public void onBackPressed() {
+//		Intent i = new Intent(Intent.ACTION_MAIN);
+//		i.addCategory(Intent.CATEGORY_HOME);
+//		startActivity(i);
+		moveTaskToBack(true);
+	}
 }

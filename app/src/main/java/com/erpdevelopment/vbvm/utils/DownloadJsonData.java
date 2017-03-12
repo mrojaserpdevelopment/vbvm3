@@ -137,6 +137,7 @@ public class DownloadJsonData {
                     @Override
                     public void callback(String url, JSONObject json, AjaxStatus status) {
                         if(json != null){
+                            System.out.println("DownloadJsonData.callback studies...");
                             //successful ajax call, show status code and json content
                             String responseString = StringEscapeUtils.unescapeHtml(json.toString());
                             final List<Study> newListStudies = new ArrayList<>();

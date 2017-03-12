@@ -17,7 +17,6 @@
         android:layout_above="@+id/bottomBar"
         android:background="#ffffff">
 
-        <!-- This could be your fragment container, or something -->
         <FrameLayout
             android:id="@+id/frame_container"
             android:layout_width="match_parent"
@@ -26,7 +25,7 @@
             android:paddingBottom="0dp"/>
 
         <!-- Sliding Layout -->
-        <include layout="@layout/audio_player2" android:id="@+id/layout_audio_player"/>
+        <include layout="@layout/layout_audio_player" android:id="@+id/layout_audio_player"/>
 
     </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
@@ -35,6 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        app:bb_tabXmlResource="@xml/bottombar_tabs" />
+        app:bb_tabXmlResource="@xml/bottombar_tabs"
+        android:visibility="visible"/>
 
 </RelativeLayout>

@@ -2,6 +2,7 @@ package com.erpdevelopment.vbvm.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SwitchCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
@@ -15,7 +16,7 @@ import com.erpdevelopment.vbvm.utils.Utilities;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private Switch switchAutoComplete;
+    private SwitchCompat switchAutoComplete;
     private RadioButton radioBibleBook;
     private RadioButton radioReleaseDate;
     private RadioGroup radioGroupSort;
@@ -24,7 +25,7 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        switchAutoComplete = (Switch) findViewById(R.id.switch_auto);
+        switchAutoComplete = (SwitchCompat) findViewById(R.id.switch_auto);
         radioBibleBook = (RadioButton) findViewById(R.id.radio_bible_book);
         radioReleaseDate = (RadioButton) findViewById(R.id.radio_release_date);
         radioGroupSort = (RadioGroup) findViewById(R.id.radio_group_sort);

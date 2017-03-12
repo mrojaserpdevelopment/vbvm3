@@ -47,7 +47,7 @@ public class DBHandleLessons {
 	    	selectQuery = "SELECT * FROM lesson ORDER BY " + COLUMN_POSTED_DATE + " DESC LIMIT 8"; //Query for Newest list	    
 	    else
 	    	selectQuery = "SELECT * FROM lesson WHERE id_study = '" + id_study + "'";	 
-	    Log.e(LOG, selectQuery);	 
+//	    Log.e(LOG, selectQuery);
 	    Cursor c = MainActivity.db.rawQuery(selectQuery, null);
 	    if (c.moveToFirst()) {
 	        do {
@@ -73,18 +73,10 @@ public class DBHandleLessons {
 	        	lesson.setStudyThumbnailSource(c.getString((c.getColumnIndex(COLUMN_STUDY_THUMBNAIL_SOURCE))));
 	        	lesson.setState(c.getString((c.getColumnIndex(COLUMN_STATE_LESSON))));
 	        	lesson.setPositionInList(c.getInt((c.getColumnIndex(COLUMN_POSITION_IN_LIST))));
-//	        	lesson.setDownloadStatus(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS))));
 				lesson.setDownloadStatusAudio(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_AUDIO))));
-//				if (lesson.getDownloadStatusAudio() == 2 ) {
-//					updateLessonDownloadStatusAudio(lesson.getIdProperty(), 0);
-//					lesson.setDownloadStatusAudio(0);
-//				}
 				lesson.setDownloadStatusTeacherAid(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_TEACHER))));
 				lesson.setDownloadStatusTranscript(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_TRANSCRIPT))));
-//				Study study = DBHandleStudies.getStudyById(id_study);
-//				lesson.setStudy(study);
 	        	lessons.add(lesson);
-				System.out.println("DBHandleLessons.getLessons: " + lesson.getDownloadStatusAudio());
 			} while (c.moveToNext());
 	    }
 	    c.close();
@@ -93,7 +85,7 @@ public class DBHandleLessons {
 	
 	public static Lesson getLessonById(String idLesson) {
 	    String selectQuery = "SELECT * FROM lesson WHERE id_lesson = '" + idLesson + "';";
-	    Log.e(LOG, selectQuery);	    
+//	    Log.e(LOG, selectQuery);
 	    Cursor c = MainActivity.db.rawQuery(selectQuery, null);
 	    Lesson lesson = null;
 	    if (c.moveToFirst()) {
@@ -120,7 +112,6 @@ public class DBHandleLessons {
 	    	lesson.setStudyThumbnailSource(c.getString((c.getColumnIndex(COLUMN_STUDY_THUMBNAIL_SOURCE))));
 	    	lesson.setState(c.getString((c.getColumnIndex(COLUMN_STATE_LESSON))));	 
         	lesson.setPositionInList(c.getInt((c.getColumnIndex(COLUMN_POSITION_IN_LIST))));
-//        	lesson.setDownloadStatus(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS))));
 			lesson.setDownloadStatusAudio(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_AUDIO))));
 			lesson.setDownloadStatusTeacherAid(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_TEACHER))));
 			lesson.setDownloadStatusTranscript(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_TRANSCRIPT))));
@@ -133,10 +124,10 @@ public class DBHandleLessons {
 		List<Lesson> lessons = new ArrayList<Lesson>();
 		String selectQuery = "";
 		if ( state == null )
-			selectQuery = "SELECT * FROM lesson ORDER BY " + COLUMN_POSTED_DATE + " DESC LIMIT 8"; //Query for Newest list
+			selectQuery = "SELECT * FROM lesson ORDER BY " + COLUMN_POSTED_DATE + " DESC LIMIT 8";
 		else
 			selectQuery = "SELECT * FROM lesson WHERE state = '" + state + "'";
-		Log.e(LOG, selectQuery);
+//		Log.e(LOG, selectQuery);
 		Cursor c = MainActivity.db.rawQuery(selectQuery, null);
 		if (c.moveToFirst()) {
 			do {
@@ -162,12 +153,9 @@ public class DBHandleLessons {
 				lesson.setStudyThumbnailSource(c.getString((c.getColumnIndex(COLUMN_STUDY_THUMBNAIL_SOURCE))));
 				lesson.setState(c.getString((c.getColumnIndex(COLUMN_STATE_LESSON))));
 				lesson.setPositionInList(c.getInt((c.getColumnIndex(COLUMN_POSITION_IN_LIST))));
-//	        	lesson.setDownloadStatus(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS))));
 				lesson.setDownloadStatusAudio(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_AUDIO))));
 				lesson.setDownloadStatusTeacherAid(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_TEACHER))));
 				lesson.setDownloadStatusTranscript(c.getInt((c.getColumnIndex(COLUMN_DOWNLOAD_STATUS_TRANSCRIPT))));
-//				Study study = DBHandleStudies.getStudyById(id_study);
-//				lesson.setStudy(study);
 				lessons.add(lesson);
 			} while (c.moveToNext());
 		}
@@ -202,14 +190,6 @@ public class DBHandleLessons {
 	}
 	
 	public static void updateLessonDownloadStatus(String idLesson, int downloadStatus, String downloadType){
-//		 int updatedRows = 0;
-//		 if( MainActivity.db != null ){
-//		  ContentValues values = new ContentValues();
-//		  values.put("COLUMN_DOWNLOAD_STATUS", downloadStatus);
-//		  updatedRows = (int) MainActivity.db.update("lesson", values, "id_lesson = ?", new String[]{idLesson});
-//		 }
-//		 return updatedRows;
-
 		switch (downloadType) {
 			case "audio": updateLessonDownloadStatusAudio(idLesson, downloadStatus);
 				break;

@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           package="com.erpdevelopment.vbvm"
-          android:versionCode="20"
-          android:versionName="3.1">
+          android:versionCode="27"
+          android:versionName="3.6">
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -11,10 +11,11 @@
         tools:overrideLibrary="com.cardinalsolutions.progressindicator"/>
 
     <supports-screens
-        android:largeScreens="false"
-        android:normalScreens="true"
         android:smallScreens="true"
-        android:xlargeScreens="false"/>
+        android:normalScreens="true"
+        android:largeScreens="true"
+        android:xlargeScreens="true"
+        android:anyDensity="true" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -31,38 +32,37 @@
         <!-- android:theme="@style/AppBaseTheme"> -->
 
         <activity
-            android:name="com.erpdevelopment.vbvm.activity.SplashActivity"
+            android:name=".activity.SplashActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-            <!--android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen">-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <activity
-            android:name="com.erpdevelopment.vbvm.activity.MainActivity"
+            android:name=".activity.MainActivity"
             android:configChanges="orientation"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait">
         </activity>
 
-        <service android:name="com.erpdevelopment.vbvm.activity.AudioPlayerService">
-        </service>
-        <service android:name="com.erpdevelopment.vbvm.service.DownloadAllService">
-        </service>
+        <service android:name=".activity.AudioPlayerService"/>
+
+        <service android:name=".service.DownloadAllService"/>
 
         <service
-            android:name="com.erpdevelopment.vbvm.service.downloader.DownloadService"
+            android:name=".service.downloader.DownloadService"
             android:enabled="true"
             android:exported="true">
         </service>
 
         <activity
-            android:name="com.erpdevelopment.vbvm.activity.SettingsActivity"
+            android:name=".activity.SettingsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
         </activity>

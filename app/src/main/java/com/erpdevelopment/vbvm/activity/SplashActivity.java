@@ -45,6 +45,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -55,22 +58,22 @@ import org.json.JSONObject;
 public class SplashActivity extends AppCompatActivity {
 	
 	private AQuery mAQuery;
-	private static int downloadCounter = 3;
 	private static final int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
+	private static final int COUNT_DOWNLOADS = 3;
+	private static int downloadCounter;
+	private ProgressBar mProgressBar;
+	private TextView tvLoadingInit;
 
-	private static synchronized void incrementCount() {
-		downloadCounter++;
-	}
 	private static synchronized void decrementCount() {
 		downloadCounter--;
 	}
-
-	private Handler handler = new Handler();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_init);
+		mProgressBar = (ProgressBar) findViewById(R.id.pb_loading);
+		tvLoadingInit = (TextView) findViewById(R.id.tv_loading_init);
 		showPermissionsRequest();
 	}
 
@@ -135,20 +138,14 @@ public class SplashActivity extends AppCompatActivity {
 			case REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS:
 			{
 				Map<String, Integer> perms = new HashMap<String, Integer>();
-				// Initial
 				perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
 				perms.put(Manifest.permission.READ_PHONE_STATE, PackageManager.PERMISSION_GRANTED);
-
-				// Fill with results
 				for (int i = 0; i < permissions.length; i++)
 					perms.put(permissions[i], grantResults[i]);
-				// Check for ACCESS_FINE_LOCATION
 				if (perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
 						&& perms.get(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
-					// All Permissions Granted
 					startApp();
 				} else {
-					// Permission Denied
 					Toast.makeText(SplashActivity.this, "Some Permission is Denied", Toast.LENGTH_LONG)
 							.show();
 					finish();
@@ -164,14 +161,15 @@ public class SplashActivity extends AppCompatActivity {
 		mAQuery = new AQuery(this);
 
 		MainActivity.settings = getPreferences(Activity.MODE_PRIVATE);
-		WebServiceCall.studiesInDB = MainActivity.settings.getBoolean("studiesInDB", false);
 
 		VbvmDatabaseOpenHelper mDbHelper = VbvmDatabaseOpenHelper.getInstance(this);
 		DatabaseManager.initializeInstance(mDbHelper);
 		MainActivity.db = DatabaseManager.getInstance().openDatabase();
 
 		checkUserFirstVisit();
-		downloadCounter = 3;
+		if ( MainActivity.settings.getBoolean("articlesInDB", false) )
+			hideLoadingProgress();
+		downloadCounter = COUNT_DOWNLOADS;
 		asyncJsonArticles();
 		asyncJsonAnswers();
 		asyncJsonVideos();
@@ -184,9 +182,9 @@ public class SplashActivity extends AppCompatActivity {
 						e.printStackTrace();
 					}
 					if (downloadCounter == 0) {
-						Intent mainIntent = new Intent().setClass(SplashActivity.this, MainActivity.class);
+						Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
 						startActivity(mainIntent);
-						finish(); //Destruimos esta activity para prevenir que el usuario retorne aqui presionando el boton Atras.
+						finish();
 						return;
 					}
 				}
@@ -195,23 +193,16 @@ public class SplashActivity extends AppCompatActivity {
 	}
 
 	public void asyncJsonArticles(){
-//		incrementCount();
-//		System.out.println("checking downloadCounter: " + downloadCounter);
 		WebServiceCall.articlesInDB = MainActivity.settings.getBoolean("articlesInDB", false);
 		if ( WebServiceCall.articlesInDB ){
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					Log.d("Database", "Articles - working offline on DB...");
+//					Log.d("Database", "Articles - working offline on DB...");
 					FilesManager.listArticles = DBHandleArticles.getAllArticles(false);
 					decrementCount();
-//					System.out.println("checking downloadCounter: " + downloadCounter);
 				}
 			}).start();
-//			Log.d("Database", "Articles - working offline on DB...");
-//			FilesManager.listArticles = DBHandleArticles.getAllArticles(false);
-//			decrementCount();
-//			System.out.println("checking downloadCounter: " + downloadCounter);
 		} else {
 			if ( !CheckConnectivity.isOnline(this)) {
 				CheckConnectivity.showMessage(this);
@@ -260,16 +251,14 @@ public class SplashActivity extends AppCompatActivity {
 								SharedPreferences.Editor e = MainActivity.settings.edit();
 								e.putBoolean("articlesInDB", true);
 								e.commit();
-								Log.i("ArticlesActivity info", "Update DB with data from Webservice");
+//								Log.i("ArticlesActivity info", "Update DB with data from Webservice");
 							} catch (JSONException e) {
 								e.printStackTrace();
 							}
 							FilesManager.listArticles = listArticles;
 						} else
 							Toast.makeText(mAQuery.getContext(), getResources().getString(R.string.error_message_connecting), Toast.LENGTH_SHORT).show();
-//							Toast.makeText(mAQuery.getContext(), "Error:" + status.getCode(), Toast.LENGTH_LONG).show();
 						decrementCount();
-//						System.out.println("checking downloadCounter: " + downloadCounter);
 					}
 				});
 			}
@@ -277,22 +266,16 @@ public class SplashActivity extends AppCompatActivity {
 	}
 
 	public void asyncJsonAnswers(){
-//		incrementCount();
-//		System.out.println("checking downloadCounter: " + downloadCounter);
 		WebServiceCall.postsInDB = MainActivity.settings.getBoolean("postsInDB", false);
 		if ( WebServiceCall.postsInDB ) {
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					Log.d("Database", "QA Posts - working offline on DB...");
+//					Log.d("Database", "QA Posts - working offline on DB...");
 					FilesManager.listAnswers = DBHandleAnswers.getAllPosts(false);
 					decrementCount();
-//					System.out.println("checking downloadCounter: " + downloadCounter);
 				}
 			}).start();
-//			Log.d("Database", "QA Posts - working offline on DB...");
-//			FilesManager.listAnswers = DBHandleAnswers.getAllPosts(false);
-//			decrementCount();
 		} else {
 			if ( !CheckConnectivity.isOnline(this) ) {
 				CheckConnectivity.showMessage(this);
@@ -346,16 +329,14 @@ public class SplashActivity extends AppCompatActivity {
 								SharedPreferences.Editor e = MainActivity.settings.edit();
 								e.putBoolean("postsInDB", true);
 								e.commit();
-								Log.i("PostsActivity info", "Updated DB / QA post with data from Webservice");
+//								Log.i("PostsActivity info", "Updated DB / QA post with data from Webservice");
 							} catch (JSONException e) {
 								e.printStackTrace();
 							}
-							System.out.println("SplashActivity.callback: " + FilesManager.listAnswers.size());
 							FilesManager.listAnswers = listAnswers;
 						} else
 							Toast.makeText(mAQuery.getContext(), getResources().getString(R.string.error_message_connecting), Toast.LENGTH_SHORT).show();
 						decrementCount();
-//						System.out.println("checking downloadCounter: " + downloadCounter);
 					}
 				});
 			}
@@ -363,24 +344,16 @@ public class SplashActivity extends AppCompatActivity {
 	}
 
 	public void asyncJsonVideos(){
-
-//		incrementCount();
-//		System.out.println("checking downloadCounter: " + downloadCounter);
 		WebServiceCall.videosInDB = MainActivity.settings.getBoolean("videosInDB", false);
 		if ( WebServiceCall.videosInDB ) {
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					Log.d("Database", "Videos - working offline on DB...");
+//					Log.d("Database", "Videos - working offline on DB...");
 					FilesManager.listVideoChannels = DBHandleVideos.getChannels();
 					decrementCount();
-//					System.out.println("checking downloadCounter: " + downloadCounter);
 				}
 			}).start();
-
-//			Log.d("Database", "Videos - working offline on DB...");
-//			FilesManager.listVideoChannels = DBHandleVideos.getChannels();
-//			decrementCount();
 		} else {
 			if ( !CheckConnectivity.isOnline(this)) {
 				CheckConnectivity.showMessage(this);
@@ -436,16 +409,14 @@ public class SplashActivity extends AppCompatActivity {
 								SharedPreferences.Editor e = MainActivity.settings.edit();
 								e.putBoolean("videosInDB", true);
 								e.commit();
-								Log.i("HomeFragment info", "Updated DB / Videos from Webservice");
+//								Log.i("HomeFragment info", "Updated DB / Videos from Webservice");
 							} catch (JSONException e) {
 								e.printStackTrace();
 							}
 							FilesManager.listVideoChannels = listVideoChannels;
 						} else
 							Toast.makeText(mAQuery.getContext(), getResources().getString(R.string.error_message_connecting), Toast.LENGTH_SHORT).show();
-//							Toast.makeText(mAQuery.getContext(), "Error:" + status.getCode(), Toast.LENGTH_LONG).show();
 						decrementCount();
-//						System.out.println("checking downloadCounter: " + downloadCounter);
 					}
 				});
 			}
@@ -455,8 +426,7 @@ public class SplashActivity extends AppCompatActivity {
 	private boolean checkUserFirstVisit(){
 		long lastUpdateTime = MainActivity.settings.getLong("lastUpdateKey", 0L);
 		long timeElapsed = System.currentTimeMillis() - lastUpdateTime;
-		// YOUR UPDATE FREQUENCY HERE
-		final long UPDATE_FREQ = 1000 * 60 * 60 * 3; //Every 1 hour
+		final long UPDATE_FREQ = 1000 * 60 * 60 * 3; //Every 3 hours
 		SharedPreferences.Editor e = MainActivity.settings.edit();
 		if (timeElapsed > UPDATE_FREQ) {
 			e.putBoolean("studiesInDB", false);
@@ -467,16 +437,15 @@ public class SplashActivity extends AppCompatActivity {
 			e.putBoolean("videosInDB", false);
 			Log.i("MainActivity info", "Update DB with data from Webservice");
 		}
-		// STORE LATEST UPDATE TIME
 		e.putLong("lastUpdateKey", System.currentTimeMillis());
 		e.commit();
 		FilesManager.lastLessonId = MainActivity.settings.getString("currentLessonId","");
 		return false;
 	}
 
-//	@Override
-//	protected void onStop() {
-//		super.onStop();
-//		handler.removeCallbacks(runnable);
-//	}
+	private void hideLoadingProgress() {
+		mProgressBar.setVisibility(View.GONE);
+		tvLoadingInit.setVisibility(View.GONE);
+	}
+
 }

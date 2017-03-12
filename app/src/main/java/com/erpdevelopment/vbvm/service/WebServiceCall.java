@@ -129,66 +129,56 @@ public class WebServiceCall {
 	}
 	
 	public List<Lesson> getStudyLessons(Study study) {		
-		
-		// Creating new JSON Parser
 		JSONParser jParser = new JSONParser();
-
-		// Getting JSON from URL
-		JSONObject json = jParser.getJSONFromUrl(JSON_STUDY_DETAIL_URL + study.getIdProperty() + "/");
-
+		JSONObject jsonObj = jParser.getJSONFromUrl(JSON_STUDY_DETAIL_URL + study.getIdProperty() + "/");
 		try {
-			vbv = json.getJSONObject(TAG_VERSE_BY_VERSE);
-			
-			// Getting JSON Array
-			JSONArray lessonArray = vbv.getJSONArray(TAG_LESSONS);
-			listLessons = new ArrayList<Lesson>();
-			
-			for ( int j=0; j < lessonArray.length(); j++ ) {
-				lesson = new Lesson();
-				lesson.setIdProperty(lessonArray.getJSONObject(j).getString("ID"));
-				lesson.setLessonsDescription(lessonArray.getJSONObject(j).getString("description"));
-				lesson.setPostedDate(lessonArray.getJSONObject(j).getString("postedDate"));
-				lesson.setTranscript(lessonArray.getJSONObject(j).getString("transcript"));
-				lesson.setDateStudyGiven(lessonArray.getJSONObject(j).getString("dateStudyGiven"));
-				lesson.setTeacherAid(lessonArray.getJSONObject(j).getString("teacherAid"));
-				lesson.setAverageRating(lessonArray.getJSONObject(j).getString("averageRating"));
-				lesson.setVideoSource(lessonArray.getJSONObject(j).getString("videoSource"));
-				lesson.setVideoLength(lessonArray.getJSONObject(j).getString("videoLength"));
-				lesson.setTitle(lessonArray.getJSONObject(j).getString("title"));
-				lesson.setLocation(lessonArray.getJSONObject(j).getString("location"));
-				lesson.setAudioSource(lessonArray.getJSONObject(j).getString("audioSource"));
-				lesson.setAudioLength(lessonArray.getJSONObject(j).getString("audioLength"));
-				lesson.setStudentAid(lessonArray.getJSONObject(j).getString("studentAid"));
-				lesson.setPositionInList(j);
-				lesson.setIdStudy(study.getIdProperty());
-				lesson.setStudyThumbnailSource(study.getThumbnailSource());
-				lesson.setStudyLessonsSize(lessonArray.length());
-//				lesson.setDownloadStatus(0);
-				lesson.setDownloadStatusAudio(0);
-				lesson.setDownloadStatusTeacherAid(0);
-				lesson.setDownloadStatusTranscript(0);
-//				lesson.setStudy(study);
-				lesson.setState("new");
-				
-				JSONArray ltopics = lessonArray.getJSONObject(j).getJSONArray(TAG_TOPICS);
-				
-				listLessonTopics = new ArrayList<Topic>();					
-				for (int k=0; k < ltopics.length(); k++){
-					topic = new Topic();
-					topic.setIdProperty(ltopics.getJSONObject(k).getString("ID"));
-					topic.setTopic(ltopics.getJSONObject(k).getString("topic"));
-					topic.setIdParent(lesson.getIdProperty());
-					listLessonTopics.add(topic);
+			listLessons = new ArrayList<>();
+			if ( jsonObj != null ) {
+				vbv = jsonObj.getJSONObject(TAG_VERSE_BY_VERSE);
+				JSONArray lessonArray = vbv.getJSONArray(TAG_LESSONS);
+				for (int j = 0; j < lessonArray.length(); j++) {
+					lesson = new Lesson();
+					lesson.setIdProperty(lessonArray.getJSONObject(j).getString("ID"));
+					lesson.setLessonsDescription(lessonArray.getJSONObject(j).getString("description"));
+					lesson.setPostedDate(lessonArray.getJSONObject(j).getString("postedDate"));
+					lesson.setTranscript(lessonArray.getJSONObject(j).getString("transcript"));
+					lesson.setDateStudyGiven(lessonArray.getJSONObject(j).getString("dateStudyGiven"));
+					lesson.setTeacherAid(lessonArray.getJSONObject(j).getString("teacherAid"));
+					lesson.setAverageRating(lessonArray.getJSONObject(j).getString("averageRating"));
+					lesson.setVideoSource(lessonArray.getJSONObject(j).getString("videoSource"));
+					lesson.setVideoLength(lessonArray.getJSONObject(j).getString("videoLength"));
+					lesson.setTitle(lessonArray.getJSONObject(j).getString("title"));
+					lesson.setLocation(lessonArray.getJSONObject(j).getString("location"));
+					lesson.setAudioSource(lessonArray.getJSONObject(j).getString("audioSource"));
+					lesson.setAudioLength(lessonArray.getJSONObject(j).getString("audioLength"));
+					lesson.setStudentAid(lessonArray.getJSONObject(j).getString("studentAid"));
+					lesson.setPositionInList(j);
+					lesson.setIdStudy(study.getIdProperty());
+					lesson.setStudyThumbnailSource(study.getThumbnailSource());
+					lesson.setStudyLessonsSize(lessonArray.length());
+					lesson.setDownloadStatusAudio(0);
+					lesson.setDownloadStatusTeacherAid(0);
+					lesson.setDownloadStatusTranscript(0);
+					lesson.setState("new");
+					JSONArray arrayTopics = lessonArray.getJSONObject(j).getJSONArray(TAG_TOPICS);
+					listLessonTopics = new ArrayList<Topic>();
+					for (int k = 0; k < arrayTopics.length(); k++) {
+						topic = new Topic();
+						topic.setIdProperty(arrayTopics.getJSONObject(k).getString("ID"));
+						topic.setTopic(arrayTopics.getJSONObject(k).getString("topic"));
+						topic.setIdParent(lesson.getIdProperty());
+						listLessonTopics.add(topic);
 						DBHandleStudies.createTopicLesson(topic);
+					}
+					lesson.setTopics(listLessonTopics);
+					listLessons.add(lesson);
+					DBHandleStudies.createLesson(lesson);
 				}
-				lesson.setTopics(listLessonTopics);	
-				listLessons.add(lesson);
-				DBHandleStudies.createLesson(lesson);
+				//Save state flag for sync Webservice/DB
+				Editor e = MainActivity.settings.edit();
+				e.putBoolean("lessonsInDB", true);
+				e.commit();
 			}
-			//Save state flag for sync Webservice/DB
-			Editor e = MainActivity.settings.edit();
-			e.putBoolean("lessonsInDB", true);
-			e.commit();			
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

@@ -4,6 +4,7 @@ package com.erpdevelopment.vbvm.utils;
 import com.erpdevelopment.vbvm.R;
 import com.erpdevelopment.vbvm.helper.LeadingMarginSpanHelper;
 import com.erpdevelopment.vbvm.model.Study;
+import com.squareup.picasso.Picasso;
 
 import android.app.Activity;
 import android.content.res.Resources;
@@ -11,13 +12,11 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
-import android.util.TypedValue;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -61,7 +60,6 @@ public class Utilities {
 		   
 		   finalTimerString = finalTimerString + minutesString + ":" + secondsString;
 		
-		// return timer string
 		return finalTimerString;
 	}
 	
@@ -71,15 +69,10 @@ public class Utilities {
 	 * @param totalDuration
 	 * */
 	public int getProgressPercentage(long currentDuration, long totalDuration){
-		Double percentage = (double) 0;
-		
+		Double percentage;
 		long currentSeconds = (int) (currentDuration / 1000);
 		long totalSeconds = (int) (totalDuration / 1000);
-		
-		// calculating percentage
 		percentage =(((double)currentSeconds)/totalSeconds)*100;
-		
-		// return percentage
 		return percentage.intValue();
 	}
 
@@ -93,14 +86,12 @@ public class Utilities {
 		int currentDuration = 0;
 		totalDuration = (int) (totalDuration / 1000);
 		currentDuration = (int) ((((double)progress) / 100) * totalDuration);
-		
-		// return current duration in milliseconds
 		return currentDuration * 1000;
 	}
 
-	public static void setActionBar(AppCompatActivity activity, String title) {
+	public static void setActionBar(AppCompatActivity activity, String title, boolean homeUp) {
         ActionBar actionBar = activity.getSupportActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setDisplayHomeAsUpEnabled(homeUp);
 		actionBar.setDisplayShowTitleEnabled(true);
 		actionBar.setTitle(title);
 		Drawable textHomeUp = Utilities.getTextViewAsDrawable(activity, title);
@@ -156,8 +147,37 @@ public class Utilities {
 		});
 	}
 
-	public static float convertDpToPixel(Resources resources, float dip) {
-		return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, resources.getDisplayMetrics());
+	public static String getFormatString(Resources res, int stringId, String text) {
+		return String.format(res.getString(stringId), text);
 	}
+
+	public static void setSupportActionBar(ActionBar actionBar, String title) {
+		actionBar.setDisplayHomeAsUpEnabled(false);
+		actionBar.setDisplayShowTitleEnabled(true);
+		actionBar.setTitle(title);
+		actionBar.show();
+	}
+
+	public static void loadStudyImages(Activity activity, String path, int size, ImageView imageView) {
+		Picasso.with(activity)
+				.load(path)
+				.resize(size,size)
+				.centerCrop()
+				.into(imageView);
+	}
+
+	public static String getLocale(Activity a) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+			return a.getResources().getConfiguration().getLocales().get(0).getDisplayName();
+		} else {
+			return a.getResources().getConfiguration().locale.getDisplayName();
+		}
+	}
+
+//	public static String getScreenDensity() {
+//		Resources resources = getResources();
+//		DisplayMetrics metrics = resources.getDisplayMetrics();
+//		float dp = 800 / ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+//	}
 
 }

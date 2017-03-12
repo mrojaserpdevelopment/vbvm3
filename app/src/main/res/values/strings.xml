@@ -12,7 +12,7 @@
     <string name="status_text_default">Enter the URL of the file to download.</string>
     <string name="progress_dialog_title_downloading">Downloading...</string>
     <string name="progress_dialog_title_connecting">Connecting...</string>
-    <string name="progress_dialog_message_prefix_downloading">Downloading file</string>
+    <string name="progress_dialog_message_prefix_downloading">Downloading</string>
     <string name="progress_dialog_message_prefix_connecting">Connecting to</string>
     <string name="user_message_download_complete">Download complete!</string>
     <string name="user_message_download_canceled">Download canceled!</string>
@@ -57,6 +57,12 @@
     <string name="action_filter">Filter</string>
     <string name="action_topics">Topics</string>
     <string name="action_authors">Authors</string>
+    <string name="label_empty_total_duration">TBD</string>
+    <string name="label_empty_current_duration">0:00</string>
+    <string name="label_notification_title">Verse By Verse Ministry</string>
+    <string name="label_notification_text">Now playing: %1$s</string>
+    <string name="label_title_lessons">Lessons</string>
+    <string name="label_title_completed_lessons">Completed lessons</string>
 
     <string-array name="items_find_bible_studies">
         <item>Old Testament Books</item>
